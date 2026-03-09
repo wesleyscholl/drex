@@ -827,27 +827,27 @@ to the best single component.
 **H-28.1 — Parametric Memory Dominates at 8× Sequence Length**
 Parametric memory retains >90% accuracy at SEQ_LEN=192 (8× baseline) while slot
 memory drops below 30%, confirming a qualitative crossover point in length scaling.
-*Status: UNTESTED*
+*Status: ~ INCONCLUSIVE (exp_28_1)*
 
 **H-28.2 — Hidden Dimension Power Law With α > 0.3 For Delta Rule**
 Accuracy scales as dim^α with α > 0.3 for the energy-gated delta rule, confirmed by
 log-log fit (R² > 0.95) across HIDDEN_DIM ∈ {32, 64, 128, 256}.
-*Status: UNTESTED*
+*Status: ~ INCONCLUSIVE (exp_28_2)*
 
 **H-28.3 — Parametric Memory Has Steepest Per-Step Accuracy Slope**
 Across STEPS ∈ {200, 400, 800, 1600, 3200}, parametric memory's per-step accuracy
 gain exceeds both slot and delta rule models, confirming highest sample efficiency.
-*Status: UNTESTED*
+*Status: ~ INCONCLUSIVE (exp_28_3)*
 
 **H-28.4 — Slot Count Peaks at 1.5–2× KV Pairs; Collapses Beyond**
 Memory slot accuracy peaks when NUM_SLOTS is 1.5–2× NUM_PAIRS and degrades with
 excess slots (slot collapse), identifying an optimal slot ratio.
-*Status: UNTESTED*
+*Status: ~ INCONCLUSIVE (exp_28_4)*
 
 **H-28.5 — Vocabulary Size Does Not Affect Delta Rule Capacity**
 Delta rule accuracy at fixed num_pairs varies by <2% across VOCAB_SIZE ∈ {32, 64,
 128, 256}, confirming the mechanism is capacity-limited by hidden_dim, not vocab.
-*Status: UNTESTED*
+*Status: ✗ REFUTED (exp_28_5)*
 
 ---
 
@@ -856,22 +856,22 @@ Delta rule accuracy at fixed num_pairs varies by <2% across VOCAB_SIZE ∈ {32, 
 **H-29.1 — Outer-Product Linear Memory Matches Slot Memory Within 2%**
 A pure outer-product linear associative memory (M += v⊗k / ||k||²) without any
 test-time SGD matches slot memory accuracy within 2% at matched parameter count.
-*Status: UNTESTED*
+*Status: ✓ SUPPORTED (exp_29_1)*
 
 **H-29.2 — Adam-at-Inference Outperforms SGD-at-Inference By >5%**
 Replacing test-time SGD with Adam (storing m1, m2 momentum states per MLP weight)
 for the parametric memory improves accuracy by >5% over SGD at the same inner steps.
-*Status: UNTESTED*
+*Status: ~ INCONCLUSIVE (exp_29_2)*
 
 **H-29.3 — Gradient-Surprise-Gated TTT Achieves 90% Accuracy at <50% Update Rate**
 Updating parametric memory only when the gradient-norm ratio (||∇||² / EMA||∇||²)
 exceeds 1.5 achieves >90% of full-update accuracy at <50% update rate.
-*Status: UNTESTED*
+*Status: ✓ SUPPORTED (exp_29_3)*
 
 **H-29.4 — Weight Decay at Inference Recovers >20% Lost Accuracy at 8× Length**
 Applying L2 weight decay (wd=0.01) during test-time MLP updates prevents saturation;
 accuracy at SEQ_LEN=192 is >20% higher with decay than without.
-*Status: UNTESTED*
+*Status: ~ INCONCLUSIVE (exp_29_4)*
 
 ---
 
@@ -880,22 +880,22 @@ accuracy at SEQ_LEN=192 is >20% higher with decay than without.
 **H-30.1 — 4-Head Delta Rule Outperforms Single-Head by >5% at 8-Pair Recall**
 Multi-head delta rule (4 heads × H/4 dimensions, matched total params) outperforms
 single-head by >5% on 8-pair associative recall.
-*Status: UNTESTED*
+*Status: ✓ SUPPORTED (exp_30_1)*
 
 **H-30.2 — Momentum Delta Rule Matches Energy Gating With Lower Loss Variance**
 Momentum delta (M_t = β×M_{t-1} + (1−β)×ΔM, β=0.9) achieves the same acc_ratio as
 energy-gated delta (within 5%) while producing <80% of energy gating's loss variance.
-*Status: UNTESTED*
+*Status: ✗ REFUTED (exp_30_2)*
 
 **H-30.3 — Bidirectional Delta Rule Improves Late-Query Accuracy By >8%**
 Adding a backward retroactive delta pass (re-applying updates weighted by future
 context similarity) improves late-query accuracy by >8% without hurting early queries.
-*Status: UNTESTED*
+*Status: ✗ REFUTED (exp_30_3)*
 
 **H-30.4 — Energy-Gated Delta Pareto Knee Is Universally at 40–60% Write Rate**
 The accuracy–write-rate Pareto frontier of energy-gated delta rule has its knee at
 40–60% write rate across HIDDEN_DIMS ∈ {32, 64, 128}, confirming a universal optimum.
-*Status: UNTESTED*
+*Status: ~ INCONCLUSIVE (exp_30_4)*
 
 ---
 
@@ -904,22 +904,22 @@ The accuracy–write-rate Pareto frontier of energy-gated delta rule has its kne
 **H-31.1 — Retroactive Writing + Two-Hop Retrieval Combined Beats Both by >5%**
 Pre-training each mechanism independently then jointly fine-tuning achieves >5% higher
 accuracy than either individually on combined two-hop + re-encoding tasks.
-*Status: UNTESTED*
+*Status: ✗ REFUTED (exp_31_1)*
 
 **H-31.2 — Retroactive Re-Encoding Gap Persists >0.08 At 8× Sequence Length**
 The +0.133 retroactive writing accuracy gap at SEQ_LEN=24 remains above +0.08 at
 SEQ_LEN=192 (8× length, 10 KV pairs), confirming mechanism scalability.
-*Status: UNTESTED*
+*Status: ✗ REFUTED (exp_31_2)*
 
 **H-31.3 — Delta Rule + Retroactive Re-Encoding Combined Beats Delta-Only by >8%**
 Using delta rule for memory writes and retroactive cross-attention for slot refinement
 achieves >8% higher accuracy than delta-only and >2% higher than re-encoding-only.
-*Status: UNTESTED*
+*Status: ~ INCONCLUSIVE (exp_31_3)*
 
 **H-31.4 — Learned Eviction Policy + Parametric Memory Beats FIFO by >10%**
 When parametric memory is capacity-limited to 8 KV pairs, applying a learned
 importance eviction policy achieves >10% higher accuracy than first-in-first-out.
-*Status: UNTESTED*
+*Status: ~ INCONCLUSIVE (exp_31_4)*
 
 ---
 
@@ -928,22 +928,22 @@ importance eviction policy achieves >10% higher accuracy than first-in-first-out
 **H-32.1 — Retroactive Writing Gap >0.09 On ≥7 of 9 Seeds**
 The exp_3_6 result (two-pass vs forward-only accuracy gap) replicates with gap >0.09
 on at least 7 of 9 seeds {0,1,2,7,13,42,99,123,777}.
-*Status: UNTESTED*
+*Status: ✓ SUPPORTED (exp_32_1)*
 
 **H-32.2 — Energy-Gated Delta acc_ratio >0.90 On ≥7 of 9 Seeds**
 The exp_15_3 result (acc_ratio=0.919, write_rate=0.519) replicates with acc_ratio >0.90
 and write_rate <0.70 on at least 7 of 9 seeds.
-*Status: UNTESTED*
+*Status: ✓ SUPPORTED (exp_32_2)*
 
 **H-32.3 — Three-Hop Chain Retention >2× On ≥7 of 9 Seeds**
 The exp_13_2 result (three-hop retention=4×) replicates with retention >2.0 on at
 least 7 of 9 seeds, confirming that three-hop compositional retrieval is reliable.
-*Status: UNTESTED*
+*Status: ✓ SUPPORTED (exp_32_3)*
 
 **H-32.4 — Parametric Memory Length Retention Gap >0.35 On ≥7 of 9 Seeds**
 The exp_16_3 result (parametric retention gap=0.440 over slot memory) replicates with
 gap >0.35 on at least 7 of 9 seeds {0,1,2,7,13,42,99,123,777}.
-*Status: UNTESTED*
+*Status: ✓ SUPPORTED (exp_32_4)*
 
 ---
 
@@ -952,20 +952,111 @@ gap >0.35 on at least 7 of 9 seeds {0,1,2,7,13,42,99,123,777}.
 **H-33.1 — Slot Memory Accuracy Follows Power Law acc ~ ρ^(−γ) With R² > 0.90**
 Slot memory accuracy decays as a power law of interference density ρ = N_pairs/hidden_dim
 across ρ ∈ {0.03, 0.06, 0.12, 0.25, 0.5, 1.0, 2.0}, with log-log fit R² > 0.90.
-*Status: UNTESTED*
+*Status: ✗ REFUTED (exp_33_1)*
 
 **H-33.2 — Architecture Interference Exponents Ordered: γ_parametric < γ_slot < γ_delta**
 Fitting separate power laws to slot, parametric, and delta rule architectures yields
 γ values ordered parametric < slot < delta with total spread > 0.3, identifying
 parametric memory as the most interference-resistant design.
-*Status: UNTESTED*
+*Status: ~ INCONCLUSIVE (exp_33_2)*
 
 **H-33.3 — Interference Exponent γ Is Independent of Hidden Dimension (±0.1)**
 The power-law exponent γ fitted at H ∈ {32, 64, 128} differs by less than 0.1 for
 each architecture, confirming γ is a property of the mechanism, not the scale.
-*Status: UNTESTED*
+*Status: ✗ REFUTED (exp_33_3)*
 
 **H-33.4 — Tripling Training Budget Recovers >50% Of Capacity-Lost Accuracy**
 At ρ=1.0 (N_pairs = hidden_dim), tripling STEPS from 400 to 1200 recovers >50%
 of the accuracy difference between ρ=1.0 and ρ=0.5 for at least one architecture.
-*Status: UNTESTED*
+*Status: ✓ SUPPORTED (exp_33_4)*
+
+---
+
+## Category 34: Training Dynamics (Phase 6)
+
+**H-34.1 — Delta Rule Shows Sharper Phase Transition Than Slot Memory**
+Delta rule memory shows a phase transition (≥30% accuracy gain within 200 steps)
+while slot memory does not — revealing a qualitative difference in learning dynamics.
+*Status: ✗ REFUTED (exp_34_1)*
+
+**H-34.2 — Memory Projections Receive Larger Gradients Early, Converge Late**
+Memory projection parameters (k/v/q) receive gradient ratio (mem/enc) > 2.0 at step 100
+and < 1.5 at step 1000, indicating early specialisation of memory writes.
+*Status: ~ INCONCLUSIVE (exp_34_2)*
+
+**H-34.3 — Energy-Gated Write Rate Decreases Naturally During Training**
+The energy-gated delta rule write rate decreases from ≥0.70 at step 100 to ≤0.40
+at step 1500 as the model learns more accurate representations.
+*Status: ~ INCONCLUSIVE (exp_34_3)*
+
+**H-34.4 — Easy-First Curriculum Outperforms Random Training By >0.08**
+Training with an easy-first curriculum (2→8 pairs over 1500 steps) improves final
+accuracy vs random mixed training by >0.08 on a 4-pair evaluation task.
+*Status: ~ INCONCLUSIVE (exp_34_4)*
+
+**H-34.5 — Memory Warmup Improves Accuracy By >3%**
+Gradual memory warmup (write scale 0→1 over first 200 steps) improves final accuracy
+by >3% over full-memory training from step 0, allowing backbone pre-training.
+*Status: ✗ REFUTED (exp_34_5)*
+
+**H-34.6 — Delta Rule Shows Strong Optimizer Preference (>10% Spread)**
+The best optimizer outperforms the worst by >10% accuracy across Adam, AdamW, SGD,
+SGD+momentum, and RMSprop, indicating higher optimizer sensitivity than typical
+architectures.
+*Status: ✓ SUPPORTED (exp_34_6)*
+
+**H-34.7 — Delta Rule Has Narrow Stable LR Band (<1.5 Decades)**
+The stable learning rate band (LRs achieving ≥50% of peak accuracy) spans <1.5 decades,
+indicating higher LR sensitivity than standard architectures (which have 2+ stable decades).
+*Status: ✗ REFUTED (exp_34_7)*
+
+**H-34.8 — Memory Quality Degrades at Larger Batch Sizes (>5% Drop B8→B128)**
+Accuracy at B=128 is >5% lower than B=8 even with proportional LR scaling, indicating
+batch-size-dependent memory quality independent of gradient noise.
+*Status: ✗ REFUTED (exp_34_8)*
+
+**H-34.9 — Gate Dead-Zone Collapse: >40% Activations Bimodal at Convergence**
+More than 40% of learned write gate activations are in the dead zone (<0.05) or
+saturated zone (>0.95) at convergence, indicating bimodal gate collapse rather than
+graded, informative gating.
+*Status: ✗ REFUTED (exp_34_9)*
+
+---
+
+## Category 35: Failure Modes (Phase 6)
+
+**H-35.1 — Delta Rule Degrades Gracefully Under Post-Hoc Noise Injection**
+Accuracy at 30% additive noise to the memory matrix M is >60% of the clean baseline,
+not a catastrophic cliff — the delta rule writes are robust to partial corruption.
+*Status: ✗ REFUTED (exp_35_1)*
+
+**H-35.2 — Slot Memory Does Not Hallucinate on OOD Queries**
+Querying with keys never presented in the context produces accuracy near random chance
+(< random + 5%), confirming that slot memory does not fabricate associations.
+*Status: ✓ SUPPORTED (exp_35_2)*
+
+**H-35.3 — OOD Inputs Cause Abnormal Write Gate Behavior (>2× Rate Deviation)**
+Out-of-distribution tokens cause write gate activations that deviate by more than 2×
+from in-distribution rates, revealing non-robustness to distributional shift.
+*Status: ✓ SUPPORTED (exp_35_3)*
+
+---
+
+## Category 36: Biological Analogues (Phase 6)
+
+**H-36.1 — Offline Consolidation Improves Recall By >3%**
+Replaying all written key-value pairs offline (without new input) improves associative
+recall accuracy by >3% over single-pass writing — analogous to hippocampal-cortical
+consolidation during sleep.
+*Status: ✗ REFUTED (exp_36_1)*
+
+**H-36.2 — Predictive Coding Residuals Match Full Representation Performance**
+Storing prediction residuals (what the model predicted wrong) rather than full token
+representations produces equivalent or better associative recall accuracy with the
+same memory capacity.
+*Status: ~ INCONCLUSIVE (exp_36_2)*
+
+**H-36.3 — Split Episodic/Semantic Memory Outperforms Unified by >5%**
+Separating episodic (temporal/event order) memory from semantic (content association)
+memory outperforms a unified memory store by >5% on tasks requiring both recall types.
+*Status: ✓ SUPPORTED (exp_36_3)*
