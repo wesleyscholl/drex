@@ -1,0 +1,29 @@
+{
+  "experiment_id": "exp_24_2",
+  "hypothesis": "Compositional two-hop retrieval sustains >70% accuracy under 60% entity interference, up from 40% interference tested in exp_13_1.",
+  "outcome": "SUPPORTED",
+  "metrics": {
+    "two_hop_acc_by_interference": {
+      "0.0": 1.0,
+      "0.4": 0.8538,
+      "0.6": 0.7887
+    },
+    "retention_at_60pct_interf": 0.7887
+  },
+  "notes": "Two-hop acc at 60% interference=0.789>0.70.",
+  "error": "",
+  "timestamp": "2026-03-09T03:49:21.276361+00:00",
+  "duration_seconds": 8.232772124931216,
+  "config": {
+    "num_entities": 32,
+    "num_attributes": 16,
+    "hidden_dim": 64,
+    "train_steps": 2000,
+    "interference_fracs": [
+      0.0,
+      0.4,
+      0.6
+    ]
+  },
+  "seed": 42
+}

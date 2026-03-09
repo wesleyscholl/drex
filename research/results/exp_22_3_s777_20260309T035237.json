@@ -1,0 +1,28 @@
+{
+  "experiment_id": "exp_22_3",
+  "hypothesis": "Orthogonal slot initialization via Gram-Schmidt plus orthogonality regularization prevents slot collapse and improves read accuracy by >5% without changing the read mechanism.",
+  "outcome": "INCONCLUSIVE",
+  "metrics": {
+    "acc_A": 0.2531,
+    "acc_B": 0.2794,
+    "gap": 0.0262,
+    "collapse_A": 0.3568,
+    "collapse_B": 0.1449,
+    "collapse_reduction": 0.2119
+  },
+  "notes": "Gap=0.026, collapse_reduction=0.212.",
+  "error": "",
+  "timestamp": "2026-03-09T03:52:37.904780+00:00",
+  "duration_seconds": 34.191753749968484,
+  "config": {
+    "vocab_size": 64,
+    "hidden_dim": 64,
+    "seq_len": 32,
+    "num_pairs": 4,
+    "memory_slots": 8,
+    "steps": 2000,
+    "batch": 32,
+    "orth_lambda": 0.1
+  },
+  "seed": 777
+}

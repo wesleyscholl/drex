@@ -1,0 +1,27 @@
+{
+  "experiment_id": "exp_26_2",
+  "hypothesis": "Write budget with positionally biased task (exp_9_5) is seed-stable: additional seeds confirm non-uniform (oracle) budget outperforms uniform.",
+  "outcome": "REFUTED",
+  "metrics": {
+    "acc_uniform": 0.2581,
+    "acc_oracle": 0.2162,
+    "acc_learned": 0.2263,
+    "uniform_to_oracle_gap": -0.0419,
+    "uniform_to_learned_gap": -0.0319
+  },
+  "notes": "Uniform=0.258, Oracle=0.216, Learned=0.226. Oracle gap=-0.042, Learned gap=-0.032.",
+  "error": "",
+  "timestamp": "2026-03-09T03:52:10.592174+00:00",
+  "duration_seconds": 50.81362158397678,
+  "config": {
+    "vocab_size": 64,
+    "hidden_dim": 64,
+    "seq_len": 32,
+    "memory_slots": 6,
+    "n_blocks": 4,
+    "num_pairs": 4,
+    "oracle_block0_slots": 4,
+    "train_steps": 2000
+  },
+  "seed": 777
+}

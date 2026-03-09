@@ -1,0 +1,37 @@
+{
+  "experiment_id": "exp_34_3",
+  "hypothesis": "Energy-gated delta write rate decreases naturally during training: \u22650.70 at step 100 and \u22640.40 at step 1500.",
+  "outcome": "INCONCLUSIVE",
+  "metrics": {
+    "write_rate_s100": 0.5377,
+    "write_rate_s300": 0.5368,
+    "write_rate_s600": 0.5361,
+    "write_rate_s900": 0.537,
+    "write_rate_s1200": 0.5411,
+    "write_rate_s1500": 0.537
+  },
+  "notes": "Write rate: early(s100)=0.538, late(s1500)=0.537. Full trajectory: {'write_rate_s100': 0.5377, 'write_rate_s300': 0.5368, 'write_rate_s600': 0.5361, 'write_rate_s900': 0.537, 'write_rate_s1200': 0.5411, 'write_rate_s1500': 0.537}. Hypothesis: \u22650.70 early \u2192 \u22640.40 late.",
+  "error": "",
+  "timestamp": "2026-03-09T17:03:27.587802+00:00",
+  "duration_seconds": 41.46348195907194,
+  "config": {
+    "vocab_size": 64,
+    "hidden_dim": 64,
+    "num_pairs": 5,
+    "seq_len": 24,
+    "steps": 1500,
+    "batch": 8,
+    "energy_threshold": 0.4,
+    "measure_steps": [
+      100,
+      300,
+      600,
+      900,
+      1200,
+      1500
+    ],
+    "param_bytes": 165632,
+    "activation_bytes": 49152
+  },
+  "seed": 777
+}

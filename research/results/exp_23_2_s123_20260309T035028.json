@@ -1,0 +1,27 @@
+{
+  "experiment_id": "exp_23_2",
+  "hypothesis": "Two-pass re-encoding yields diminishing returns: the second re-encoding pass provides <20% of the accuracy gain from the first pass.",
+  "outcome": "REFUTED",
+  "metrics": {
+    "acc_0pass": 0.2331,
+    "acc_1pass": 0.2631,
+    "acc_2pass": 0.305,
+    "gain_pass1": 0.03,
+    "gain_pass2": 0.0419,
+    "diminishment_ratio": 1.3958
+  },
+  "notes": "No diminishing returns: ratio=1.396>0.80.",
+  "error": "",
+  "timestamp": "2026-03-09T03:50:28.745427+00:00",
+  "duration_seconds": 53.029637000057846,
+  "config": {
+    "vocab_size": 64,
+    "hidden_dim": 64,
+    "seq_len": 24,
+    "num_pairs": 4,
+    "forward_slots": 4,
+    "steps": 1500,
+    "batch": 32
+  },
+  "seed": 123
+}

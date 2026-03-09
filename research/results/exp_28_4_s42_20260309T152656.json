@@ -1,0 +1,48 @@
+{
+  "experiment_id": "exp_28_4",
+  "hypothesis": "Slot accuracy peaks at NUM_SLOTS=1.5\u20132\u00d7NUM_PAIRS (9\u201312 slots), then degrades with excess slots due to slot collapse.",
+  "outcome": "INCONCLUSIVE",
+  "metrics": {
+    "acc_k2": 0.0469,
+    "acc_k4": 0.0711,
+    "acc_k6": 0.1742,
+    "acc_k8": 0.0352,
+    "acc_k12": 0.1359,
+    "acc_k16": 0.1648,
+    "acc_k24": 0.1562,
+    "collapse_k2": 0.8059,
+    "collapse_k4": 0.7088,
+    "collapse_k6": 0.5065,
+    "collapse_k8": 0.9992,
+    "collapse_k12": 0.5579,
+    "collapse_k16": 0.6986,
+    "collapse_k24": 0.5004,
+    "peak_k": 6,
+    "acc_peak": 0.1742,
+    "acc_k24_vs_peak": -0.018
+  },
+  "notes": "Peak at k=6 (acc=0.174). k=24 acc=0.156 (drop=0.018).",
+  "error": "",
+  "timestamp": "2026-03-09T15:26:56.703421+00:00",
+  "duration_seconds": 48.87724387506023,
+  "config": {
+    "vocab_size": 64,
+    "hidden_dim": 64,
+    "num_pairs": 6,
+    "seq_len": 24,
+    "steps": 500,
+    "batch": 32,
+    "slot_counts": [
+      2,
+      4,
+      6,
+      8,
+      12,
+      16,
+      24
+    ],
+    "param_bytes": 116480,
+    "activation_bytes": 196608
+  },
+  "seed": 42
+}

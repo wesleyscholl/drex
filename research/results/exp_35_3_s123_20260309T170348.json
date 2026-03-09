@@ -1,0 +1,31 @@
+{
+  "experiment_id": "exp_35_3",
+  "hypothesis": "Out-of-distribution inputs cause abnormal write gate behavior: the write rate for OOD tokens deviates from in-distribution write rate by more than 2\u00d7, revealing that the gate is not robust to OOD inputs.",
+  "outcome": "SUPPORTED",
+  "metrics": {
+    "wr_ood_0": 0.0,
+    "wr_ood_25": 0.0,
+    "wr_ood_50": 0.0,
+    "wr_ood_75": 0.0,
+    "wr_ood_100": 0.0,
+    "acc_ood_0": 0.2973,
+    "acc_ood_25": 0.1715,
+    "acc_ood_50": 0.1203,
+    "acc_ood_75": 0.0883,
+    "acc_ood_100": 0.0633,
+    "baseline_write_rate": 0.0,
+    "full_ood_write_rate": 0.0,
+    "wr_ratio_ood_vs_baseline": 0.0
+  },
+  "notes": "Abnormal OOD write rate: baseline=0.000, OOD=0.000, ratio=0.00 (outside [0.5, 2.0]). Gate not robust to OOD inputs.",
+  "error": "",
+  "timestamp": "2026-03-09T17:03:48.515128+00:00",
+  "duration_seconds": 66.51482958300039,
+  "config": {
+    "vocab": 64,
+    "hidden": 64,
+    "steps": 600,
+    "train_range": 32
+  },
+  "seed": 123
+}

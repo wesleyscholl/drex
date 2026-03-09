@@ -1,0 +1,51 @@
+{
+  "experiment_id": "exp_28_5",
+  "hypothesis": "Delta rule accuracy variance across VOCAB_SIZE \u2208 {32,64,128,256} is <2% at each NUM_PAIRS level, confirming vocab-independence of capacity.",
+  "outcome": "REFUTED",
+  "metrics": {
+    "acc_variance_n2": 0.175,
+    "acc_mean_n2": 0.4709,
+    "acc_n2_v32": 0.5258,
+    "acc_n2_v64": 0.5039,
+    "acc_n2_v128": 0.5031,
+    "acc_n2_v256": 0.3508,
+    "acc_variance_n4": 0.1601,
+    "acc_mean_n4": 0.2225,
+    "acc_n4_v32": 0.2812,
+    "acc_n4_v64": 0.275,
+    "acc_n4_v128": 0.2125,
+    "acc_n4_v256": 0.1211,
+    "acc_variance_n8": 0.1218,
+    "acc_mean_n8": 0.0885,
+    "acc_n8_v32": 0.1445,
+    "acc_n8_v64": 0.1172,
+    "acc_n8_v128": 0.0695,
+    "acc_n8_v256": 0.0227,
+    "max_variance": 0.175
+  },
+  "notes": "Max variance across vocab sizes = 0.1750 (>0.02). Vocab-independence NOT confirmed.",
+  "error": "",
+  "timestamp": "2026-03-09T15:33:09.921187+00:00",
+  "duration_seconds": 278.1204920000164,
+  "config": {
+    "hidden_dim": 64,
+    "seq_len": 24,
+    "steps": 400,
+    "batch": 32,
+    "vocab_sizes": [
+      32,
+      64,
+      128,
+      256
+    ],
+    "n_pairs_list": [
+      2,
+      4,
+      8
+    ],
+    "param_bytes_V32": 99968,
+    "param_bytes_V256": 215552,
+    "activation_bytes": 196608
+  },
+  "seed": 42
+}

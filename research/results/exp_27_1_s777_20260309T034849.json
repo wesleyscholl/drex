@@ -1,0 +1,27 @@
+{
+  "experiment_id": "exp_27_1",
+  "hypothesis": "Hybrid memory (delta-rule matrix + parametric MLP) outperforms either alone when each component is pre-trained independently for 100 steps before joint fine-tuning.",
+  "outcome": "REFUTED",
+  "metrics": {
+    "acc_delta_only": 0.0875,
+    "acc_param_only": 0.0292,
+    "acc_cold_joint": 0.0958,
+    "acc_pretrained_hybrid": 0.0542,
+    "superadditive_ratio": 0.619
+  },
+  "notes": "Delta=0.087, Param=0.029, Cold=0.096, PretrainedHybrid=0.054, ratio=0.619.",
+  "error": "",
+  "timestamp": "2026-03-09T03:48:49.427106+00:00",
+  "duration_seconds": 31.709113082964905,
+  "config": {
+    "vocab_size": 64,
+    "hidden_dim": 32,
+    "seq_len": 24,
+    "num_pairs": 5,
+    "steps_pre": 100,
+    "steps_joint": 200,
+    "batch": 8,
+    "mlp_inner": 8
+  },
+  "seed": 777
+}

@@ -1,0 +1,40 @@
+{
+  "experiment_id": "exp_34_2",
+  "hypothesis": "Memory projection parameters (k/v/q) receive larger gradient than encoder early in training (ratio > 2.0 at step 100) and converge to similar magnitudes later (ratio < 1.5 at step 1000).",
+  "outcome": "INCONCLUSIVE",
+  "metrics": {
+    "enc_gnorm_s100": 1.8664,
+    "mem_gnorm_s100": 4.485,
+    "ratio_s100": 2.403,
+    "enc_gnorm_s300": 3.6299,
+    "mem_gnorm_s300": 7.1586,
+    "ratio_s300": 1.9721,
+    "enc_gnorm_s600": 5.2064,
+    "mem_gnorm_s600": 11.1343,
+    "ratio_s600": 2.1386,
+    "enc_gnorm_s1000": 5.1346,
+    "mem_gnorm_s1000": 11.1816,
+    "ratio_s1000": 2.1777
+  },
+  "notes": "Gradient ratio (mem/enc): early(s100)=2.403, late(s1000)=2.178. Hypothesis: ratio>2.0 early and <1.5 late.",
+  "error": "",
+  "timestamp": "2026-03-09T17:01:13.802663+00:00",
+  "duration_seconds": 23.810068708029576,
+  "config": {
+    "vocab_size": 64,
+    "hidden_dim": 64,
+    "num_pairs": 4,
+    "seq_len": 24,
+    "steps": 1200,
+    "batch": 8,
+    "measure_at": [
+      100,
+      300,
+      600,
+      1000
+    ],
+    "param_bytes": 182016,
+    "activation_bytes": 49152
+  },
+  "seed": 777
+}

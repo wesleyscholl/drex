@@ -1,0 +1,29 @@
+{
+  "experiment_id": "exp_34_4",
+  "hypothesis": "Easy-first curriculum (2\u21928 pairs) improves final accuracy vs random mixed training by >0.08 on a 4-pair evaluation task.",
+  "outcome": "INCONCLUSIVE",
+  "metrics": {
+    "acc_random": 0.225,
+    "acc_easy_first": 0.2687,
+    "acc_hard_first": 0.2708,
+    "gap_easy_vs_random": 0.0437,
+    "gap_easy_vs_hard": -0.0021
+  },
+  "notes": "Random=0.225, Easy-first=0.269, Hard-first=0.271. Gap(easy-random)=+0.044.",
+  "error": "",
+  "timestamp": "2026-03-09T17:07:18.277760+00:00",
+  "duration_seconds": 89.22729633399285,
+  "config": {
+    "vocab_size": 64,
+    "hidden_dim": 64,
+    "min_pairs": 2,
+    "max_pairs": 8,
+    "eval_pairs": 4,
+    "seq_len": 24,
+    "steps": 1500,
+    "batch": 8,
+    "param_bytes": 165632,
+    "activation_bytes": 49152
+  },
+  "seed": 123
+}

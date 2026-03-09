@@ -1,0 +1,30 @@
+{
+  "experiment_id": "exp_31_1",
+  "hypothesis": "Combined model (retroactive re-encoding + two-hop retrieval) outperforms both in isolation by >5% using pre-training isolation.",
+  "outcome": "REFUTED",
+  "metrics": {
+    "acc_retro": 0.4863,
+    "acc_twohop": 0.585,
+    "acc_combined": 0.1212,
+    "gain_vs_retro": -0.3651,
+    "gain_vs_twohop": -0.4638
+  },
+  "notes": "Retro=0.486, TwoHop=0.585, Combined=0.121. Gain vs retro: -0.365, gain vs twohop: -0.464.",
+  "error": "",
+  "timestamp": "2026-03-09T15:01:48.273981+00:00",
+  "duration_seconds": 42.35238141589798,
+  "config": {
+    "vocab_size": 128,
+    "hidden_dim": 64,
+    "num_pairs": 5,
+    "seq_len": 26,
+    "steps_pretrain": 200,
+    "steps_finetune": 200,
+    "batch": 16,
+    "lr": 0.0003,
+    "finetune_lr": 0.0001,
+    "param_bytes": 214784,
+    "activation_bytes": 106496
+  },
+  "seed": 42
+}

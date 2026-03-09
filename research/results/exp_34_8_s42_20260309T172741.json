@@ -1,0 +1,27 @@
+{
+  "experiment_id": "exp_34_8",
+  "hypothesis": "Delta rule memory quality degrades at larger batch sizes independently of gradient noise: accuracy at B=128 is >5% lower than B=8 even when effective LR is scaled proportionally (linear scaling rule).",
+  "outcome": "REFUTED",
+  "metrics": {
+    "acc_B4": 0.1269,
+    "acc_B8": 0.1881,
+    "acc_B16": 0.2125,
+    "acc_B32": 0.2056,
+    "acc_B64": 0.2406,
+    "acc_B128": 0.2475,
+    "drop_B8_to_B128": -0.0594,
+    "spearman_batch_vs_acc": 0.943
+  },
+  "notes": "No batch sensitivity: drop=-0.059<0.01. Memory quality scales normally with batch size.",
+  "error": "",
+  "timestamp": "2026-03-09T17:27:41.472513+00:00",
+  "duration_seconds": 163.28144204197451,
+  "config": {
+    "vocab": 64,
+    "hidden": 64,
+    "steps": 600,
+    "base_lr": 0.0003,
+    "base_batch": 8
+  },
+  "seed": 42
+}

@@ -1,0 +1,40 @@
+{
+  "experiment_id": "exp_29_4",
+  "hypothesis": "Weight decay at inference prevents saturation: at SEQ_LEN=192, accuracy with weight_decay=0.01 is >20% higher than without.",
+  "outcome": "INCONCLUSIVE",
+  "metrics": {
+    "acc_plain_len24": 0.0375,
+    "acc_wd_len24": 0.0281,
+    "gap_len24": -0.0094,
+    "acc_plain_len96": 0.0187,
+    "acc_wd_len96": 0.0375,
+    "gap_len96": 0.0188,
+    "acc_plain_len192": 0.0312,
+    "acc_wd_len192": 0.0344,
+    "gap_len192": 0.0032,
+    "acc_gain_wd_192": 0.0032
+  },
+  "notes": "Gain at SEQ_LEN=192: +0.003. Gaps: len24=-0.009, len96=+0.019, len192=+0.003.",
+  "error": "",
+  "timestamp": "2026-03-09T14:40:17.887223+00:00",
+  "duration_seconds": 468.52464354096446,
+  "config": {
+    "vocab_size": 64,
+    "hidden_dim": 64,
+    "num_pairs": 8,
+    "seq_lens": [
+      24,
+      96,
+      192
+    ],
+    "steps": 800,
+    "batch": 8,
+    "inner_dim": 32,
+    "weight_decay": 0.01,
+    "inference_lr": 0.05,
+    "param_bytes_plain": 116608,
+    "param_bytes_wd": 116608,
+    "activation_bytes": 393216
+  },
+  "seed": 123
+}

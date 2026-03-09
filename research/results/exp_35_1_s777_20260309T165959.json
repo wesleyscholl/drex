@@ -1,0 +1,36 @@
+{
+  "experiment_id": "exp_35_1",
+  "hypothesis": "Delta rule memory degrades gracefully under post-hoc noise injection: accuracy at 30% additive noise to M is >60% of clean baseline, not a catastrophic cliff (>70% accuracy drop).",
+  "outcome": "REFUTED",
+  "metrics": {
+    "acc_noise_0pct": 0.2047,
+    "acc_noise_10pct": 0.0281,
+    "acc_noise_25pct": 0.0177,
+    "acc_noise_50pct": 0.0208,
+    "acc_noise_100pct": 0.0193,
+    "acc_noise_200pct": 0.0172,
+    "baseline_acc": 0.2047,
+    "retention_at_25pct_noise": 0.0865,
+    "retention_at_50pct_noise": 0.1016,
+    "cliff_detected": true,
+    "cliff_at_noise": 0.1
+  },
+  "notes": "Catastrophic degradation: baseline=0.205, @25%noise=0.018 (retention=0.086). Cliff at noise=0.1.",
+  "error": "",
+  "timestamp": "2026-03-09T16:59:59.321265+00:00",
+  "duration_seconds": 44.68284195789602,
+  "config": {
+    "vocab": 64,
+    "hidden": 64,
+    "steps": 600,
+    "noise_levels": [
+      0.0,
+      0.1,
+      0.25,
+      0.5,
+      1.0,
+      2.0
+    ]
+  },
+  "seed": 777
+}

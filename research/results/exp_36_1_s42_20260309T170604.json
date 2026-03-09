@@ -1,0 +1,23 @@
+{
+  "experiment_id": "exp_36_1",
+  "hypothesis": "An offline consolidation phase \u2014 replaying all written key-value pairs through the memory without new input \u2014 improves associative recall accuracy by >3% over single-pass writing, analogous to hippocampal-cortical consolidation.",
+  "outcome": "REFUTED",
+  "metrics": {
+    "acc_no_consolidation": 0.1771,
+    "acc_with_consolidation": 0.1771,
+    "consolidation_gain": 0.0,
+    "consolidation_passes": 2
+  },
+  "notes": "No consolidation benefit: gain=0.000 (threshold >0.03). Offline replay does not improve retrieval.",
+  "error": "",
+  "timestamp": "2026-03-09T17:06:04.207290+00:00",
+  "duration_seconds": 51.0600634169532,
+  "config": {
+    "vocab": 64,
+    "hidden": 64,
+    "steps": 600,
+    "consolidation_passes": 2,
+    "num_pairs": 6
+  },
+  "seed": 42
+}

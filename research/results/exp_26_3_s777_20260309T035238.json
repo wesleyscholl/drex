@@ -1,0 +1,25 @@
+{
+  "experiment_id": "exp_26_3",
+  "hypothesis": "Query-conditioned write gate (exp_17_1) improvement over context-only gate is seed-stable: additional seeds confirm >5% accuracy improvement on multi-query-type tasks.",
+  "outcome": "INCONCLUSIVE",
+  "metrics": {
+    "acc_A": 0.14,
+    "acc_B": 0.1656,
+    "gap": 0.0256,
+    "query_pred_acc": 0.7798
+  },
+  "notes": "Context-only=0.140, QueryCond=0.166, gap=0.026, qtype_pred=0.780.",
+  "error": "",
+  "timestamp": "2026-03-09T03:52:38.445269+00:00",
+  "duration_seconds": 9.375537708052434,
+  "config": {
+    "vocab_size": 64,
+    "hidden_dim": 64,
+    "seq_len": 32,
+    "num_query_types": 4,
+    "memory_slots": 8,
+    "steps": 400,
+    "batch": 32
+  },
+  "seed": 777
+}

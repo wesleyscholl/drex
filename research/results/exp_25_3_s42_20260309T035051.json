@@ -1,0 +1,34 @@
+{
+  "experiment_id": "exp_25_3",
+  "hypothesis": "Temporal ordering task (retrieve k-th event in temporal sequence): accuracy drops monotonically with k, revealing the read bottleneck for ordered memory access.",
+  "outcome": "INCONCLUSIVE",
+  "metrics": {
+    "acc_by_k": {
+      "1": 0.2369,
+      "2": 0.1144,
+      "3": 0.1512,
+      "4": 0.1062,
+      "5": 0.2263,
+      "6": 0.0706
+    },
+    "monotone_decreasing": false,
+    "first_to_last_drop": 0.1663,
+    "k1_acc": 0.2369,
+    "k_max_acc": 0.0706
+  },
+  "notes": "Drop=0.166 but not monotone (False). Partial temporal bottleneck.",
+  "error": "",
+  "timestamp": "2026-03-09T03:50:51.172578+00:00",
+  "duration_seconds": 23.477419042028487,
+  "config": {
+    "vocab_size": 64,
+    "hidden_dim": 64,
+    "seq_len": 32,
+    "n_events": 6,
+    "max_k": 6,
+    "memory_slots": 8,
+    "steps": 2000,
+    "batch": 32
+  },
+  "seed": 42
+}

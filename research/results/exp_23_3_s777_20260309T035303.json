@@ -1,0 +1,27 @@
+{
+  "experiment_id": "exp_23_3",
+  "hypothesis": "Selective re-encoding (re-encode only slots with cosine distance > T from context) achieves >90% of full re-encoding accuracy at <60% re-encode rate.",
+  "outcome": "INCONCLUSIVE",
+  "metrics": {
+    "acc_A": 0.2188,
+    "acc_B": 0.2625,
+    "acc_C": 0.2331,
+    "reenc_rate": 0.0,
+    "acc_ratio": 0.8881
+  },
+  "notes": "Acc_ratio=0.888, reenc_rate=0.000.",
+  "error": "",
+  "timestamp": "2026-03-09T03:53:03.004724+00:00",
+  "duration_seconds": 31.061623999965377,
+  "config": {
+    "vocab_size": 64,
+    "hidden_dim": 64,
+    "seq_len": 24,
+    "num_pairs": 4,
+    "forward_slots": 4,
+    "steps": 1500,
+    "batch": 32,
+    "cosine_threshold": 0.5
+  },
+  "seed": 777
+}

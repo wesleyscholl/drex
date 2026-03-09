@@ -1,0 +1,48 @@
+{
+  "experiment_id": "exp_28_3",
+  "hypothesis": "Parametric memory has the steepest per-step accuracy gain across STEPS \u2208 {200,400,800,1600,3200}, confirming highest sample efficiency.",
+  "outcome": "INCONCLUSIVE",
+  "metrics": {
+    "acc_slot_s200": 0.1875,
+    "acc_delta_s200": 0.1521,
+    "acc_param_s200": 0.0323,
+    "acc_slot_s400": 0.1875,
+    "acc_delta_s400": 0.2042,
+    "acc_param_s400": 0.0302,
+    "acc_slot_s800": 0.2229,
+    "acc_delta_s800": 0.2135,
+    "acc_param_s800": 0.0333,
+    "acc_slot_s1600": 0.074,
+    "acc_delta_s1600": 0.2323,
+    "acc_param_s1600": 0.0281,
+    "acc_slot_s3200": 0.0583,
+    "acc_delta_s3200": 0.2333,
+    "acc_param_s3200": 0.0292,
+    "slope_slot": -0.05202,
+    "slope_delta": 0.019713,
+    "slope_param": -0.001064
+  },
+  "notes": "Slopes (\u00d710\u00b3/step): slot=-0.0520, delta=0.0197, param=-0.0011.",
+  "error": "",
+  "timestamp": "2026-03-09T15:05:25.729132+00:00",
+  "duration_seconds": 578.832594916923,
+  "config": {
+    "vocab_size": 64,
+    "hidden_dim": 64,
+    "num_pairs": 5,
+    "seq_len": 24,
+    "steps_list": [
+      200,
+      400,
+      800,
+      1600,
+      3200
+    ],
+    "batch": 32,
+    "param_bytes_slot": 116480,
+    "param_bytes_delta": 116480,
+    "param_bytes_param": 108352,
+    "activation_bytes": 196608
+  },
+  "seed": 42
+}

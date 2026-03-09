@@ -1,0 +1,41 @@
+{
+  "experiment_id": "exp_24_1",
+  "hypothesis": "Parametric memory retains >80% accuracy at 4x training sequence length, while slot memory drops below 40%.",
+  "outcome": "REFUTED",
+  "metrics": {
+    "acc_slot": {
+      "24": 0.0969,
+      "48": 0.0375,
+      "96": 0.0406
+    },
+    "acc_parametric": {
+      "24": 0.0344,
+      "48": 0.0437,
+      "96": 0.0312
+    },
+    "retention_slot_4x": 0.419,
+    "retention_param_4x": 0.907
+  },
+  "notes": "Parametric underperforms slot at 4x length.",
+  "error": "",
+  "timestamp": "2026-03-09T03:49:13.033846+00:00",
+  "duration_seconds": 45.78643520793412,
+  "config": {
+    "vocab_size": 64,
+    "hidden_dim": 32,
+    "seq_lens": [
+      24,
+      48,
+      96
+    ],
+    "num_pairs_per_len": [
+      4,
+      8,
+      12
+    ],
+    "memory_slots": 8,
+    "steps": 300,
+    "batch": 8
+  },
+  "seed": 777
+}

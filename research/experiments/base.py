@@ -83,6 +83,7 @@ class Experiment(ABC):
         print(f"{'='*60}")
 
         t0 = time.perf_counter()
+        self.seed = seed  # make seed available to run() via self.seed
         try:
             result = self.run()
         except Exception as e:

@@ -1,0 +1,37 @@
+{
+  "experiment_id": "exp_33_4",
+  "hypothesis": "Tripling training steps (400\u21921200) at \u03c1=1.0 recovers >50% of accuracy lost vs \u03c1=0.5 for at least one architecture.",
+  "outcome": "REFUTED",
+  "metrics": {
+    "acc_slot_rho05": 0.0078,
+    "acc_delta_rho05": 0.0117,
+    "acc_slot_400": 0.0047,
+    "acc_delta_400": 0.0086,
+    "acc_slot_800": 0.0031,
+    "acc_delta_800": 0.0141,
+    "acc_slot_1200": 0.0047,
+    "acc_delta_1200": 0.0086,
+    "recovery_slot": 0.0,
+    "recovery_delta": 0.0
+  },
+  "notes": "Slot recovery=0.000, Delta recovery=0.000. \u03c1=0.5 ref: slot=0.008, delta=0.012. \u03c1=1.0@400: slot=0.005, delta=0.009. \u03c1=1.0@1200: slot=0.005, delta=0.009.",
+  "error": "",
+  "timestamp": "2026-03-09T17:39:22.377089+00:00",
+  "duration_seconds": 825.6244265829446,
+  "config": {
+    "hidden_dim": 64,
+    "vocab_size": 256,
+    "batch": 32,
+    "n_high": 64,
+    "n_mid": 32,
+    "steps_list": [
+      400,
+      800,
+      1200
+    ],
+    "param_bytes_slot": 215552,
+    "param_bytes_delta": 215552,
+    "activation_bytes": 1114112
+  },
+  "seed": 123
+}

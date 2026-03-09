@@ -660,3 +660,312 @@ Combining a feedforward controller with hindsight oracle distillation produces
 higher accuracy than any single-mechanism baseline (LSTM+task, FF+task, LSTM+oracle),
 representing the strongest overall write policy tested in Phase 3.
 *Status: UNTESTED*
+
+---
+
+## Category 22: Read Architecture Redesigns (Phase 4)
+
+**H-22.1 — Slot-Conditioned Read Reduces Read Error**
+Computing the read query as a linear combination of slot embeddings (soft attention
+over slots → query) reduces read error by > 5% compared to a fixed linear projection
+from the final hidden state, because the query adapts to what is already stored.
+*Status: UNTESTED*
+
+**H-22.2 — Iterative Message-Passing Read Outperforms Single-Pass**
+Two rounds of slot→query→slot attention refinement outperform single-pass dot-product
+read by > 3% on multi-fact retrieval tasks, because iterative refinement narrows
+ambiguity in which slot to attend to.
+*Status: UNTESTED*
+
+**H-22.3 — Orthogonal Slot Initialization Prevents Collapse and Improves Recall**
+Orthogonal initialization of slot weight matrices via Gram-Schmidt prevents slot
+collapse (measurably lower mean pairwise cosine similarity) and independently
+improves read accuracy by > 5% without changing the read mechanism.
+*Status: UNTESTED*
+
+**H-22.4 — Read Gate Transfers From Single-Hop to Multi-Hop Without Retuning**
+An entropy-threshold read gate trained on single-hop associative recall transfers
+to multi-hop tasks without retuning, achieving accuracy within 5% of a gate retrained
+on the multi-hop distribution.
+*Status: UNTESTED*
+
+**H-22.5 — Contrastive Slot Training Improves Precision Under Interference**
+An InfoNCE auxiliary loss that pushes apart slot embeddings improves retrieval
+precision@1 by > 5% on high-interference tasks (many similar keys), because
+contrastive training increases the angular separation between stored representations.
+*Status: UNTESTED*
+
+---
+
+## Category 23: Retroactive Re-Encoding Variants (Phase 4)
+
+**H-23.1 — Multi-Head Re-Encoding Outperforms Single-Head**
+Multi-head cross-attention (num_heads=4) for re-encoding existing memory slots
+outperforms single-head cross-attention re-encoding by > 3%, because multiple
+attention heads capture richer slot-context interactions.
+*Status: UNTESTED*
+
+**H-23.2 — Second Re-Encoding Pass Yields Diminishing Returns**
+A second re-encoding pass (applying cross-attention re-encoding to already
+re-encoded slots) contributes less than 20% of the gain from the first pass,
+confirming that re-encoding has rapidly diminishing returns.
+*Status: UNTESTED*
+
+**H-23.3 — Selective Re-Encoding Achieves High Accuracy at Low Rate**
+Re-encoding only slots with cosine distance > T from the context mean achieves
+> 90% of full re-encoding accuracy while processing < 60% of slots, because
+slots already similar to context do not benefit from re-encoding.
+*Status: UNTESTED*
+
+**H-23.4 — Re-Encoding Gain is Task-Type Specific**
+Factual recall tasks benefit > 2× more from re-encoding than pattern completion
+tasks (measured by accuracy gain), because factual associations require binding
+arbitrary tokens whereas patterns can be inferred from local context.
+*Status: UNTESTED*
+
+---
+
+## Category 24: Scale and Length Generalization (Phase 4)
+
+**H-24.1 — Parametric Memory Retains > 80% Accuracy at 4× Length**
+Parametric MLP memory trained at seq_len=24 retains > 80% of its peak accuracy
+at seq_len=96 (4×), while slot memory drops below 40%, confirming the length-scaling
+advantage observed in exp_16_3.
+*Status: UNTESTED*
+
+**H-24.2 — Two-Hop Retrieval Sustains > 70% Accuracy Under 60% Interference**
+Compositional two-hop retrieval sustains > 70% accuracy when 60% of bridge
+mappings are deliberately corrupted (vs. the 40% interference level tested in
+exp_13_1), because compositional structure provides redundant retrieval paths.
+*Status: UNTESTED*
+
+**H-24.3 — Energy-Gated Delta Rule is Dimension-Robust**
+The energy-gated delta rule (exp_15_3) achieves the same accuracy-to-write-rate
+efficiency ratio (within 5%) across HIDDEN_DIM ∈ {32, 64, 128}, confirming that
+the energy criterion is not an artifact of low-dimensional geometry.
+*Status: UNTESTED*
+
+**H-24.4 — Four-Hop Chains Are Infeasible at HIDDEN_DIM=64**
+Four-hop compositional chain accuracy drops > 50% relative to two-hop accuracy
+at HIDDEN_DIM=64, and a hop-by-hop training curriculum does not close more than
+10% of this gap, indicating a fundamental capacity limitation.
+*Status: UNTESTED*
+
+---
+
+## Category 25: Hard Benchmarks (Phase 4)
+
+**H-25.1 — Multi-Domain Retrieval Caps Below 70% Without Routing**
+A single memory architecture confronted with mixed factual, pattern, and temporal
+retrieval tasks in the same sequence achieves < 70% joint accuracy, while domain-
+specific routing models achieve significantly higher accuracy per domain.
+*Status: UNTESTED*
+
+**H-25.2 — Slot Memory Degrades > 20% Under Query Noise; Parametric < 10%**
+Adding Gaussian noise ε~N(0, 0.1) to the query embedding at test time degrades
+slot memory by > 20% accuracy while degrading parametric memory by < 10%, because
+gradient-adapted representations are inherently more noise-robust.
+*Status: UNTESTED*
+
+**H-25.3 — Temporal Ordering Accuracy Degrades Monotonically With Ordinal Position**
+Retrieval accuracy for the kth event in a temporal ordering task decreases
+monotonically with k (Pearson r < −0.7), reflecting the read bottleneck identified
+in exp_7_7 applied to ordered sequence retrieval.
+*Status: UNTESTED*
+
+---
+
+## Category 26: Seed Stability Validation (Phase 4)
+
+**H-26.1 — Protected Slot Interior Optimum Is Seed-Stable**
+The interior accuracy peak at K=3–6 protected slots (exp_9_4) replicates across
+5 additional independent seeds (13, 99, 256, 512, 1024), confirming that the
+optimum is not a seed artifact.
+*Status: UNTESTED*
+
+**H-26.2 — Write Budget Non-Uniform Allocation Is Seed-Stable**
+The write budget advantage of oracle protected-slot allocation over uniform allocation
+(exp_9_5) replicates across 5 additional independent seeds, confirming that non-
+uniform budget allocation is a reliable accuracy lever.
+*Status: UNTESTED*
+
+**H-26.3 — Query-Conditioned Write Gate Advantage Is Seed-Stable**
+The accuracy advantage of query-conditioned write gates over context-only gates
+(exp_17_1) replicates across 5 additional independent seeds, warranting a Phase 5
+architectural redesign of this mechanism.
+*Status: UNTESTED*
+
+---
+
+## Category 27: Parametric-Delta Hybrid (Phase 4)
+
+**H-27.1 — Isolated Pre-Training Enables Super-Additive Hybrid Memory**
+A hybrid memory combining energy-gated delta-rule matrix and parametric MLP
+components, each pre-trained independently for 200 steps before joint fine-tuning,
+outperforms either component alone by > 10% and outperforms cold joint training
+by > 2%, because pre-training isolates each component's loss landscape.
+*Status: UNTESTED*
+
+**H-27.2 — Delta-Rule and Parametric Components Spontaneously Specialize**
+In a trained hybrid model, the delta-rule component achieves higher accuracy on
+short-range (distance ≤ 4) retrieval than the parametric component, while the
+parametric component achieves higher accuracy on long-range (distance ≥ 8) retrieval,
+reflecting spontaneous division of labor.
+*Status: UNTESTED*
+
+**H-27.3 — Sequential Pre-Training Is Strictly Better Than Cold Joint Training**
+The sequential pre-training strategy (delta pre-train → parametric pre-train →
+joint fine-tune with lower LR and gradient clipping) yields strictly higher accuracy
+than cold joint training at the same total step budget AND is super-additive relative
+to the best single component.
+*Status: UNTESTED*
+
+---
+
+## Category 28: Explicit Scaling Laws (Phase 5)
+
+**H-28.1 — Parametric Memory Dominates at 8× Sequence Length**
+Parametric memory retains >90% accuracy at SEQ_LEN=192 (8× baseline) while slot
+memory drops below 30%, confirming a qualitative crossover point in length scaling.
+*Status: UNTESTED*
+
+**H-28.2 — Hidden Dimension Power Law With α > 0.3 For Delta Rule**
+Accuracy scales as dim^α with α > 0.3 for the energy-gated delta rule, confirmed by
+log-log fit (R² > 0.95) across HIDDEN_DIM ∈ {32, 64, 128, 256}.
+*Status: UNTESTED*
+
+**H-28.3 — Parametric Memory Has Steepest Per-Step Accuracy Slope**
+Across STEPS ∈ {200, 400, 800, 1600, 3200}, parametric memory's per-step accuracy
+gain exceeds both slot and delta rule models, confirming highest sample efficiency.
+*Status: UNTESTED*
+
+**H-28.4 — Slot Count Peaks at 1.5–2× KV Pairs; Collapses Beyond**
+Memory slot accuracy peaks when NUM_SLOTS is 1.5–2× NUM_PAIRS and degrades with
+excess slots (slot collapse), identifying an optimal slot ratio.
+*Status: UNTESTED*
+
+**H-28.5 — Vocabulary Size Does Not Affect Delta Rule Capacity**
+Delta rule accuracy at fixed num_pairs varies by <2% across VOCAB_SIZE ∈ {32, 64,
+128, 256}, confirming the mechanism is capacity-limited by hidden_dim, not vocab.
+*Status: UNTESTED*
+
+---
+
+## Category 29: TTT / Titans-Inspired Memory (Phase 5)
+
+**H-29.1 — Outer-Product Linear Memory Matches Slot Memory Within 2%**
+A pure outer-product linear associative memory (M += v⊗k / ||k||²) without any
+test-time SGD matches slot memory accuracy within 2% at matched parameter count.
+*Status: UNTESTED*
+
+**H-29.2 — Adam-at-Inference Outperforms SGD-at-Inference By >5%**
+Replacing test-time SGD with Adam (storing m1, m2 momentum states per MLP weight)
+for the parametric memory improves accuracy by >5% over SGD at the same inner steps.
+*Status: UNTESTED*
+
+**H-29.3 — Gradient-Surprise-Gated TTT Achieves 90% Accuracy at <50% Update Rate**
+Updating parametric memory only when the gradient-norm ratio (||∇||² / EMA||∇||²)
+exceeds 1.5 achieves >90% of full-update accuracy at <50% update rate.
+*Status: UNTESTED*
+
+**H-29.4 — Weight Decay at Inference Recovers >20% Lost Accuracy at 8× Length**
+Applying L2 weight decay (wd=0.01) during test-time MLP updates prevents saturation;
+accuracy at SEQ_LEN=192 is >20% higher with decay than without.
+*Status: UNTESTED*
+
+---
+
+## Category 30: Multi-Head & Extended Delta Rule (Phase 5)
+
+**H-30.1 — 4-Head Delta Rule Outperforms Single-Head by >5% at 8-Pair Recall**
+Multi-head delta rule (4 heads × H/4 dimensions, matched total params) outperforms
+single-head by >5% on 8-pair associative recall.
+*Status: UNTESTED*
+
+**H-30.2 — Momentum Delta Rule Matches Energy Gating With Lower Loss Variance**
+Momentum delta (M_t = β×M_{t-1} + (1−β)×ΔM, β=0.9) achieves the same acc_ratio as
+energy-gated delta (within 5%) while producing <80% of energy gating's loss variance.
+*Status: UNTESTED*
+
+**H-30.3 — Bidirectional Delta Rule Improves Late-Query Accuracy By >8%**
+Adding a backward retroactive delta pass (re-applying updates weighted by future
+context similarity) improves late-query accuracy by >8% without hurting early queries.
+*Status: UNTESTED*
+
+**H-30.4 — Energy-Gated Delta Pareto Knee Is Universally at 40–60% Write Rate**
+The accuracy–write-rate Pareto frontier of energy-gated delta rule has its knee at
+40–60% write rate across HIDDEN_DIMS ∈ {32, 64, 128}, confirming a universal optimum.
+*Status: UNTESTED*
+
+---
+
+## Category 31: Top Mechanism Integration (Phase 5)
+
+**H-31.1 — Retroactive Writing + Two-Hop Retrieval Combined Beats Both by >5%**
+Pre-training each mechanism independently then jointly fine-tuning achieves >5% higher
+accuracy than either individually on combined two-hop + re-encoding tasks.
+*Status: UNTESTED*
+
+**H-31.2 — Retroactive Re-Encoding Gap Persists >0.08 At 8× Sequence Length**
+The +0.133 retroactive writing accuracy gap at SEQ_LEN=24 remains above +0.08 at
+SEQ_LEN=192 (8× length, 10 KV pairs), confirming mechanism scalability.
+*Status: UNTESTED*
+
+**H-31.3 — Delta Rule + Retroactive Re-Encoding Combined Beats Delta-Only by >8%**
+Using delta rule for memory writes and retroactive cross-attention for slot refinement
+achieves >8% higher accuracy than delta-only and >2% higher than re-encoding-only.
+*Status: UNTESTED*
+
+**H-31.4 — Learned Eviction Policy + Parametric Memory Beats FIFO by >10%**
+When parametric memory is capacity-limited to 8 KV pairs, applying a learned
+importance eviction policy achieves >10% higher accuracy than first-in-first-out.
+*Status: UNTESTED*
+
+---
+
+## Category 32: Deep Seed Validation (Phase 5)
+
+**H-32.1 — Retroactive Writing Gap >0.09 On ≥7 of 9 Seeds**
+The exp_3_6 result (two-pass vs forward-only accuracy gap) replicates with gap >0.09
+on at least 7 of 9 seeds {0,1,2,7,13,42,99,123,777}.
+*Status: UNTESTED*
+
+**H-32.2 — Energy-Gated Delta acc_ratio >0.90 On ≥7 of 9 Seeds**
+The exp_15_3 result (acc_ratio=0.919, write_rate=0.519) replicates with acc_ratio >0.90
+and write_rate <0.70 on at least 7 of 9 seeds.
+*Status: UNTESTED*
+
+**H-32.3 — Three-Hop Chain Retention >2× On ≥7 of 9 Seeds**
+The exp_13_2 result (three-hop retention=4×) replicates with retention >2.0 on at
+least 7 of 9 seeds, confirming that three-hop compositional retrieval is reliable.
+*Status: UNTESTED*
+
+**H-32.4 — Parametric Memory Length Retention Gap >0.35 On ≥7 of 9 Seeds**
+The exp_16_3 result (parametric retention gap=0.440 over slot memory) replicates with
+gap >0.35 on at least 7 of 9 seeds {0,1,2,7,13,42,99,123,777}.
+*Status: UNTESTED*
+
+---
+
+## Category 33: Capacity Physics / Interference Density Law (Phase 5)
+
+**H-33.1 — Slot Memory Accuracy Follows Power Law acc ~ ρ^(−γ) With R² > 0.90**
+Slot memory accuracy decays as a power law of interference density ρ = N_pairs/hidden_dim
+across ρ ∈ {0.03, 0.06, 0.12, 0.25, 0.5, 1.0, 2.0}, with log-log fit R² > 0.90.
+*Status: UNTESTED*
+
+**H-33.2 — Architecture Interference Exponents Ordered: γ_parametric < γ_slot < γ_delta**
+Fitting separate power laws to slot, parametric, and delta rule architectures yields
+γ values ordered parametric < slot < delta with total spread > 0.3, identifying
+parametric memory as the most interference-resistant design.
+*Status: UNTESTED*
+
+**H-33.3 — Interference Exponent γ Is Independent of Hidden Dimension (±0.1)**
+The power-law exponent γ fitted at H ∈ {32, 64, 128} differs by less than 0.1 for
+each architecture, confirming γ is a property of the mechanism, not the scale.
+*Status: UNTESTED*
+
+**H-33.4 — Tripling Training Budget Recovers >50% Of Capacity-Lost Accuracy**
+At ρ=1.0 (N_pairs = hidden_dim), tripling STEPS from 400 to 1200 recovers >50%
+of the accuracy difference between ρ=1.0 and ρ=0.5 for at least one architecture.
+*Status: UNTESTED*

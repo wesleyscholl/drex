@@ -1,0 +1,26 @@
+{
+  "experiment_id": "exp_25_1",
+  "hypothesis": "Multi-domain retrieval benchmark (facts + patterns + temporal chains in same sequence): any memory architecture achieves <70% joint accuracy without domain-specific slots.",
+  "outcome": "SUPPORTED",
+  "metrics": {
+    "acc_generic": 0.145,
+    "acc_domain_specific": 0.0481,
+    "random_baseline": 0.0312,
+    "generic_below_70pct": true
+  },
+  "notes": "Generic acc=0.145<0.70. Domain-specific: 0.048.",
+  "error": "",
+  "timestamp": "2026-03-09T03:49:00.719968+00:00",
+  "duration_seconds": 60.14161349995993,
+  "config": {
+    "vocab_size": 64,
+    "hidden_dim": 64,
+    "seq_len": 48,
+    "num_pairs_per_domain": 3,
+    "num_domains": 3,
+    "memory_slots": 8,
+    "steps": 2000,
+    "batch": 32
+  },
+  "seed": 123
+}

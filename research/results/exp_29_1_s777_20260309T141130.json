@@ -1,0 +1,26 @@
+{
+  "experiment_id": "exp_29_1",
+  "hypothesis": "Outer-product linear associative memory (no test-time SGD) matches slot memory within 2% at matched parameter count.",
+  "outcome": "SUPPORTED",
+  "metrics": {
+    "acc_linear": 0.2656,
+    "acc_slot": 0.2288,
+    "gap": 0.0368
+  },
+  "notes": "Linear acc=0.266, slot acc=0.229, gap=+0.037.",
+  "error": "",
+  "timestamp": "2026-03-09T14:11:30.392378+00:00",
+  "duration_seconds": 86.42045270896051,
+  "config": {
+    "vocab_size": 64,
+    "hidden_dim": 64,
+    "num_pairs": 5,
+    "seq_len": 24,
+    "steps": 2000,
+    "batch": 32,
+    "param_bytes_linear": 149760,
+    "param_bytes_slot": 116480,
+    "activation_bytes": 196608
+  },
+  "seed": 777
+}

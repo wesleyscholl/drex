@@ -1,0 +1,26 @@
+{
+  "experiment_id": "exp_34_9",
+  "hypothesis": "At convergence, more than 40% of learned write gate activations are in the dead zone (<0.05) or saturated zone (>0.95), indicating bimodal gate collapse rather than graded, informative gating.",
+  "outcome": "REFUTED",
+  "metrics": {
+    "acc": 0.2427,
+    "gate_dead_frac": 0.0,
+    "gate_saturated_frac": 0.0,
+    "bimodal_fraction": 0.0,
+    "gate_mean": 0.4762,
+    "gate_std": 0.0332,
+    "gate_entropy_normalized": 0.3038,
+    "total_gate_samples": 147200
+  },
+  "notes": "Gate is well-spread: bimodal_fraction=0.000 < 0.15. Entropy=0.304. No dead/saturation collapse.",
+  "error": "",
+  "timestamp": "2026-03-09T17:33:47.358400+00:00",
+  "duration_seconds": 31.695685582933947,
+  "config": {
+    "vocab": 64,
+    "hidden": 64,
+    "steps": 600,
+    "eval_batches": 200
+  },
+  "seed": 42
+}

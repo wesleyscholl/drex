@@ -1,0 +1,29 @@
+{
+  "experiment_id": "exp_22_4",
+  "hypothesis": "Read gating (suppress low-confidence reads via entropy threshold) transfers from simple associative recall to multi-pair retrieval without retuning: accuracy gap is <2% on simple and >3% on hard task.",
+  "outcome": "INCONCLUSIVE",
+  "metrics": {
+    "acc_std_easy": 0.405,
+    "acc_gate_easy": 0.3906,
+    "acc_std_hard": 0.1981,
+    "acc_gate_hard": 0.1938,
+    "gap_easy": 0.0144,
+    "gap_hard": -0.0044,
+    "entropy_threshold": 1.7675
+  },
+  "notes": "Easy gap=0.014, hard gap=-0.004. Partial transfer.",
+  "error": "",
+  "timestamp": "2026-03-09T03:55:13.286573+00:00",
+  "duration_seconds": 43.85277474997565,
+  "config": {
+    "vocab_size": 64,
+    "hidden_dim": 64,
+    "num_pairs_easy": 2,
+    "num_pairs_hard": 6,
+    "memory_slots": 8,
+    "steps": 2000,
+    "batch": 32,
+    "entropy_threshold": 1.7675
+  },
+  "seed": 777
+}

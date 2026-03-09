@@ -1,0 +1,23 @@
+{
+  "experiment_id": "exp_35_2",
+  "hypothesis": "Slot memory architecture does NOT hallucinate: querying with keys never presented in context produces accuracy near random chance, not significantly above chance (< random + 5%).",
+  "outcome": "SUPPORTED",
+  "metrics": {
+    "acc_in_distribution": 0.1852,
+    "acc_ood_query": 0.0398,
+    "random_baseline": 0.0312,
+    "ood_above_random": 0.0086,
+    "hallucination_ratio": 0.2152
+  },
+  "notes": "No hallucination: OOD acc=0.040 \u2248 random baseline=0.031 (gap=0.009<0.05). In-dist acc=0.185.",
+  "error": "",
+  "timestamp": "2026-03-09T17:01:02.046078+00:00",
+  "duration_seconds": 20.881502749980427,
+  "config": {
+    "vocab": 128,
+    "hidden": 64,
+    "num_slots": 8,
+    "steps": 600
+  },
+  "seed": 123
+}

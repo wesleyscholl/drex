@@ -1,0 +1,29 @@
+{
+  "experiment_id": "exp_27_2",
+  "hypothesis": "In the hybrid model, the delta-rule component specializes in short-range retrieval while the parametric component specializes in long-range retrieval: delta_short > param_short + 5% AND param_long > delta_long + 5%.",
+  "outcome": "INCONCLUSIVE",
+  "metrics": {
+    "delta_short": 0.1062,
+    "delta_long": 0.1125,
+    "param_short": 0.0125,
+    "param_long": 0.025,
+    "short_gap": 0.0938,
+    "long_gap": -0.0875
+  },
+  "notes": "Delta: short=0.106, long=0.113. Param: short=0.013, long=0.025. short_gap=0.094, long_gap=-0.087.",
+  "error": "",
+  "timestamp": "2026-03-09T03:49:01.239122+00:00",
+  "duration_seconds": 11.79291970806662,
+  "config": {
+    "vocab_size": 64,
+    "hidden_dim": 32,
+    "seq_len": 32,
+    "num_pairs": 4,
+    "steps_pre": 100,
+    "steps_joint": 200,
+    "short_filler": 2,
+    "long_filler": 10,
+    "batch": 8
+  },
+  "seed": 42
+}

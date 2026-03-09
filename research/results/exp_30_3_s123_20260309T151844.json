@@ -1,0 +1,30 @@
+{
+  "experiment_id": "exp_30_3",
+  "hypothesis": "Bidirectional delta rule improves accuracy by >8% on late-query tasks vs unidirectional, without harming early-query tasks by more than 2%.",
+  "outcome": "REFUTED",
+  "metrics": {
+    "acc_unidir_late": 0.1881,
+    "acc_bidir_late": 0.1688,
+    "acc_unidir_early": 0.1775,
+    "acc_bidir_early": 0.175,
+    "late_improvement": -0.0193,
+    "early_change": -0.0025
+  },
+  "notes": "Late: bidir=0.169, unidir=0.188, improvement=-0.019. Early: bidir=0.175, unidir=0.177, change=-0.003.",
+  "error": "",
+  "timestamp": "2026-03-09T15:18:44.556001+00:00",
+  "duration_seconds": 785.6314262080705,
+  "config": {
+    "hidden_dim": 64,
+    "vocab_size": 64,
+    "num_pairs": 6,
+    "seq_len": 30,
+    "steps": 1500,
+    "batch": 32,
+    "early_read_pos": 5,
+    "param_bytes_unidir": 116480,
+    "param_bytes_bidir": 116480,
+    "activation_bytes": 245760
+  },
+  "seed": 123
+}

@@ -1,0 +1,28 @@
+{
+  "experiment_id": "exp_23_4",
+  "hypothesis": "Re-encoding gain is task-type specific: factual recall tasks show >2x the accuracy benefit of pattern-completion tasks from cross-attention re-encoding.",
+  "outcome": "REFUTED",
+  "metrics": {
+    "acc_factual_base": 0.1506,
+    "acc_factual_reenc": 0.1794,
+    "acc_pattern_base": 0.3544,
+    "acc_pattern_reenc": 0.4269,
+    "gain_factual": 0.0287,
+    "gain_pattern": 0.0725,
+    "specificity_ratio": 0.3966
+  },
+  "notes": "No task-type specificity: ratio=0.397<0.5.",
+  "error": "",
+  "timestamp": "2026-03-09T03:53:43.175191+00:00",
+  "duration_seconds": 40.16231179202441,
+  "config": {
+    "vocab_size": 64,
+    "hidden_dim": 64,
+    "seq_len": 24,
+    "num_pairs": 4,
+    "forward_slots": 4,
+    "steps": 1500,
+    "batch": 32
+  },
+  "seed": 42
+}

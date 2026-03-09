@@ -1,0 +1,30 @@
+{
+  "experiment_id": "exp_31_4",
+  "hypothesis": "Learned importance-based eviction achieves >10% better accuracy than FIFO eviction when NUM_PAIRS (12) exceeds CAPACITY_LIMIT (8).",
+  "outcome": "INCONCLUSIVE",
+  "metrics": {
+    "acc_fifo": 0.28,
+    "acc_learned": 0.3088,
+    "gap": 0.0288,
+    "capacity_limit": 8,
+    "num_pairs": 12
+  },
+  "notes": "FIFO=0.280, Learned=0.309, Gap=+0.029. Capacity=8, NumPairs=12.",
+  "error": "",
+  "timestamp": "2026-03-09T16:13:41.857941+00:00",
+  "duration_seconds": 236.2179606659338,
+  "config": {
+    "vocab_size": 64,
+    "hidden_dim": 64,
+    "capacity_limit": 8,
+    "num_pairs": 12,
+    "seq_len": 32,
+    "steps": 1200,
+    "batch": 16,
+    "inference_lr": 0.05,
+    "inner_dim": 24,
+    "param_bytes": 112996,
+    "activation_bytes": 131072
+  },
+  "seed": 42
+}

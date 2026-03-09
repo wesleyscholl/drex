@@ -1,0 +1,33 @@
+{
+  "experiment_id": "exp_30_2",
+  "hypothesis": "Momentum delta (\u03b2=0.9) matches energy-gated accuracy within 5% while achieving lower final-100-step loss variance (ratio < 0.8).",
+  "outcome": "REFUTED",
+  "metrics": {
+    "acc_energy": 0.1706,
+    "acc_momentum": 0.2275,
+    "write_rate_energy": 0.6001,
+    "write_rate_momentum": 1.0,
+    "loss_var_energy": 0.02472,
+    "loss_var_momentum": 0.029723,
+    "gap_acc": 0.0569,
+    "var_ratio": 1.2024
+  },
+  "notes": "Momentum acc=0.228, Energy acc=0.171, gap=0.057. Var ratio=1.202. Write rates: energy=0.600, momentum=1.000.",
+  "error": "",
+  "timestamp": "2026-03-09T14:50:28.109782+00:00",
+  "duration_seconds": 192.8554174581077,
+  "config": {
+    "hidden_dim": 64,
+    "vocab_size": 64,
+    "num_pairs": 6,
+    "seq_len": 24,
+    "steps": 1500,
+    "batch": 32,
+    "beta": 0.9,
+    "energy_threshold": 0.4,
+    "param_bytes_energy": 116480,
+    "param_bytes_momentum": 116480,
+    "activation_bytes": 196608
+  },
+  "seed": 123
+}

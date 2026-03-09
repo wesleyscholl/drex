@@ -1,0 +1,26 @@
+{
+  "experiment_id": "exp_23_1",
+  "hypothesis": "Multi-head re-encoding (MHA num_heads=4 over slots) outperforms single-head cross-attention re-encoding by >3% due to richer slot-context interaction.",
+  "outcome": "INCONCLUSIVE",
+  "metrics": {
+    "acc_A": 0.2762,
+    "acc_B": 0.2913,
+    "gap": 0.015
+  },
+  "notes": "Gap=0.015, between -0.02 and +0.03.",
+  "error": "",
+  "timestamp": "2026-03-09T03:48:08.255832+00:00",
+  "duration_seconds": 36.601198042044416,
+  "config": {
+    "vocab_size": 64,
+    "hidden_dim": 64,
+    "seq_len": 24,
+    "num_pairs": 4,
+    "memory_slots": 6,
+    "forward_slots": 4,
+    "num_heads": 4,
+    "steps": 1500,
+    "batch": 32
+  },
+  "seed": 123
+}

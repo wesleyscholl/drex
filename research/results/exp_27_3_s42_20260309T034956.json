@@ -1,0 +1,35 @@
+{
+  "experiment_id": "exp_27_3",
+  "hypothesis": "Sequential pre-training isolation (delta pre-train \u2192 parametric pre-train \u2192 joint fine-tune) achieves super-additive accuracy >1.1\u00d7 best single component AND outperforms cold joint training.",
+  "outcome": "REFUTED",
+  "metrics": {
+    "acc_delta_only": 0.0833,
+    "acc_param_only": 0.0333,
+    "acc_cold_joint": 0.15,
+    "acc_pretrain_sequential": 0.0417,
+    "superadditive_ratio": 0.5,
+    "loss_var_cold": 0.077247,
+    "loss_var_sequential": 0.100602,
+    "stability_ratio": 0.7679
+  },
+  "notes": "A=0.083, B=0.033, C(cold)=0.150, D(seq)=0.042, superadd=0.500, stability_ratio=0.768.",
+  "error": "",
+  "timestamp": "2026-03-09T03:49:56.591992+00:00",
+  "duration_seconds": 31.299012333038263,
+  "config": {
+    "vocab_size": 64,
+    "hidden_dim": 32,
+    "seq_len": 24,
+    "num_pairs": 5,
+    "steps_a": 400,
+    "steps_b": 400,
+    "steps_c": 400,
+    "steps_pre": 100,
+    "steps_joint": 200,
+    "lr": 0.0003,
+    "lr_joint": 0.0001,
+    "grad_clip": 0.5,
+    "batch": 8
+  },
+  "seed": 42
+}

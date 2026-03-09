@@ -1,0 +1,47 @@
+{
+  "experiment_id": "exp_33_3",
+  "hypothesis": "Interference exponent \u03b3 is independent of hidden dimension: \u03b3 values at H=32, H=64, H=128 are within \u00b10.1 for each architecture.",
+  "outcome": "REFUTED",
+  "metrics": {
+    "gamma_slot_H32": 0.3501,
+    "r2_slot_H32": 0.446,
+    "gamma_slot_H64": -0.1151,
+    "r2_slot_H64": 0.1696,
+    "gamma_slot_H128": 0.1521,
+    "r2_slot_H128": 0.0935,
+    "gamma_delta_H32": 0.949,
+    "r2_delta_H32": 0.727,
+    "gamma_delta_H64": 1.0072,
+    "r2_delta_H64": 0.7699,
+    "gamma_delta_H128": 0.9215,
+    "r2_delta_H128": 0.7921,
+    "max_gamma_spread_slot": 0.4652,
+    "max_gamma_spread_delta": 0.0857,
+    "max_spread_overall": 0.4652
+  },
+  "notes": "Slot \u03b3 spread=0.465, Delta \u03b3 spread=0.086. Max of both=0.465. Slot \u03b3: H32=0.350 H64=-0.115 H128=0.152. Delta \u03b3: H32=0.949 H64=1.007 H128=0.921.",
+  "error": "",
+  "timestamp": "2026-03-09T16:31:40.414697+00:00",
+  "duration_seconds": 1625.0943806249416,
+  "config": {
+    "vocab_size": 256,
+    "steps": 300,
+    "batch": 32,
+    "hidden_dims": [
+      32,
+      64,
+      128
+    ],
+    "rho_values": [
+      0.0312,
+      0.0625,
+      0.125,
+      0.25,
+      0.5,
+      1.0
+    ],
+    "activation_bytes": 393216,
+    "param_bytes_ref": 215552
+  },
+  "seed": 123
+}

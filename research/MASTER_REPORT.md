@@ -1,19 +1,19 @@
 # drex Research — Master Results Report
 
-**Generated:** 2026-03-09 01:21 UTC
-**Experiments:** 105  |  **Seeds per experiment:** 42, 123, 777
-**Total runs evaluated:** 488
+**Generated:** 2026-03-09 17:49 UTC
+**Experiments:** 167  |  **Seeds per experiment:** 0, 1, 2, 7, 13, 42, 99, 123, 777
+**Total runs evaluated:** 698
 
 ## Overall Scoreboard
 
 | Outcome | Count | % |
 |---------|-------|---|
-| ✓ SUPPORTED    | 24    | 23% |
-| ~ INCONCLUSIVE | 35 | 33% |
-| ✗ REFUTED      | 46      | 44% |
+| ✓ SUPPORTED    | 41    | 25% |
+| ~ INCONCLUSIVE | 53 | 32% |
+| ✗ REFUTED      | 73      | 44% |
 | ! ERROR        | 0        | 0% |
 
-**Seed consistency:** 92/105 experiments gave the same verdict across all seeds. 13 inconsistent.
+**Seed consistency:** 123/167 experiments gave the same verdict across all seeds. 44 inconsistent.
 
 ## Summary Table
 
@@ -124,6 +124,68 @@
 | exp_21_2 | ✗ REFUTED | ✓ | acc_A=0.032±0.004 | Task-only: acc=0.0275. Oracle-augmented: acc=0.0331. gap=0.0… |
 | exp_21_3 | ✗ REFUTED | ✓ | acc_A=0.032±0.004 | A(e2e): acc=0.0275 gq=-0.0108. B(distilled): acc=0.0244 gq=0… |
 | exp_21_4 | ✗ REFUTED | ✓ | acc_A=0.035±0.005 | A(LSTM+task)=0.0325  B(FF+task)=0.0394  C(FF+oracle)=0.0319 … |
+| exp_22_1 | ✗ REFUTED | ⚠ ['REFUTED', 'REFUTED', 'INCONCLUSIVE'] | acc_A=0.281±0.024 | Standard read outperforms slot-conditioned by 0.036.… |
+| exp_22_2 | ✗ REFUTED | ⚠ ['REFUTED', 'REFUTED', 'INCONCLUSIVE'] | acc_A=0.281±0.024 | Single-pass outperforms iterative by 0.048.… |
+| exp_22_3 | ~ INCONCLUSIVE | ✓ | acc_A=0.281±0.024 | Gap=0.005, collapse_reduction=0.065.… |
+| exp_22_4 | ✗ REFUTED | ⚠ ['REFUTED', 'REFUTED', 'INCONCLUSIVE'] | acc_gate_easy=0.272±0.186 | Easy gap=0.476 too large or hard benefit negative (-0.053).… |
+| exp_22_5 | ✗ REFUTED | ⚠ ['REFUTED', 'REFUTED', 'INCONCLUSIVE'] | acc_A=0.285±0.010 | Standard outperforms contrastive by 0.249.… |
+| exp_23_1 | ~ INCONCLUSIVE | ⚠ ['INCONCLUSIVE', 'SUPPORTED', 'INCONCLUSIVE'] | acc_A=0.263±0.014 | Gap=0.015, between -0.02 and +0.03.… |
+| exp_23_2 | ✓ SUPPORTED | ⚠ ['REFUTED', 'INCONCLUSIVE', 'SUPPORTED'] | acc_0pass=0.201±0.044 | No diminishing returns: ratio=1.396>0.80.… |
+| exp_23_3 | ✓ SUPPORTED | ⚠ ['SUPPORTED', 'SUPPORTED', 'INCONCLUSIVE'] | acc_A=0.201±0.044 | Selective: acc_ratio=1.000>0.90 at reenc_rate=0.000<0.60.… |
+| exp_23_4 | ✗ REFUTED | ⚠ ['REFUTED', 'REFUTED', 'SUPPORTED'] | acc_factual_base=0.201±0.044 | No task-type specificity: ratio=-8.436<0.5.… |
+| exp_24_1 | ~ INCONCLUSIVE | ⚠ ['INCONCLUSIVE', 'INCONCLUSIVE', 'REFUTED'] | acc_parametric.24=0.035±0.011 | Param retention_4x=1.876, slot acc_96=0.019. Threshold not f… |
+| exp_24_2 | ✓ SUPPORTED | ✓ | retention_at_60pct_interf=0.789±0.000 | Two-hop acc at 60% interference=0.789>0.70.… |
+| exp_24_3 | ✗ REFUTED | ✓ | max_ratio=0.413±0.009 | Ratio spread=0.387>0.15. Mechanism is dim-sensitive.… |
+| exp_24_4 | ✗ REFUTED | ✓ | acc_2hop=1.000±0.000 | 4-hop achievable: drop=18.7%<20% vs 2-hop.… |
+| exp_25_1 | ✓ SUPPORTED | ✓ | acc_domain_specific=0.064±0.026 | Generic acc=0.145<0.70. Domain-specific: 0.048.… |
+| exp_25_2 | ✗ REFUTED | ⚠ ['REFUTED', 'SUPPORTED', 'REFUTED'] | param_accs_by_sigma.0.0=0.033±0.009 | Slot is noise-robust (deg=-0.584) — no architecture gap.… |
+| exp_25_3 | ✗ REFUTED | ⚠ ['REFUTED', 'INCONCLUSIVE', 'REFUTED'] | acc_by_k.1=0.131±0.112 | Temporal ordering is nearly flat (drop=-0.049<0.05).… |
+| exp_26_1 | ✓ SUPPORTED | ⚠ ['INCONCLUSIVE', 'SUPPORTED', 'SUPPORTED'] | acc_range=0.149±0.003 | K values [0, 2, 4, 6, 8, 10], accs [0.152, 0.144, 0.022, 0.0… |
+| exp_26_2 | ✗ REFUTED | ⚠ ['REFUTED', 'INCONCLUSIVE', 'REFUTED'] | acc_learned=0.174±0.094 | Uniform=0.256, Oracle=0.255, Learned=0.231. Oracle gap=-0.00… |
+| exp_26_3 | ✗ REFUTED | ⚠ ['REFUTED', 'REFUTED', 'INCONCLUSIVE'] | acc_A=0.140±0.081 | Context-only=0.221, QueryCond=0.033, gap=-0.188, qtype_pred=… |
+| exp_27_1 | ✗ REFUTED | ✓ | acc_cold_joint=0.121±0.027 | Delta=0.075, Param=0.008, Cold=0.117, PretrainedHybrid=0.033… |
+| exp_27_2 | ~ INCONCLUSIVE | ✓ | delta_long=0.106±0.017 | Delta: short=0.087, long=0.087. Param: short=0.031, long=0.0… |
+| exp_27_3 | ✗ REFUTED | ✓ | acc_cold_joint=0.121±0.027 | A=0.075, B=0.008, C(cold)=0.117, D(seq)=0.037, superadd=0.50… |
+| exp_28_1 | ~ INCONCLUSIVE | ✓ | acc_delta_len192=0.180±0.026 | Slot retention 8×=1.702, param retention 8×=0.737. Slot@192=… |
+| exp_28_2 | ~ INCONCLUSIVE | ⚠ ['REFUTED', 'INCONCLUSIVE', 'INCONCLUSIVE'] | acc_delta_H128=0.217±0.015 | Delta: α=0.228, R²=0.450. Slot: α=-0.618, R²=0.503. Param: α… |
+| exp_28_3 | ~ INCONCLUSIVE | ✓ | acc_delta_s1600=0.230±0.003 | Slopes (×10³/step): slot=-0.0004, delta=0.0100, param=-0.005… |
+| exp_28_4 | ~ INCONCLUSIVE | ⚠ ['INCONCLUSIVE', 'INCONCLUSIVE', 'REFUTED'] | acc_k12=0.130±0.040 | Peak at k=16 (acc=0.174). k=24 acc=0.148 (drop=0.026).… |
+| exp_28_5 | ✗ REFUTED | ✓ | acc_mean_n2=0.480±0.009 | Max variance across vocab sizes = 0.1703 (>0.02). Vocab-inde… |
+| exp_29_1 | ✓ SUPPORTED | ✓ | acc_linear=0.253±0.018 | Linear acc=0.261, slot acc=0.028, gap=+0.234.… |
+| exp_29_2 | ~ INCONCLUSIVE | ⚠ ['INCONCLUSIVE', 'REFUTED', 'INCONCLUSIVE'] | acc_adam=0.076±0.020 | Adam acc=0.096, SGD acc=0.062, gap=+0.033.… |
+| exp_29_3 | ✓ SUPPORTED | ⚠ ['SUPPORTED', 'SUPPORTED', 'REFUTED'] | acc_full=0.031±0.015 | Full acc=0.019, Surprise acc=0.033, No-TTT acc=0.029. acc_ra… |
+| exp_29_4 | ~ INCONCLUSIVE | ⚠ ['INCONCLUSIVE', 'INCONCLUSIVE', 'REFUTED'] | acc_gain_wd_192=-0.002±0.006 | Gain at SEQ_LEN=192: +0.003. Gaps: len24=-0.009, len96=+0.01… |
+| exp_30_1 | ✓ SUPPORTED | ⚠ ['SUPPORTED', 'INCONCLUSIVE', 'SUPPORTED'] | acc_multi=0.258±0.097 | Multi-head acc=0.366, Single-head acc=0.152, gap=0.214. Para… |
+| exp_30_2 | ✗ REFUTED | ✓ | acc_energy=0.183±0.016 | Momentum acc=0.228, Energy acc=0.171, gap=0.057. Var ratio=1… |
+| exp_30_3 | ✗ REFUTED | ⚠ ['REFUTED', 'INCONCLUSIVE', 'REFUTED'] | acc_bidir_early=0.182±0.007 | Late: bidir=0.169, unidir=0.188, improvement=-0.019. Early: … |
+| exp_30_4 | ~ INCONCLUSIVE | ⚠ ['INCONCLUSIVE', 'INCONCLUSIVE', 'SUPPORTED'] | all_knees_in_range=0.333±0.577 | Knee write rates: H32=0.612, H64=0.599, H128=0.593. All in [… |
+| exp_31_1 | ✗ REFUTED | ✓ | acc_combined=0.163±0.060 | Retro=0.647, TwoHop=0.718, Combined=0.135. Gain vs retro: -0… |
+| exp_31_2 | ✗ REFUTED | ⚠ ['INCONCLUSIVE', 'REFUTED', 'REFUTED'] | acc_forward_len192=0.129±0.015 | Gaps: len24=-0.027, len48=-0.033, len96=-0.023, len192=0.017… |
+| exp_31_3 | ~ INCONCLUSIVE | ✓ | acc_delta=0.160±0.012 | Delta=0.154, Retro=0.129, DeltaRetro=0.179. Gain vs delta: +… |
+| exp_31_4 | ~ INCONCLUSIVE | ✓ | acc_fifo=0.221±0.055 | FIFO=0.214, Learned=0.241, Gap=+0.028. Capacity=8, NumPairs=… |
+| exp_32_1 | ✓ SUPPORTED | ⚠ ['REFUTED', 'SUPPORTED', 'SUPPORTED', 'INCONCLUSIVE', 'INCONCLUSIVE', 'REFUTED', 'REFUTED', 'SUPPORTED', 'SUPPORTED'] | acc_gap=0.043±0.118 | Seed=0. Two-pass vs forward gap=-0.072. Retroactive write ra… |
+| exp_32_2 | ✓ SUPPORTED | ⚠ ['SUPPORTED', 'SUPPORTED', 'SUPPORTED', 'SUPPORTED', 'REFUTED', 'SUPPORTED', 'REFUTED', 'SUPPORTED', 'REFUTED'] | acc_A_continuous=0.140±0.016 | Seed=0. acc_ratio=0.905, write_rate=0.515. acc_A=0.138, acc_… |
+| exp_32_3 | ✓ SUPPORTED | ⚠ ['INCONCLUSIVE', 'SUPPORTED', 'INCONCLUSIVE', 'SUPPORTED', 'SUPPORTED', 'SUPPORTED', 'SUPPORTED', 'SUPPORTED', 'SUPPORTED'] | acc_single=0.062±0.035 | Seed=0. degradation_ratio=2.000. Accs: 1-hop=0.094, 2-hop=0.… |
+| exp_32_4 | ✓ SUPPORTED | ⚠ ['SUPPORTED', 'INCONCLUSIVE', 'SUPPORTED', 'SUPPORTED', 'SUPPORTED', 'REFUTED', 'INCONCLUSIVE', 'SUPPORTED', 'SUPPORTED'] | acc_param_len24=0.029±0.012 | Seed=0. Param retention gap=0.498. Required gap > 0.35. Slot… |
+| exp_33_1 | ✗ REFUTED | ✓ | acc_n16=0.009±0.004 | Slot memory γ=-0.004, R²=0.000. Accs: [0.0078, 0.0055, 0.009… |
+| exp_33_2 | ~ INCONCLUSIVE | ⚠ ['INCONCLUSIVE', 'INCONCLUSIVE', 'SUPPORTED'] | acc_delta_n16=0.013±0.001 | γ ordering: param=-0.081 < slot=-0.196 < delta=1.338, spread… |
+| exp_33_3 | ✗ REFUTED | ✓ | gamma_delta_H128=0.802±0.165 | Slot γ spread=0.465, Delta γ spread=0.086. Max of both=0.465… |
+| exp_33_4 | ✓ SUPPORTED | ⚠ ['REFUTED', 'SUPPORTED', 'SUPPORTED'] | acc_delta_1200=0.006±0.002 | Slot recovery=0.000, Delta recovery=0.000. ρ=0.5 ref: slot=0… |
+| exp_34_1 | ✗ REFUTED | ✓ | delta_chk1000=0.285±0.028 | Delta transition: False (gain=0.000, window -1--1). Slot tra… |
+| exp_34_2 | ~ INCONCLUSIVE | ✓ | enc_gnorm_s100=2.131±0.241 | Gradient ratio (mem/enc): early(s100)=2.155, late(s1000)=1.9… |
+| exp_34_3 | ~ INCONCLUSIVE | ✓ | write_rate_s100=0.534±0.003 | Write rate: early(s100)=0.534, late(s1500)=0.543. Full traje… |
+| exp_34_4 | ~ INCONCLUSIVE | ✓ | acc_easy_first=0.278±0.031 | Random=0.225, Easy-first=0.269, Hard-first=0.271. Gap(easy-r… |
+| exp_34_5 | ✗ REFUTED | ✓ | acc_full_immediate=0.209±0.008 | No significant warmup benefit: gain=0.013 (threshold >0.03).… |
+| exp_34_6 | ✓ SUPPORTED | ⚠ ['INCONCLUSIVE', 'REFUTED', 'SUPPORTED'] | acc_Adam=0.209±0.008 | Moderate spread=0.049. Best=SGD(0.242), Worst=AdamW(0.193).… |
+| exp_34_7 | ✗ REFUTED | ✓ | acc_lr_1e-02=0.245±0.012 | Wide stable band: 2.48 decades > 2.0. Low LR sensitivity.… |
+| exp_34_8 | ✗ REFUTED | ✓ | acc_B128=0.233±0.017 | No batch sensitivity: drop=-0.047<0.01. Memory quality scale… |
+| exp_34_9 | ✗ REFUTED | ✓ | acc=0.248±0.005 | Gate is well-spread: bimodal_fraction=0.000 < 0.15. Entropy=… |
+| exp_35_1 | ✗ REFUTED | ✓ | acc_noise_0pct=0.205±0.011 | Catastrophic degradation: baseline=0.194, @25%noise=0.016 (r… |
+| exp_35_2 | ✓ SUPPORTED | ✓ | acc_in_distribution=0.192±0.017 | No hallucination: OOD acc=0.040 ≈ random baseline=0.031 (gap… |
+| exp_35_3 | ✓ SUPPORTED | ⚠ ['SUPPORTED', 'REFUTED', 'INCONCLUSIVE'] | acc_ood_0=0.296±0.003 | Abnormal OOD write rate: baseline=0.000, OOD=0.000, ratio=0.… |
+| exp_36_1 | ✗ REFUTED | ✓ | acc_no_consolidation=0.178±0.008 | No consolidation benefit: gain=0.005 (threshold >0.03). Offl… |
+| exp_36_2 | ~ INCONCLUSIVE | ✓ | acc_full_representation=0.205±0.011 | Roughly equivalent: full=0.194, residual=0.190, gap=-0.004. … |
+| exp_36_3 | ✓ SUPPORTED | ✓ | acc_split=0.236±0.019 | Split memory wins: unified=0.156, split=0.215, advantage=0.0… |
 
 ---
 
@@ -2249,13 +2311,1295 @@
 
 ---
 
+### Category 22 — Read Architecture Redesigns (Phase 4)
+*0 supported / 4 refuted / 1 inconclusive / 0 error*
+
+#### exp_22_1  ✗ REFUTED ⚠ inconsistent across seeds ['REFUTED', 'REFUTED', 'INCONCLUSIVE']
+**Hypothesis:** Slot-conditioned read (soft attention over slots -> query refinement) reduces read error by >5% vs fixed linear-projection query on multi-fact retrieval (4 KV pairs, random baseline <10%).
+
+**Runs:** 3 (seeds: [123, 42, 777])  |  **Avg duration:** 41s
+
+**Metrics (mean ± std across seeds):**
+
+- `acc_A` = **0.2811** ± 0.0243  *(runs: 0.294, 0.296, 0.253)*
+- `acc_B` = **0.2633** ± 0.0085  *(runs: 0.258, 0.259, 0.273)*
+- `gap` = **-0.0177** ± 0.0327  *(runs: -0.036, -0.037, 0.020)*
+
+**Notes:** Standard read outperforms slot-conditioned by 0.036.
+
+---
+#### exp_22_2  ✗ REFUTED ⚠ inconsistent across seeds ['REFUTED', 'REFUTED', 'INCONCLUSIVE']
+**Hypothesis:** Iterative message-passing read (2 rounds of slot→query→slot attention refinement) outperforms single-pass read by >3% on multi-fact retrieval.
+
+**Runs:** 3 (seeds: [123, 42, 777])  |  **Avg duration:** 41s
+
+**Metrics (mean ± std across seeds):**
+
+- `acc_A` = **0.2811** ± 0.0243  *(runs: 0.294, 0.296, 0.253)*
+- `acc_B` = **0.2583** ± 0.0129  *(runs: 0.246, 0.257, 0.272)*
+- `gap` = **-0.0227** ± 0.0361  *(runs: -0.048, -0.039, 0.019)*
+
+**Notes:** Single-pass outperforms iterative by 0.048.
+
+---
+#### exp_22_3  ~ INCONCLUSIVE
+**Hypothesis:** Orthogonal slot initialization via Gram-Schmidt plus orthogonality regularization prevents slot collapse and improves read accuracy by >5% without changing the read mechanism.
+
+**Runs:** 3 (seeds: [123, 42, 777])  |  **Avg duration:** 35s
+
+**Metrics (mean ± std across seeds):**
+
+- `acc_A` = **0.2811** ± 0.0243  *(runs: 0.294, 0.296, 0.253)*
+- `acc_B` = **0.2882** ± 0.0098  *(runs: 0.299, 0.286, 0.279)*
+- `collapse_A` = **0.2582** ± 0.0860  *(runs: 0.199, 0.218, 0.357)*
+- `collapse_B` = **0.1459** ± 0.0119  *(runs: 0.135, 0.158, 0.145)*
+- `collapse_reduction` = **0.1123** ± 0.0863  *(runs: 0.065, 0.060, 0.212)*
+- `gap` = **0.0071** ± 0.0182  *(runs: 0.005, -0.010, 0.026)*
+
+**Notes:** Gap=0.005, collapse_reduction=0.065.
+
+---
+#### exp_22_4  ✗ REFUTED ⚠ inconsistent across seeds ['REFUTED', 'REFUTED', 'INCONCLUSIVE']
+**Hypothesis:** Read gating (suppress low-confidence reads via entropy threshold) transfers from simple associative recall to multi-pair retrieval without retuning: accuracy gap is <2% on simple and >3% on hard task.
+
+**Runs:** 3 (seeds: [123, 42, 777])  |  **Avg duration:** 52s
+
+**Metrics (mean ± std across seeds):**
+
+- `acc_gate_easy` = **0.2721** ± 0.1857  *(runs: 0.058, 0.367, 0.391)*
+- `acc_gate_hard` = **0.1190** ± 0.0903  *(runs: 0.144, 0.019, 0.194)*
+- `acc_std_easy` = **0.4866** ± 0.0710  *(runs: 0.534, 0.521, 0.405)*
+- `acc_std_hard` = **0.1962** ± 0.0027  *(runs: 0.198, 0.193, 0.198)*
+- `entropy_threshold` = **1.7675**  *(stable across seeds)*
+- `gap_easy` = **0.2146** ± 0.2365  *(runs: 0.476, 0.154, 0.014)*
+- `gap_hard` = **-0.0773** ± 0.0875  *(runs: -0.053, -0.174, -0.004)*
+
+**Notes:** Easy gap=0.476 too large or hard benefit negative (-0.053).
+
+---
+#### exp_22_5  ✗ REFUTED ⚠ inconsistent across seeds ['REFUTED', 'REFUTED', 'INCONCLUSIVE']
+**Hypothesis:** Contrastive slot training (InfoNCE-style loss pushing slot embeddings apart) improves retrieval accuracy by >5% on high-interference tasks (many similar keys).
+
+**Runs:** 3 (seeds: [123, 42, 777])  |  **Avg duration:** 20s
+
+**Metrics (mean ± std across seeds):**
+
+- `acc_A` = **0.2854** ± 0.0100  *(runs: 0.286, 0.295, 0.275)*
+- `acc_B` = **0.1775** ± 0.1235  *(runs: 0.037, 0.227, 0.269)*
+- `gap` = **-0.1079** ± 0.1264  *(runs: -0.249, -0.068, -0.006)*
+- `random_baseline` = **0.0312**  *(stable across seeds)*
+
+**Notes:** Standard outperforms contrastive by 0.249.
+
+---
+
+### Category 23 — Retroactive Re-Encoding Variants (Phase 4)
+*2 supported / 1 refuted / 1 inconclusive / 0 error*
+
+#### exp_23_1  ~ INCONCLUSIVE ⚠ inconsistent across seeds ['INCONCLUSIVE', 'SUPPORTED', 'INCONCLUSIVE']
+**Hypothesis:** Multi-head re-encoding (MHA num_heads=4 over slots) outperforms single-head cross-attention re-encoding by >3% due to richer slot-context interaction.
+
+**Runs:** 3 (seeds: [123, 42, 777])  |  **Avg duration:** 36s
+
+**Metrics (mean ± std across seeds):**
+
+- `acc_A` = **0.2627** ± 0.0144  *(runs: 0.276, 0.247, 0.264)*
+- `acc_B` = **0.2877** ± 0.0035  *(runs: 0.291, 0.284, 0.287)*
+- `gap` = **0.0250** ± 0.0111  *(runs: 0.015, 0.037, 0.023)*
+
+**Notes:** Gap=0.015, between -0.02 and +0.03.
+
+---
+#### exp_23_2  ✓ SUPPORTED ⚠ inconsistent across seeds ['REFUTED', 'INCONCLUSIVE', 'SUPPORTED']
+**Hypothesis:** Two-pass re-encoding yields diminishing returns: the second re-encoding pass provides <20% of the accuracy gain from the first pass.
+
+**Runs:** 3 (seeds: [123, 42, 777])  |  **Avg duration:** 52s
+
+**Metrics (mean ± std across seeds):**
+
+- `acc_0pass` = **0.2008** ± 0.0441  *(runs: 0.233, 0.151, 0.219)*
+- `acc_1pass` = **0.2729** ± 0.0192  *(runs: 0.263, 0.261, 0.295)*
+- `acc_2pass` = **0.3004** ± 0.0040  *(runs: 0.305, 0.299, 0.297)*
+- `diminishment_ratio` = **0.5917** ± 0.7138  *(runs: 1.396, 0.347, 0.033)*
+- `gain_pass1` = **0.0721** ± 0.0402  *(runs: 0.030, 0.110, 0.076)*
+- `gain_pass2` = **0.0275** ± 0.0217  *(runs: 0.042, 0.038, 0.003)*
+
+**Notes:** No diminishing returns: ratio=1.396>0.80.
+
+---
+#### exp_23_3  ✓ SUPPORTED ⚠ inconsistent across seeds ['SUPPORTED', 'SUPPORTED', 'INCONCLUSIVE']
+**Hypothesis:** Selective re-encoding (re-encode only slots with cosine distance > T from context) achieves >90% of full re-encoding accuracy at <60% re-encode rate.
+
+**Runs:** 3 (seeds: [123, 42, 777])  |  **Avg duration:** 34s
+
+**Metrics (mean ± std across seeds):**
+
+- `acc_A` = **0.2008** ± 0.0441  *(runs: 0.233, 0.151, 0.219)*
+- `acc_B` = **0.1565** ± 0.1192  *(runs: 0.028, 0.179, 0.263)*
+- `acc_C` = **0.2502** ± 0.0190  *(runs: 0.271, 0.247, 0.233)*
+- `acc_ratio` = **1.0881** ± 0.2558  *(runs: 1.000, 1.376, 0.888)*
+- `reenc_rate` = **0.0000**  *(stable across seeds)*
+
+**Notes:** Selective: acc_ratio=1.000>0.90 at reenc_rate=0.000<0.60.
+
+---
+#### exp_23_4  ✗ REFUTED ⚠ inconsistent across seeds ['REFUTED', 'REFUTED', 'SUPPORTED']
+**Hypothesis:** Re-encoding gain is task-type specific: factual recall tasks show >2x the accuracy benefit of pattern-completion tasks from cross-attention re-encoding.
+
+**Runs:** 3 (seeds: [123, 42, 777])  |  **Avg duration:** 37s
+
+**Metrics (mean ± std across seeds):**
+
+- `acc_factual_base` = **0.2008** ± 0.0441  *(runs: 0.233, 0.151, 0.219)*
+- `acc_factual_reenc` = **0.1565** ± 0.1192  *(runs: 0.028, 0.179, 0.263)*
+- `acc_pattern_base` = **0.3550** ± 0.0066  *(runs: 0.349, 0.354, 0.362)*
+- `acc_pattern_reenc` = **0.3925** ± 0.0299  *(runs: 0.373, 0.427, 0.378)*
+- `gain_factual` = **-0.0444** ± 0.1398  *(runs: -0.206, 0.029, 0.044)*
+- `gain_pattern` = **0.0375** ± 0.0306  *(runs: 0.024, 0.072, 0.016)*
+- `specificity_ratio` = **-1.7464** ± 5.9166  *(runs: -8.436, 0.397, 2.800)*
+
+**Notes:** No task-type specificity: ratio=-8.436<0.5.
+
+---
+
+### Category 24 — Scale and Length Generalization (Phase 4)
+*1 supported / 2 refuted / 1 inconclusive / 0 error*
+
+#### exp_24_1  ~ INCONCLUSIVE ⚠ inconsistent across seeds ['INCONCLUSIVE', 'INCONCLUSIVE', 'REFUTED']
+**Hypothesis:** Parametric memory retains >80% accuracy at 4x training sequence length, while slot memory drops below 40%.
+
+**Runs:** 3 (seeds: [123, 42, 777])  |  **Avg duration:** 46s
+
+**Metrics (mean ± std across seeds):**
+
+- `acc_parametric.24` = **0.0354** ± 0.0110  *(runs: 0.025, 0.047, 0.034)*
+- `acc_parametric.48` = **0.0291** ± 0.0130  *(runs: 0.025, 0.019, 0.044)*
+- `acc_parametric.96` = **0.0406** ± 0.0083  *(runs: 0.047, 0.044, 0.031)*
+- `acc_slot.24` = **0.0844** ± 0.0109  *(runs: 0.078, 0.078, 0.097)*
+- `acc_slot.48` = **0.0323** ± 0.0148  *(runs: 0.044, 0.016, 0.037)*
+- `acc_slot.96` = **0.0312** ± 0.0113  *(runs: 0.019, 0.034, 0.041)*
+- `retention_param_4x` = **1.2383** ± 0.5524  *(runs: 1.876, 0.932, 0.907)*
+- `retention_slot_4x` = **0.3663** ± 0.1104  *(runs: 0.239, 0.441, 0.419)*
+
+**Notes:** Param retention_4x=1.876, slot acc_96=0.019. Threshold not fully met.
+
+---
+#### exp_24_2  ✓ SUPPORTED
+**Hypothesis:** Compositional two-hop retrieval sustains >70% accuracy under 60% entity interference, up from 40% interference tested in exp_13_1.
+
+**Runs:** 3 (seeds: [123, 42, 777])  |  **Avg duration:** 8s
+
+**Metrics (mean ± std across seeds):**
+
+- `retention_at_60pct_interf` = **0.7887**  *(stable across seeds)*
+- `two_hop_acc_by_interference.0.0` = **1.0000**  *(stable across seeds)*
+- `two_hop_acc_by_interference.0.4` = **0.8538**  *(stable across seeds)*
+- `two_hop_acc_by_interference.0.6` = **0.7887**  *(stable across seeds)*
+
+**Notes:** Two-hop acc at 60% interference=0.789>0.70.
+
+---
+#### exp_24_3  ✗ REFUTED
+**Hypothesis:** Energy-gated delta rule achieves the same accuracy-to-write-rate ratio at HIDDEN_DIM=128 as at HIDDEN_DIM=32 (within 5%) — the mechanism is dimension-robust.
+
+**Runs:** 3 (seeds: [123, 42, 777])  |  **Avg duration:** 88s
+
+**Metrics (mean ± std across seeds):**
+
+- `max_ratio` = **0.4132** ± 0.0087  *(runs: 0.418, 0.403, 0.418)*
+- `min_ratio` = **0.2504** ± 0.0467  *(runs: 0.257, 0.201, 0.294)*
+- `ratio_spread` = **0.3952** ± 0.1024  *(runs: 0.387, 0.501, 0.297)*
+- `results_by_dim.128.acc` = **0.2112** ± 0.0043  *(runs: 0.214, 0.206, 0.214)*
+- `results_by_dim.128.acc_wr_ratio` = **0.4132** ± 0.0087  *(runs: 0.418, 0.403, 0.418)*
+- `results_by_dim.128.write_rate` = **0.5113** ± 0.0003  *(runs: 0.511, 0.512, 0.511)*
+- `results_by_dim.32.acc` = **0.1292** ± 0.0235  *(runs: 0.132, 0.104, 0.151)*
+- `results_by_dim.32.acc_wr_ratio` = **0.2504** ± 0.0467  *(runs: 0.257, 0.201, 0.294)*
+- `results_by_dim.32.write_rate` = **0.5161** ± 0.0028  *(runs: 0.514, 0.519, 0.515)*
+- `results_by_dim.64.acc` = **0.1981** ± 0.0166  *(runs: 0.204, 0.179, 0.211)*
+- `results_by_dim.64.acc_wr_ratio` = **0.3871** ± 0.0329  *(runs: 0.397, 0.350, 0.414)*
+- `results_by_dim.64.write_rate` = **0.5119** ± 0.0012  *(runs: 0.513, 0.512, 0.511)*
+
+**Notes:** Ratio spread=0.387>0.15. Mechanism is dim-sensitive.
+
+---
+#### exp_24_4  ✗ REFUTED
+**Hypothesis:** Four-hop compositional chains are infeasible at HIDDEN_DIM=64: accuracy drops >50% vs two-hop even with hop-by-hop training curriculum.
+
+**Runs:** 3 (seeds: [123, 42, 777])  |  **Avg duration:** 11s
+
+**Metrics (mean ± std across seeds):**
+
+- `acc_2hop` = **1.0000**  *(stable across seeds)*
+- `acc_4hop` = **0.8131**  *(stable across seeds)*
+- `acc_drop_fraction` = **0.1869**  *(stable across seeds)*
+- `random_baseline` = **0.0625**  *(stable across seeds)*
+
+**Notes:** 4-hop achievable: drop=18.7%<20% vs 2-hop.
+
+---
+
+### Category 25 — Hard Benchmarks (Phase 4)
+*1 supported / 2 refuted / 0 inconclusive / 0 error*
+
+#### exp_25_1  ✓ SUPPORTED
+**Hypothesis:** Multi-domain retrieval benchmark (facts + patterns + temporal chains in same sequence): any memory architecture achieves <70% joint accuracy without domain-specific slots.
+
+**Runs:** 3 (seeds: [123, 42, 777])  |  **Avg duration:** 60s
+
+**Metrics (mean ± std across seeds):**
+
+- `acc_domain_specific` = **0.0635** ± 0.0256  *(runs: 0.048, 0.093, 0.049)*
+- `acc_generic` = **0.1433** ± 0.0058  *(runs: 0.145, 0.148, 0.137)*
+- `generic_below_70pct` = [True, True, True]
+- `random_baseline` = **0.0312**  *(stable across seeds)*
+
+**Notes:** Generic acc=0.145<0.70. Domain-specific: 0.048.
+
+---
+#### exp_25_2  ✗ REFUTED ⚠ inconsistent across seeds ['REFUTED', 'SUPPORTED', 'REFUTED']
+**Hypothesis:** Noisy-key retrieval (Gaussian noise added to query at test time): slot memory degrades >20% while parametric memory degrades <10%.
+
+**Runs:** 3 (seeds: [123, 42, 777])  |  **Avg duration:** 9s
+
+**Metrics (mean ± std across seeds):**
+
+- `param_accs_by_sigma.0.0` = **0.0333** ± 0.0095  *(runs: 0.031, 0.025, 0.044)*
+- `param_accs_by_sigma.0.1` = **0.0302** ± 0.0090  *(runs: 0.041, 0.025, 0.025)*
+- `param_accs_by_sigma.0.2` = **0.0250** ± 0.0031  *(runs: 0.022, 0.028, 0.025)*
+- `param_deg_at_sigma01` = **0.0422** ± 0.3664  *(runs: -0.301, 0.000, 0.428)*
+- `slot_accs_by_sigma.0.0` = **0.0427** ± 0.0119  *(runs: 0.037, 0.056, 0.034)*
+- `slot_accs_by_sigma.0.1` = **0.0364** ± 0.0208  *(runs: 0.059, 0.019, 0.031)*
+- `slot_accs_by_sigma.0.2` = **0.0385** ± 0.0243  *(runs: 0.066, 0.019, 0.031)*
+- `slot_deg_at_sigma01` = **0.0590** ± 0.6266  *(runs: -0.584, 0.668, 0.093)*
+
+**Notes:** Slot is noise-robust (deg=-0.584) — no architecture gap.
+
+---
+#### exp_25_3  ✗ REFUTED ⚠ inconsistent across seeds ['REFUTED', 'INCONCLUSIVE', 'REFUTED']
+**Hypothesis:** Temporal ordering task (retrieve k-th event in temporal sequence): accuracy drops monotonically with k, revealing the read bottleneck for ordered memory access.
+
+**Runs:** 3 (seeds: [123, 42, 777])  |  **Avg duration:** 22s
+
+**Metrics (mean ± std across seeds):**
+
+- `acc_by_k.1` = **0.1313** ± 0.1120  *(runs: 0.143, 0.237, 0.014)*
+- `acc_by_k.2` = **0.1032** ± 0.0424  *(runs: 0.139, 0.114, 0.056)*
+- `acc_by_k.3` = **0.1171** ± 0.0882  *(runs: 0.183, 0.151, 0.017)*
+- `acc_by_k.4` = **0.1171** ± 0.0362  *(runs: 0.158, 0.106, 0.087)*
+- `acc_by_k.5` = **0.1306** ± 0.1103  *(runs: 0.156, 0.226, 0.010)*
+- `acc_by_k.6` = **0.1192** ± 0.0646  *(runs: 0.193, 0.071, 0.094)*
+- `first_to_last_drop` = **0.0121** ± 0.1344  *(runs: -0.049, 0.166, -0.081)*
+- `k1_acc` = **0.1313** ± 0.1120  *(runs: 0.143, 0.237, 0.014)*
+- `k_max_acc` = **0.1192** ± 0.0646  *(runs: 0.193, 0.071, 0.094)*
+- `monotone_decreasing` = [False, False, False]
+
+**Notes:** Temporal ordering is nearly flat (drop=-0.049<0.05).
+
+---
+
+### Category 26 — Seed Stability Validation (Phase 4)
+*1 supported / 2 refuted / 0 inconclusive / 0 error*
+
+#### exp_26_1  ✓ SUPPORTED ⚠ inconsistent across seeds ['INCONCLUSIVE', 'SUPPORTED', 'SUPPORTED']
+**Hypothesis:** Protected slot interior optimum (exp_9_4) is seed-stable: 3 additional seeds confirm an interior peak at K=3-6 with MEMORY_SLOTS=12.
+
+**Runs:** 3 (seeds: [123, 42, 777])  |  **Avg duration:** 44s
+
+**Metrics (mean ± std across seeds):**
+
+- `acc_range` = **0.1490** ± 0.0030  *(runs: 0.150, 0.146, 0.151)*
+- `accuracies` = [[0.1519, 0.1437, 0.0225, 0.0469, 0.105, 0.1725], [0.0381, 0.1575, 0.1031, 0.1837, 0.1062, 0.1638], [0.0294, 0.0306, 0.0912, 0.0725, 0.1806, 0.1469]]
+- `critical_accuracies` = [[0.0328, 0.2215, 0.02, 0.0583, 0.0959, 0.1686], [0.0279, 0.1462, 0.1161, 0.19, 0.1144, 0.1644], [0.0267, 0.036, 0.112, 0.0818, 0.1821, 0.1317]]
+- `interior_peak_exists` = [False, True, True]
+- `k_opt` = **4.0000** ± 1.0000  *(runs: 5.000, 3.000, 4.000)*
+- `max_acc` = **0.1790** ± 0.0058  *(runs: 0.172, 0.184, 0.181)*
+- `min_acc` = **0.0300** ± 0.0078  *(runs: 0.022, 0.038, 0.029)*
+- `noncritical_accuracies` = [[0.3345, 0.0189, 0.0239, 0.0314, 0.1157, 0.1692], [0.0571, 0.1701, 0.0844, 0.1779, 0.0963, 0.1652], [0.0325, 0.0237, 0.0591, 0.0562, 0.1758, 0.1691]]
+
+**Notes:** K values [0, 2, 4, 6, 8, 10], accs [0.152, 0.144, 0.022, 0.047, 0.105, 0.172]. Optimal K=5, max_acc=0.172. Interior peak: False.
+
+---
+#### exp_26_2  ✗ REFUTED ⚠ inconsistent across seeds ['REFUTED', 'INCONCLUSIVE', 'REFUTED']
+**Hypothesis:** Write budget with positionally biased task (exp_9_5) is seed-stable: additional seeds confirm non-uniform (oracle) budget outperforms uniform.
+
+**Runs:** 3 (seeds: [123, 42, 777])  |  **Avg duration:** 58s
+
+**Metrics (mean ± std across seeds):**
+
+- `acc_learned` = **0.1742** ± 0.0940  *(runs: 0.231, 0.066, 0.226)*
+- `acc_oracle` = **0.2485** ± 0.0296  *(runs: 0.255, 0.274, 0.216)*
+- `acc_uniform` = **0.2596** ± 0.0043  *(runs: 0.256, 0.264, 0.258)*
+- `uniform_to_learned_gap` = **-0.0854** ± 0.0982  *(runs: -0.026, -0.199, -0.032)*
+- `uniform_to_oracle_gap` = **-0.0110** ± 0.0273  *(runs: -0.001, 0.010, -0.042)*
+
+**Notes:** Uniform=0.256, Oracle=0.255, Learned=0.231. Oracle gap=-0.001, Learned gap=-0.026.
+
+---
+#### exp_26_3  ✗ REFUTED ⚠ inconsistent across seeds ['REFUTED', 'REFUTED', 'INCONCLUSIVE']
+**Hypothesis:** Query-conditioned write gate (exp_17_1) improvement over context-only gate is seed-stable: additional seeds confirm >5% accuracy improvement on multi-query-type tasks.
+
+**Runs:** 3 (seeds: [123, 42, 777])  |  **Avg duration:** 9s
+
+**Metrics (mean ± std across seeds):**
+
+- `acc_A` = **0.1398** ± 0.0812  *(runs: 0.221, 0.059, 0.140)*
+- `acc_B` = **0.0762** ± 0.0774  *(runs: 0.033, 0.030, 0.166)*
+- `gap` = **-0.0636** ± 0.1111  *(runs: -0.188, -0.028, 0.026)*
+- `query_pred_acc` = **0.7209** ± 0.1728  *(runs: 0.857, 0.526, 0.780)*
+
+**Notes:** Context-only=0.221, QueryCond=0.033, gap=-0.188, qtype_pred=0.857.
+
+---
+
+### Category 27 — Parametric-Delta Hybrid (Phase 4)
+*0 supported / 2 refuted / 1 inconclusive / 0 error*
+
+#### exp_27_1  ✗ REFUTED
+**Hypothesis:** Hybrid memory (delta-rule matrix + parametric MLP) outperforms either alone when each component is pre-trained independently for 100 steps before joint fine-tuning.
+
+**Runs:** 3 (seeds: [123, 42, 777])  |  **Avg duration:** 32s
+
+**Metrics (mean ± std across seeds):**
+
+- `acc_cold_joint` = **0.1208** ± 0.0273  *(runs: 0.117, 0.150, 0.096)*
+- `acc_delta_only` = **0.0819** ± 0.0064  *(runs: 0.075, 0.083, 0.087)*
+- `acc_param_only` = **0.0236** ± 0.0134  *(runs: 0.008, 0.033, 0.029)*
+- `acc_pretrained_hybrid` = **0.0444** ± 0.0105  *(runs: 0.033, 0.046, 0.054)*
+- `superadditive_ratio` = **0.5378** ± 0.0879  *(runs: 0.444, 0.550, 0.619)*
+
+**Notes:** Delta=0.075, Param=0.008, Cold=0.117, PretrainedHybrid=0.033, ratio=0.444.
+
+---
+#### exp_27_2  ~ INCONCLUSIVE
+**Hypothesis:** In the hybrid model, the delta-rule component specializes in short-range retrieval while the parametric component specializes in long-range retrieval: delta_short > param_short + 5% AND param_long > delta_long + 5%.
+
+**Runs:** 3 (seeds: [123, 42, 777])  |  **Avg duration:** 12s
+
+**Metrics (mean ± std across seeds):**
+
+- `delta_long` = **0.1062** ± 0.0165  *(runs: 0.087, 0.113, 0.119)*
+- `delta_short` = **0.1000** ± 0.0108  *(runs: 0.087, 0.106, 0.106)*
+- `long_gap` = **-0.0812** ± 0.0109  *(runs: -0.069, -0.087, -0.087)*
+- `param_long` = **0.0250** ± 0.0063  *(runs: 0.019, 0.025, 0.031)*
+- `param_short` = **0.0271** ± 0.0130  *(runs: 0.031, 0.013, 0.037)*
+- `short_gap` = **0.0729** ± 0.0191  *(runs: 0.056, 0.094, 0.069)*
+
+**Notes:** Delta: short=0.087, long=0.087. Param: short=0.031, long=0.019. short_gap=0.056, long_gap=-0.069.
+
+---
+#### exp_27_3  ✗ REFUTED
+**Hypothesis:** Sequential pre-training isolation (delta pre-train → parametric pre-train → joint fine-tune) achieves super-additive accuracy >1.1× best single component AND outperforms cold joint training.
+
+**Runs:** 3 (seeds: [123, 42, 777])  |  **Avg duration:** 32s
+
+**Metrics (mean ± std across seeds):**
+
+- `acc_cold_joint` = **0.1208** ± 0.0273  *(runs: 0.117, 0.150, 0.096)*
+- `acc_delta_only` = **0.0819** ± 0.0064  *(runs: 0.075, 0.083, 0.087)*
+- `acc_param_only` = **0.0236** ± 0.0134  *(runs: 0.008, 0.033, 0.029)*
+- `acc_pretrain_sequential` = **0.0431** ± 0.0064  *(runs: 0.037, 0.042, 0.050)*
+- `loss_var_cold` = **0.0953** ± 0.0169  *(runs: 0.111, 0.077, 0.098)*
+- `loss_var_sequential` = **0.1050** ± 0.0065  *(runs: 0.102, 0.101, 0.112)*
+- `stability_ratio` = **0.9083** ± 0.1628  *(runs: 1.087, 0.768, 0.870)*
+- `superadditive_ratio` = **0.5238** ± 0.0412  *(runs: 0.500, 0.500, 0.571)*
+
+**Notes:** A=0.075, B=0.008, C(cold)=0.117, D(seq)=0.037, superadd=0.500, stability_ratio=1.087.
+
+---
+
+### Category 28 — Explicit Scaling Laws (Phase 5)
+*0 supported / 1 refuted / 4 inconclusive / 0 error*
+
+#### exp_28_1  ~ INCONCLUSIVE
+**Hypothesis:** Parametric memory retains >90% accuracy at SEQ_LEN=192 while slot memory drops below 30%, confirming a length-scaling crossover.
+
+**Runs:** 3 (seeds: [123, 42, 777])  |  **Avg duration:** 531s
+
+**Metrics (mean ± std across seeds):**
+
+- `acc_delta_len192` = **0.1805** ± 0.0262  *(runs: 0.177, 0.208, 0.156)*
+- `acc_delta_len24` = **0.1556** ± 0.0136  *(runs: 0.156, 0.142, 0.169)*
+- `acc_delta_len48` = **0.1514** ± 0.0288  *(runs: 0.163, 0.119, 0.173)*
+- `acc_delta_len96` = **0.1500** ± 0.0211  *(runs: 0.173, 0.131, 0.146)*
+- `acc_param_len192` = **0.0333** ± 0.0036  *(runs: 0.029, 0.035, 0.035)*
+- `acc_param_len24` = **0.0347** ± 0.0084  *(runs: 0.040, 0.040, 0.025)*
+- `acc_param_len48` = **0.0319** ± 0.0073  *(runs: 0.031, 0.025, 0.040)*
+- `acc_param_len96` = **0.0305** ± 0.0052  *(runs: 0.031, 0.035, 0.025)*
+- `acc_slot_len192` = **0.0792** ± 0.0758  *(runs: 0.035, 0.167, 0.035)*
+- `acc_slot_len24` = **0.0701** ± 0.0766  *(runs: 0.021, 0.158, 0.031)*
+- `acc_slot_len48` = **0.0993** ± 0.0576  *(runs: 0.140, 0.033, 0.125)*
+- `acc_slot_len96` = **0.0840** ± 0.1058  *(runs: 0.021, 0.206, 0.025)*
+- `param_retention_8x` = **1.0158** ± 0.3553  *(runs: 0.737, 0.894, 1.416)*
+- `slot_retention_8x` = **1.2965** ± 0.3534  *(runs: 1.702, 1.053, 1.135)*
+
+**Notes:** Slot retention 8×=1.702, param retention 8×=0.737. Slot@192=0.035, Param@192=0.029.
+
+---
+#### exp_28_2  ~ INCONCLUSIVE ⚠ inconsistent across seeds ['REFUTED', 'INCONCLUSIVE', 'INCONCLUSIVE']
+**Hypothesis:** Accuracy scales as dim^α with α > 0.3 for delta rule, R² > 0.95 log-log fit over HIDDEN_DIM ∈ {32,64,128,256}.
+
+**Runs:** 3 (seeds: [123, 42, 777])  |  **Avg duration:** 381s
+
+**Metrics (mean ± std across seeds):**
+
+- `acc_delta_H128` = **0.2175** ± 0.0145  *(runs: 0.202, 0.219, 0.231)*
+- `acc_delta_H256` = **0.2125** ± 0.0109  *(runs: 0.205, 0.207, 0.225)*
+- `acc_delta_H32` = **0.1323** ± 0.0142  *(runs: 0.116, 0.144, 0.137)*
+- `acc_delta_H64` = **0.2089** ± 0.0199  *(runs: 0.229, 0.189, 0.209)*
+- `acc_param_H128` = **0.0294** ± 0.0012  *(runs: 0.030, 0.030, 0.028)*
+- `acc_param_H256` = **0.0310** ± 0.0052  *(runs: 0.030, 0.027, 0.037)*
+- `acc_param_H32` = **0.0292** ± 0.0059  *(runs: 0.027, 0.025, 0.036)*
+- `acc_param_H64` = **0.0310** ± 0.0023  *(runs: 0.034, 0.030, 0.030)*
+- `acc_slot_H128` = **0.0320** ± 0.0051  *(runs: 0.037, 0.031, 0.027)*
+- `acc_slot_H256` = **0.1036** ± 0.1193  *(runs: 0.037, 0.241, 0.032)*
+- `acc_slot_H32` = **0.1279** ± 0.0885  *(runs: 0.166, 0.191, 0.027)*
+- `acc_slot_H64` = **0.0739** ± 0.0533  *(runs: 0.031, 0.134, 0.057)*
+- `alpha_delta` = **0.2126** ± 0.0291  *(runs: 0.228, 0.179, 0.231)*
+- `alpha_param` = **0.0207** ± 0.0170  *(runs: 0.034, 0.027, 0.002)*
+- `alpha_slot` = **-0.2507** ± 0.3210  *(runs: -0.618, -0.108, -0.026)*
+- `r2_delta` = **0.6318** ± 0.1585  *(runs: 0.450, 0.737, 0.709)*
+- `r2_param` = **0.0594** ± 0.0523  *(runs: 0.099, 0.079, 0.000)*
+- `r2_slot` = **0.1727** ± 0.2857  *(runs: 0.503, 0.011, 0.004)*
+
+**Notes:** Delta: α=0.228, R²=0.450. Slot: α=-0.618, R²=0.503. Param: α=0.034, R²=0.099.
+
+---
+#### exp_28_3  ~ INCONCLUSIVE
+**Hypothesis:** Parametric memory has the steepest per-step accuracy gain across STEPS ∈ {200,400,800,1600,3200}, confirming highest sample efficiency.
+
+**Runs:** 3 (seeds: [123, 42, 777])  |  **Avg duration:** 607s
+
+**Metrics (mean ± std across seeds):**
+
+- `acc_delta_s1600` = **0.2295** ± 0.0026  *(runs: 0.229, 0.232, 0.227)*
+- `acc_delta_s200` = **0.1694** ± 0.0310  *(runs: 0.205, 0.152, 0.151)*
+- `acc_delta_s3200` = **0.2305** ± 0.0147  *(runs: 0.244, 0.233, 0.215)*
+- `acc_delta_s400` = **0.2087** ± 0.0176  *(runs: 0.228, 0.204, 0.194)*
+- `acc_delta_s800` = **0.2198** ± 0.0075  *(runs: 0.218, 0.213, 0.228)*
+- `acc_param_s1600` = **0.0305** ± 0.0026  *(runs: 0.030, 0.028, 0.033)*
+- `acc_param_s200` = **0.0403** ± 0.0090  *(runs: 0.050, 0.032, 0.038)*
+- `acc_param_s3200` = **0.0326** ± 0.0051  *(runs: 0.030, 0.029, 0.038)*
+- `acc_param_s400` = **0.0337** ± 0.0032  *(runs: 0.036, 0.030, 0.034)*
+- `acc_param_s800` = **0.0368** ± 0.0069  *(runs: 0.045, 0.033, 0.032)*
+- `acc_slot_s1600` = **0.0472** ± 0.0233  *(runs: 0.031, 0.074, 0.036)*
+- `acc_slot_s200` = **0.0864** ± 0.0879  *(runs: 0.028, 0.188, 0.044)*
+- `acc_slot_s3200` = **0.0347** ± 0.0217  *(runs: 0.030, 0.058, 0.016)*
+- `acc_slot_s400` = **0.0837** ± 0.0899  *(runs: 0.033, 0.188, 0.030)*
+- `acc_slot_s800` = **0.0969** ± 0.1092  *(runs: 0.035, 0.223, 0.032)*
+- `slope_delta` = **0.0145** ± 0.0049  *(runs: 0.010, 0.020, 0.014)*
+- `slope_param` = **-0.0019** ± 0.0032  *(runs: -0.005, -0.001, 0.001)*
+- `slope_slot` = **-0.0198** ± 0.0281  *(runs: -0.000, -0.052, -0.007)*
+
+**Notes:** Slopes (×10³/step): slot=-0.0004, delta=0.0100, param=-0.0054.
+
+---
+#### exp_28_4  ~ INCONCLUSIVE ⚠ inconsistent across seeds ['INCONCLUSIVE', 'INCONCLUSIVE', 'REFUTED']
+**Hypothesis:** Slot accuracy peaks at NUM_SLOTS=1.5–2×NUM_PAIRS (9–12 slots), then degrades with excess slots due to slot collapse.
+
+**Runs:** 3 (seeds: [123, 42, 777])  |  **Avg duration:** 48s
+
+**Metrics (mean ± std across seeds):**
+
+- `acc_k12` = **0.1302** ± 0.0402  *(runs: 0.087, 0.136, 0.167)*
+- `acc_k16` = **0.1625** ± 0.0131  *(runs: 0.174, 0.165, 0.148)*
+- `acc_k2` = **0.0682** ± 0.0439  *(runs: 0.039, 0.047, 0.119)*
+- `acc_k24` = **0.1573** ± 0.0102  *(runs: 0.148, 0.156, 0.168)*
+- `acc_k24_vs_peak` = **-0.0148** ± 0.0135  *(runs: -0.026, -0.018, 0.000)*
+- `acc_k4` = **0.1185** ± 0.0469  *(runs: 0.165, 0.071, 0.119)*
+- `acc_k6` = **0.1200** ± 0.0832  *(runs: 0.024, 0.174, 0.162)*
+- `acc_k8` = **0.0984** ± 0.0597  *(runs: 0.106, 0.035, 0.154)*
+- `acc_peak` = **0.1721** ± 0.0036  *(runs: 0.174, 0.174, 0.168)*
+- `collapse_k12` = **0.6323** ± 0.0959  *(runs: 0.741, 0.558, 0.599)*
+- `collapse_k16` = **0.6238** ± 0.0751  *(runs: 0.624, 0.699, 0.548)*
+- `collapse_k2` = **0.8207** ± 0.1102  *(runs: 0.938, 0.806, 0.719)*
+- `collapse_k24` = **0.4390** ± 0.0588  *(runs: 0.433, 0.500, 0.383)*
+- `collapse_k4` = **0.6444** ± 0.0760  *(runs: 0.561, 0.709, 0.664)*
+- `collapse_k6` = **0.7082** ± 0.2581  *(runs: 0.999, 0.506, 0.619)*
+- `collapse_k8` = **0.7613** ± 0.2424  *(runs: 0.770, 0.999, 0.515)*
+- `peak_k` = **15.3333** ± 9.0185  *(runs: 16.000, 6.000, 24.000)*
+
+**Notes:** Peak at k=16 (acc=0.174). k=24 acc=0.148 (drop=0.026).
+
+---
+#### exp_28_5  ✗ REFUTED
+**Hypothesis:** Delta rule accuracy variance across VOCAB_SIZE ∈ {32,64,128,256} is <2% at each NUM_PAIRS level, confirming vocab-independence of capacity.
+
+**Runs:** 3 (seeds: [123, 42, 777])  |  **Avg duration:** 279s
+
+**Metrics (mean ± std across seeds):**
+
+- `acc_mean_n2` = **0.4804** ± 0.0089  *(runs: 0.482, 0.471, 0.489)*
+- `acc_mean_n4` = **0.2219** ± 0.0022  *(runs: 0.224, 0.223, 0.220)*
+- `acc_mean_n8` = **0.0843** ± 0.0108  *(runs: 0.092, 0.088, 0.072)*
+- `acc_n2_v128` = **0.4849** ± 0.0159  *(runs: 0.474, 0.503, 0.477)*
+- `acc_n2_v256` = **0.3792** ± 0.0246  *(runs: 0.393, 0.351, 0.394)*
+- `acc_n2_v32` = **0.5380** ± 0.0134  *(runs: 0.536, 0.526, 0.552)*
+- `acc_n2_v64` = **0.5195** ± 0.0141  *(runs: 0.523, 0.504, 0.531)*
+- `acc_n4_v128` = **0.2224** ± 0.0133  *(runs: 0.237, 0.212, 0.217)*
+- `acc_n4_v256` = **0.1263** ± 0.0162  *(runs: 0.113, 0.121, 0.144)*
+- `acc_n4_v32` = **0.2794** ± 0.0053  *(runs: 0.284, 0.281, 0.273)*
+- `acc_n4_v64` = **0.2596** ± 0.0160  *(runs: 0.261, 0.275, 0.243)*
+- `acc_n8_v128` = **0.0607** ± 0.0167  *(runs: 0.071, 0.070, 0.041)*
+- `acc_n8_v256` = **0.0180** ± 0.0051  *(runs: 0.013, 0.023, 0.019)*
+- `acc_n8_v32` = **0.1497** ± 0.0097  *(runs: 0.161, 0.144, 0.144)*
+- `acc_n8_v64` = **0.1089** ± 0.0215  *(runs: 0.125, 0.117, 0.084)*
+- `acc_variance_n2` = **0.1588** ± 0.0161  *(runs: 0.143, 0.175, 0.159)*
+- `acc_variance_n4` = **0.1531** ± 0.0216  *(runs: 0.170, 0.160, 0.129)*
+- `acc_variance_n8` = **0.1317** ± 0.0145  *(runs: 0.148, 0.122, 0.125)*
+- `max_variance` = **0.1680** ± 0.0084  *(runs: 0.170, 0.175, 0.159)*
+
+**Notes:** Max variance across vocab sizes = 0.1703 (>0.02). Vocab-independence NOT confirmed.
+
+---
+
+### Category 29 — TTT / Titans-Inspired Memory (Phase 5)
+*2 supported / 0 refuted / 2 inconclusive / 0 error*
+
+#### exp_29_1  ✓ SUPPORTED
+**Hypothesis:** Outer-product linear associative memory (no test-time SGD) matches slot memory within 2% at matched parameter count.
+
+**Runs:** 3 (seeds: [123, 42, 777])  |  **Avg duration:** 79s
+
+**Metrics (mean ± std across seeds):**
+
+- `acc_linear` = **0.2533** ± 0.0176  *(runs: 0.261, 0.233, 0.266)*
+- `acc_slot` = **0.1369** ± 0.1018  *(runs: 0.028, 0.154, 0.229)*
+- `gap` = **0.1164** ± 0.1037  *(runs: 0.234, 0.079, 0.037)*
+
+**Notes:** Linear acc=0.261, slot acc=0.028, gap=+0.234.
+
+---
+#### exp_29_2  ~ INCONCLUSIVE ⚠ inconsistent across seeds ['INCONCLUSIVE', 'REFUTED', 'INCONCLUSIVE']
+**Hypothesis:** Adam-at-inference for parametric memory MLP improves accuracy by >5% over SGD at the same number of inner steps (INFERENCE_STEPS=3).
+
+**Runs:** 3 (seeds: [123, 42, 777])  |  **Avg duration:** 212s
+
+**Metrics (mean ± std across seeds):**
+
+- `acc_adam` = **0.0757** ± 0.0198  *(runs: 0.096, 0.056, 0.075)*
+- `acc_sgd` = **0.0722** ± 0.0105  *(runs: 0.062, 0.083, 0.071)*
+- `gap` = **0.0035** ± 0.0302  *(runs: 0.033, -0.027, 0.004)*
+
+**Notes:** Adam acc=0.096, SGD acc=0.062, gap=+0.033.
+
+---
+#### exp_29_3  ✓ SUPPORTED ⚠ inconsistent across seeds ['SUPPORTED', 'SUPPORTED', 'REFUTED']
+**Hypothesis:** Surprise-gated TTT (update when gradient-norm ratio > 1.5) achieves >90% of full-update accuracy at <50% update rate.
+
+**Runs:** 3 (seeds: [123, 42, 777])  |  **Avg duration:** 69s
+
+**Metrics (mean ± std across seeds):**
+
+- `acc_full` = **0.0312** ± 0.0150  *(runs: 0.019, 0.027, 0.048)*
+- `acc_no_ttt` = **0.0306** ± 0.0043  *(runs: 0.029, 0.035, 0.027)*
+- `acc_ratio` = **1.0709** ± 0.6743  *(runs: 1.778, 1.000, 0.435)*
+- `acc_surprise` = **0.0271** ± 0.0063  *(runs: 0.033, 0.027, 0.021)*
+- `write_rate` = **0.0947** ± 0.0132  *(runs: 0.102, 0.080, 0.102)*
+
+**Notes:** Full acc=0.019, Surprise acc=0.033, No-TTT acc=0.029. acc_ratio=1.778, write_rate=0.102.
+
+---
+#### exp_29_4  ~ INCONCLUSIVE ⚠ inconsistent across seeds ['INCONCLUSIVE', 'INCONCLUSIVE', 'REFUTED']
+**Hypothesis:** Weight decay at inference prevents saturation: at SEQ_LEN=192, accuracy with weight_decay=0.01 is >20% higher than without.
+
+**Runs:** 3 (seeds: [123, 42, 777])  |  **Avg duration:** 468s
+
+**Metrics (mean ± std across seeds):**
+
+- `acc_gain_wd_192` = **-0.0021** ± 0.0065  *(runs: 0.003, 0.000, -0.009)*
+- `acc_plain_len192` = **0.0312** ± 0.0032  *(runs: 0.031, 0.028, 0.034)*
+- `acc_plain_len24` = **0.0385** ± 0.0047  *(runs: 0.037, 0.034, 0.044)*
+- `acc_plain_len96` = **0.0281** ± 0.0094  *(runs: 0.019, 0.037, 0.028)*
+- `acc_wd_len192` = **0.0292** ± 0.0048  *(runs: 0.034, 0.028, 0.025)*
+- `acc_wd_len24` = **0.0354** ± 0.0101  *(runs: 0.028, 0.031, 0.047)*
+- `acc_wd_len96` = **0.0385** ± 0.0079  *(runs: 0.037, 0.031, 0.047)*
+- `gap_len192` = **-0.0021** ± 0.0065  *(runs: 0.003, 0.000, -0.009)*
+- `gap_len24` = **-0.0031** ± 0.0063  *(runs: -0.009, -0.003, 0.003)*
+- `gap_len96` = **0.0104** ± 0.0145  *(runs: 0.019, -0.006, 0.019)*
+
+**Notes:** Gain at SEQ_LEN=192: +0.003. Gaps: len24=-0.009, len96=+0.019, len192=+0.003.
+
+---
+
+### Category 30 — Multi-Head & Extended Delta Rule (Phase 5)
+*1 supported / 2 refuted / 1 inconclusive / 0 error*
+
+#### exp_30_1  ✓ SUPPORTED ⚠ inconsistent across seeds ['SUPPORTED', 'INCONCLUSIVE', 'SUPPORTED']
+**Hypothesis:** Multi-head delta rule (4 heads x H/4 dims) outperforms single-head by >5% on 8-pair associative recall.
+
+**Runs:** 3 (seeds: [123, 42, 777])  |  **Avg duration:** 419s
+
+**Metrics (mean ± std across seeds):**
+
+- `acc_multi` = **0.2577** ± 0.0972  *(runs: 0.366, 0.179, 0.228)*
+- `acc_single` = **0.1465** ± 0.0060  *(runs: 0.152, 0.140, 0.147)*
+- `gap` = **0.1112** ± 0.0918  *(runs: 0.214, 0.039, 0.081)*
+
+**Notes:** Multi-head acc=0.366, Single-head acc=0.152, gap=0.214. Params: single=113KB, multi=162KB.
+
+---
+#### exp_30_2  ✗ REFUTED
+**Hypothesis:** Momentum delta (β=0.9) matches energy-gated accuracy within 5% while achieving lower final-100-step loss variance (ratio < 0.8).
+
+**Runs:** 3 (seeds: [123, 42, 777])  |  **Avg duration:** 192s
+
+**Metrics (mean ± std across seeds):**
+
+- `acc_energy` = **0.1835** ± 0.0163  *(runs: 0.171, 0.178, 0.202)*
+- `acc_momentum` = **0.2117** ± 0.0153  *(runs: 0.228, 0.197, 0.211)*
+- `gap_acc` = **0.0281** ± 0.0254  *(runs: 0.057, 0.019, 0.009)*
+- `loss_var_energy` = **0.0255** ± 0.0017  *(runs: 0.025, 0.024, 0.027)*
+- `loss_var_momentum` = **0.0302** ± 0.0007  *(runs: 0.030, 0.030, 0.031)*
+- `var_ratio` = **1.1900** ± 0.0537  *(runs: 1.202, 1.236, 1.131)*
+- `write_rate_energy` = **0.5984** ± 0.0017  *(runs: 0.600, 0.598, 0.597)*
+- `write_rate_momentum` = **1.0000**  *(stable across seeds)*
+
+**Notes:** Momentum acc=0.228, Energy acc=0.171, gap=0.057. Var ratio=1.202. Write rates: energy=0.600, momentum=1.000.
+
+---
+#### exp_30_3  ✗ REFUTED ⚠ inconsistent across seeds ['REFUTED', 'INCONCLUSIVE', 'REFUTED']
+**Hypothesis:** Bidirectional delta rule improves accuracy by >8% on late-query tasks vs unidirectional, without harming early-query tasks by more than 2%.
+
+**Runs:** 3 (seeds: [123, 42, 777])  |  **Avg duration:** 731s
+
+**Metrics (mean ± std across seeds):**
+
+- `acc_bidir_early` = **0.1823** ± 0.0067  *(runs: 0.175, 0.184, 0.188)*
+- `acc_bidir_late` = **0.1838** ± 0.0130  *(runs: 0.169, 0.193, 0.190)*
+- `acc_unidir_early` = **0.1846** ± 0.0072  *(runs: 0.177, 0.192, 0.184)*
+- `acc_unidir_late` = **0.1929** ± 0.0063  *(runs: 0.188, 0.191, 0.200)*
+- `early_change` = **-0.0023** ± 0.0060  *(runs: -0.003, -0.008, 0.004)*
+- `late_improvement` = **-0.0091** ± 0.0106  *(runs: -0.019, 0.002, -0.010)*
+
+**Notes:** Late: bidir=0.169, unidir=0.188, improvement=-0.019. Early: bidir=0.175, unidir=0.177, change=-0.003.
+
+---
+#### exp_30_4  ~ INCONCLUSIVE ⚠ inconsistent across seeds ['INCONCLUSIVE', 'INCONCLUSIVE', 'SUPPORTED']
+**Hypothesis:** Energy-gated delta rule Pareto knee lies at 40-60% write rate for all tested hidden dimensions (32, 64, 128).
+
+**Runs:** 3 (seeds: [123, 42, 777])  |  **Avg duration:** 1217s
+
+**Metrics (mean ± std across seeds):**
+
+- `all_knees_in_range` = **0.3333** ± 0.5774  *(runs: 0.000, 0.000, 1.000)*
+- `knee_wr_H128` = **0.5903** ± 0.0022  *(runs: 0.593, 0.588, 0.590)*
+- `knee_wr_H32` = **0.5448** ± 0.0587  *(runs: 0.612, 0.521, 0.501)*
+- `knee_wr_H64` = **0.5972** ± 0.0074  *(runs: 0.599, 0.604, 0.589)*
+- `pareto_acc_H128_th0` = **0.1815** ± 0.0036  *(runs: 0.185, 0.181, 0.178)*
+- `pareto_acc_H128_th1` = **0.1875** ± 0.0075  *(runs: 0.191, 0.179, 0.193)*
+- `pareto_acc_H128_th2` = **0.1810** ± 0.0072  *(runs: 0.186, 0.173, 0.184)*
+- `pareto_acc_H128_th3` = **0.1831** ± 0.0087  *(runs: 0.177, 0.193, 0.180)*
+- `pareto_acc_H128_th4` = **0.1870** ± 0.0065  *(runs: 0.189, 0.192, 0.180)*
+- `pareto_acc_H128_th5` = **0.0271** ± 0.0032  *(runs: 0.029, 0.029, 0.023)*
+- `pareto_acc_H32_th0` = **0.1487** ± 0.0030  *(runs: 0.145, 0.151, 0.150)*
+- `pareto_acc_H32_th1` = **0.1643** ± 0.0073  *(runs: 0.156, 0.166, 0.170)*
+- `pareto_acc_H32_th2` = **0.1612** ± 0.0099  *(runs: 0.150, 0.165, 0.169)*
+- `pareto_acc_H32_th3` = **0.1542** ± 0.0246  *(runs: 0.126, 0.169, 0.168)*
+- `pareto_acc_H32_th4` = **0.1617** ± 0.0195  *(runs: 0.140, 0.168, 0.177)*
+- `pareto_acc_H32_th5` = **0.0294** ± 0.0056  *(runs: 0.030, 0.034, 0.023)*
+- `pareto_acc_H64_th0` = **0.1857** ± 0.0135  *(runs: 0.198, 0.171, 0.188)*
+- `pareto_acc_H64_th1` = **0.1813** ± 0.0094  *(runs: 0.173, 0.180, 0.191)*
+- `pareto_acc_H64_th2` = **0.1964** ± 0.0151  *(runs: 0.205, 0.205, 0.179)*
+- `pareto_acc_H64_th3` = **0.1831** ± 0.0111  *(runs: 0.170, 0.191, 0.188)*
+- `pareto_acc_H64_th4` = **0.1831** ± 0.0090  *(runs: 0.189, 0.188, 0.173)*
+- `pareto_acc_H64_th5` = **0.0365** ± 0.0059  *(runs: 0.030, 0.042, 0.037)*
+- `pareto_wr_H128_th0` = **1.0000**  *(stable across seeds)*
+- `pareto_wr_H128_th1` = **0.6250** ± 0.0025  *(runs: 0.622, 0.627, 0.625)*
+- `pareto_wr_H128_th2` = **0.5915** ± 0.0016  *(runs: 0.593, 0.592, 0.590)*
+- `pareto_wr_H128_th3` = **0.5891** ± 0.0008  *(runs: 0.588, 0.590, 0.589)*
+- `pareto_wr_H128_th4` = **0.5889** ± 0.0006  *(runs: 0.590, 0.588, 0.589)*
+- `pareto_wr_H128_th5` = **0.0000**  *(stable across seeds)*
+- `pareto_wr_H32_th0` = **1.0000**  *(stable across seeds)*
+- `pareto_wr_H32_th1` = **0.6429** ± 0.0016  *(runs: 0.642, 0.645, 0.642)*
+- `pareto_wr_H32_th2` = **0.6121** ± 0.0006  *(runs: 0.612, 0.613, 0.612)*
+- `pareto_wr_H32_th3` = **0.5873** ± 0.0022  *(runs: 0.587, 0.589, 0.585)*
+- `pareto_wr_H32_th4` = **0.5056** ± 0.0142  *(runs: 0.494, 0.521, 0.501)*
+- `pareto_wr_H32_th5` = **0.0000**  *(stable across seeds)*
+- `pareto_wr_H64_th0` = **1.0000**  *(stable across seeds)*
+- `pareto_wr_H64_th1` = **0.6342** ± 0.0008  *(runs: 0.635, 0.634, 0.634)*
+- `pareto_wr_H64_th2` = **0.5997** ± 0.0036  *(runs: 0.599, 0.604, 0.597)*
+- `pareto_wr_H64_th3` = **0.5895** ± 0.0004  *(runs: 0.590, 0.590, 0.589)*
+- `pareto_wr_H64_th4` = **0.5873** ± 0.0032  *(runs: 0.588, 0.590, 0.584)*
+- `pareto_wr_H64_th5` = **0.0000**  *(stable across seeds)*
+
+**Notes:** Knee write rates: H32=0.612, H64=0.599, H128=0.593. All in [0.40,0.60]: False.
+
+---
+
+### Category 31 — Top Mechanism Integration (Phase 5)
+*0 supported / 2 refuted / 2 inconclusive / 0 error*
+
+#### exp_31_1  ✗ REFUTED
+**Hypothesis:** Combined model (retroactive re-encoding + two-hop retrieval) outperforms both in isolation by >5% using pre-training isolation.
+
+**Runs:** 3 (seeds: [123, 42, 777])  |  **Avg duration:** 34s
+
+**Metrics (mean ± std across seeds):**
+
+- `acc_combined` = **0.1625** ± 0.0600  *(runs: 0.135, 0.121, 0.231)*
+- `acc_retro` = **0.5854** ± 0.0868  *(runs: 0.647, 0.486, 0.623)*
+- `acc_twohop` = **0.6408** ± 0.0687  *(runs: 0.718, 0.585, 0.620)*
+- `gain_vs_retro` = **-0.4229** ± 0.0787  *(runs: -0.512, -0.365, -0.391)*
+- `gain_vs_twohop` = **-0.4783** ± 0.0977  *(runs: -0.583, -0.464, -0.389)*
+
+**Notes:** Retro=0.647, TwoHop=0.718, Combined=0.135. Gain vs retro: -0.512, gain vs twohop: -0.583.
+
+---
+#### exp_31_2  ✗ REFUTED ⚠ inconsistent across seeds ['INCONCLUSIVE', 'REFUTED', 'REFUTED']
+**Hypothesis:** Retroactive re-encoding gap persists above +0.08 at SEQ_LEN=192 (8× baseline).
+
+**Runs:** 3 (seeds: [123, 42, 777])  |  **Avg duration:** 1211s
+
+**Metrics (mean ± std across seeds):**
+
+- `acc_forward_len192` = **0.1292** ± 0.0154  *(runs: 0.120, 0.147, 0.120)*
+- `acc_forward_len24` = **0.1334** ± 0.0160  *(runs: 0.122, 0.127, 0.152)*
+- `acc_forward_len48` = **0.1339** ± 0.0104  *(runs: 0.131, 0.125, 0.145)*
+- `acc_forward_len96` = **0.1229** ± 0.0198  *(runs: 0.127, 0.102, 0.141)*
+- `acc_retro_len192` = **0.1265** ± 0.0098  *(runs: 0.138, 0.123, 0.119)*
+- `acc_retro_len24` = **0.1130** ± 0.0156  *(runs: 0.095, 0.125, 0.119)*
+- `acc_retro_len48` = **0.1161** ± 0.0166  *(runs: 0.098, 0.119, 0.131)*
+- `acc_retro_len96` = **0.1089** ± 0.0113  *(runs: 0.103, 0.122, 0.102)*
+- `gap_len192` = **-0.0026** ± 0.0204  *(runs: 0.017, -0.024, -0.002)*
+- `gap_len24` = **-0.0204** ± 0.0166  *(runs: -0.027, -0.002, -0.033)*
+- `gap_len48` = **-0.0177** ± 0.0137  *(runs: -0.033, -0.006, -0.014)*
+- `gap_len96` = **-0.0141** ± 0.0308  *(runs: -0.024, 0.020, -0.039)*
+
+**Notes:** Gaps: len24=-0.027, len48=-0.033, len96=-0.023, len192=0.017. 192 gap > 0.08: False
+
+---
+#### exp_31_3  ~ INCONCLUSIVE
+**Hypothesis:** DeltaRetroModel outperforms delta-only by >8% and outperforms retro-only by >2%.
+
+**Runs:** 3 (seeds: [123, 42, 777])  |  **Avg duration:** 69s
+
+**Metrics (mean ± std across seeds):**
+
+- `acc_delta` = **0.1596** ± 0.0118  *(runs: 0.154, 0.173, 0.151)*
+- `acc_delta_retro` = **0.1823** ± 0.0109  *(runs: 0.179, 0.194, 0.173)*
+- `acc_retro` = **0.1025** ± 0.0251  *(runs: 0.129, 0.079, 0.100)*
+- `gain_vs_delta` = **0.0227** ± 0.0020  *(runs: 0.025, 0.021, 0.022)*
+- `gain_vs_retro` = **0.0798** ± 0.0330  *(runs: 0.051, 0.116, 0.073)*
+
+**Notes:** Delta=0.154, Retro=0.129, DeltaRetro=0.179. Gain vs delta: +0.025, gain vs retro: +0.051.
+
+---
+#### exp_31_4  ~ INCONCLUSIVE
+**Hypothesis:** Learned importance-based eviction achieves >10% better accuracy than FIFO eviction when NUM_PAIRS (12) exceeds CAPACITY_LIMIT (8).
+
+**Runs:** 3 (seeds: [123, 42, 777])  |  **Avg duration:** 280s
+
+**Metrics (mean ± std across seeds):**
+
+- `acc_fifo` = **0.2212** ± 0.0554  *(runs: 0.214, 0.280, 0.170)*
+- `acc_learned` = **0.2650** ± 0.0380  *(runs: 0.241, 0.309, 0.245)*
+- `capacity_limit` = **8.0000**  *(stable across seeds)*
+- `gap` = **0.0438** ± 0.0271  *(runs: 0.028, 0.029, 0.075)*
+- `num_pairs` = **12.0000**  *(stable across seeds)*
+
+**Notes:** FIFO=0.214, Learned=0.241, Gap=+0.028. Capacity=8, NumPairs=12.
+
+---
+
+### Category 32 — Deep Seed Validation (Phase 5)
+*4 supported / 0 refuted / 0 inconclusive / 0 error*
+
+#### exp_32_1  ✓ SUPPORTED ⚠ inconsistent across seeds ['REFUTED', 'SUPPORTED', 'SUPPORTED', 'INCONCLUSIVE', 'INCONCLUSIVE', 'REFUTED', 'REFUTED', 'SUPPORTED', 'SUPPORTED']
+**Hypothesis:** Deep seed validation of retroactive writing (exp_3_6): gap > 0.09 (stricter criterion for robust confirmation).
+
+**Runs:** 9 (seeds: [0, 123, 13, 1, 2, 42, 777, 7, 99])  |  **Avg duration:** 50s
+
+**Metrics (mean ± std across seeds):**
+
+- `acc_gap` = **0.0431** ± 0.1182  *(runs: -0.072, 0.172, 0.183, 0.014, 0.027, -0.044, -0.153, 0.130, 0.131)*
+- `forward_acc` = **0.1269** ± 0.0721  *(runs: 0.189, 0.031, 0.069, 0.167, 0.181, 0.208, 0.188, 0.053, 0.056)*
+- `retroactive_write_rate` = **0.0833**  *(stable across seeds)*
+- `seed` = **118.2222** ± 251.2115  *(runs: 0.000, 123.000, 13.000, 1.000, 2.000, 42.000, 777.000, 7.000, 99.000)*
+- `two_pass_acc` = **0.1700** ± 0.0622  *(runs: 0.117, 0.203, 0.252, 0.181, 0.208, 0.164, 0.034, 0.183, 0.188)*
+
+**Notes:** Seed=0. Two-pass vs forward gap=-0.072. Retroactive write rate=0.083. Required gap > 0.09.
+
+---
+#### exp_32_2  ✓ SUPPORTED ⚠ inconsistent across seeds ['SUPPORTED', 'SUPPORTED', 'SUPPORTED', 'SUPPORTED', 'REFUTED', 'SUPPORTED', 'REFUTED', 'SUPPORTED', 'REFUTED']
+**Hypothesis:** Deep seed validation of energy-gated delta rule (exp_15_3): acc_ratio > 0.90 AND write_rate < 0.70.
+
+**Runs:** 9 (seeds: [0, 123, 13, 1, 2, 42, 777, 7, 99])  |  **Avg duration:** 28s
+
+**Metrics (mean ± std across seeds):**
+
+- `acc_A_continuous` = **0.1395** ± 0.0162  *(runs: 0.138, 0.114, 0.151, 0.116, 0.154, 0.137, 0.160, 0.136, 0.149)*
+- `acc_B_energy_gated` = **0.1392** ± 0.0146  *(runs: 0.124, 0.171, 0.141, 0.132, 0.138, 0.146, 0.142, 0.139, 0.119)*
+- `acc_ratio_B` = **1.0158** ± 0.2064  *(runs: 0.904, 1.492, 0.934, 1.141, 0.895, 1.064, 0.891, 1.023, 0.799)*
+- `seed` = **118.2222** ± 251.2115  *(runs: 0.000, 123.000, 13.000, 1.000, 2.000, 42.000, 777.000, 7.000, 99.000)*
+- `write_rate_A` = **1.0000**  *(stable across seeds)*
+- `write_rate_B` = **0.5154** ± 0.0024  *(runs: 0.515, 0.516, 0.520, 0.517, 0.513, 0.514, 0.517, 0.514, 0.513)*
+
+**Notes:** Seed=0. acc_ratio=0.905, write_rate=0.515. acc_A=0.138, acc_B=0.124. Required: ratio>0.90 AND wr<0.70.
+
+---
+#### exp_32_3  ✓ SUPPORTED ⚠ inconsistent across seeds ['INCONCLUSIVE', 'SUPPORTED', 'INCONCLUSIVE', 'SUPPORTED', 'SUPPORTED', 'SUPPORTED', 'SUPPORTED', 'SUPPORTED', 'SUPPORTED']
+**Hypothesis:** Deep seed validation of three-hop chain (exp_13_2): degradation_ratio > 2.0 (three-hop exceeds two-hop by 2×).
+
+**Runs:** 9 (seeds: [0, 123, 13, 1, 2, 42, 777, 7, 99])  |  **Avg duration:** 2s
+
+**Metrics (mean ± std across seeds):**
+
+- `acc_single` = **0.0625** ± 0.0350  *(runs: 0.094, 0.062, 0.094, 0.125, 0.031, 0.031, 0.031, 0.062, 0.031)*
+- `acc_three` = **0.0972** ± 0.0244  *(runs: 0.062, 0.125, 0.062, 0.094, 0.094, 0.094, 0.125, 0.125, 0.094)*
+- `acc_two` = **0.0312**  *(stable across seeds)*
+- `degradation_ratio` = **3.1111** ± 0.7817  *(runs: 2.000, 4.000, 2.000, 3.000, 3.000, 3.000, 4.000, 4.000, 3.000)*
+- `seed` = **118.2222** ± 251.2115  *(runs: 0.000, 123.000, 13.000, 1.000, 2.000, 42.000, 777.000, 7.000, 99.000)*
+
+**Notes:** Seed=0. degradation_ratio=2.000. Accs: 1-hop=0.094, 2-hop=0.031, 3-hop=0.062. Required ratio > 2.0 to confirm three-hop beats two-hop finding.
+
+---
+#### exp_32_4  ✓ SUPPORTED ⚠ inconsistent across seeds ['SUPPORTED', 'INCONCLUSIVE', 'SUPPORTED', 'SUPPORTED', 'SUPPORTED', 'REFUTED', 'INCONCLUSIVE', 'SUPPORTED', 'SUPPORTED']
+**Hypothesis:** Deep seed validation of parametric seq scaling (exp_16_3): param retention gap > 0.35 (stricter criterion).
+
+**Runs:** 9 (seeds: [0, 123, 13, 1, 2, 42, 777, 7, 99])  |  **Avg duration:** 28s
+
+**Metrics (mean ± std across seeds):**
+
+- `acc_param_len24` = **0.0291** ± 0.0121  *(runs: 0.044, 0.044, 0.016, 0.025, 0.025, 0.028, 0.031, 0.041, 0.009)*
+- `acc_param_len48` = **0.0281** ± 0.0084  *(runs: 0.034, 0.028, 0.025, 0.034, 0.028, 0.016, 0.016, 0.041, 0.031)*
+- `acc_slot_len24` = **0.1076** ± 0.0344  *(runs: 0.141, 0.081, 0.138, 0.128, 0.084, 0.113, 0.109, 0.138, 0.037)*
+- `acc_slot_len48` = **0.0361** ± 0.0144  *(runs: 0.041, 0.031, 0.019, 0.037, 0.047, 0.053, 0.019, 0.022, 0.056)*
+- `retention_diff` = **0.7719** ± 0.5839  *(runs: 0.498, 0.259, 1.467, 1.083, 0.568, 0.083, 0.329, 0.841, 1.818)*
+- `retention_parametric` = **1.2119** ± 0.8743  *(runs: 0.787, 0.643, 1.603, 1.376, 1.124, 0.555, 0.500, 1.000, 3.319)*
+- `retention_slot` = **0.4401** ± 0.4231  *(runs: 0.289, 0.384, 0.136, 0.293, 0.556, 0.472, 0.171, 0.159, 1.501)*
+- `seed` = **118.2222** ± 251.2115  *(runs: 0.000, 123.000, 13.000, 1.000, 2.000, 42.000, 777.000, 7.000, 99.000)*
+
+**Notes:** Seed=0. Param retention gap=0.498. Required gap > 0.35. Slot retention=0.289, Param retention=0.787.
+
+---
+
+### Category 33 — Capacity Physics / Interference Density Law (Phase 5)
+*1 supported / 2 refuted / 1 inconclusive / 0 error*
+
+#### exp_33_1  ✗ REFUTED
+**Hypothesis:** Slot memory accuracy follows acc ~ ρ^(-γ) with R² > 0.90 across ρ ∈ {0.031, 0.063, 0.125, 0.25, 0.5, 1.0} (N_pairs/hidden_dim).
+
+**Runs:** 3 (seeds: [123, 42, 777])  |  **Avg duration:** 58s
+
+**Metrics (mean ± std across seeds):**
+
+- `acc_n16` = **0.0089** ± 0.0043  *(runs: 0.005, 0.009, 0.013)*
+- `acc_n2` = **0.0070** ± 0.0008  *(runs: 0.008, 0.007, 0.006)*
+- `acc_n32` = **0.0091** ± 0.0024  *(runs: 0.009, 0.007, 0.012)*
+- `acc_n4` = **0.0058** ± 0.0005  *(runs: 0.005, 0.005, 0.006)*
+- `acc_n64` = **0.0078** ± 0.0008  *(runs: 0.007, 0.008, 0.009)*
+- `acc_n8` = **0.0120** ± 0.0052  *(runs: 0.009, 0.009, 0.018)*
+- `gamma_slot` = **-0.0616** ± 0.0624  *(runs: -0.004, -0.052, -0.128)*
+- `intercept` = **-4.7250** ± 0.2974  *(runs: -4.959, -4.825, -4.390)*
+- `r_squared` = **0.1051** ± 0.0906  *(runs: 0.001, 0.161, 0.153)*
+- `rho_n16` = **0.2500**  *(stable across seeds)*
+- `rho_n2` = **0.0312**  *(stable across seeds)*
+- `rho_n32` = **0.5000**  *(stable across seeds)*
+- `rho_n4` = **0.0625**  *(stable across seeds)*
+- `rho_n64` = **1.0000**  *(stable across seeds)*
+- `rho_n8` = **0.1250**  *(stable across seeds)*
+
+**Notes:** Slot memory γ=-0.004, R²=0.000. Accs: [0.0078, 0.0055, 0.0094, 0.0047, 0.0086, 0.007].
+
+---
+#### exp_33_2  ~ INCONCLUSIVE ⚠ inconsistent across seeds ['INCONCLUSIVE', 'INCONCLUSIVE', 'SUPPORTED']
+**Hypothesis:** Different architectures have distinct interference exponents: γ_parametric < γ_slot < γ_delta with spread > 0.3.
+
+**Runs:** 3 (seeds: [123, 42, 777])  |  **Avg duration:** 988s
+
+**Metrics (mean ± std across seeds):**
+
+- `acc_delta_n16` = **0.0130** ± 0.0009  *(runs: 0.013, 0.014, 0.013)*
+- `acc_delta_n2` = **0.3911** ± 0.0173  *(runs: 0.407, 0.373, 0.394)*
+- `acc_delta_n32` = **0.0050** ± 0.0012  *(runs: 0.006, 0.004, 0.005)*
+- `acc_delta_n4` = **0.1136** ± 0.0285  *(runs: 0.146, 0.093, 0.102)*
+- `acc_delta_n64` = **0.0063** ± 0.0034  *(runs: 0.005, 0.004, 0.010)*
+- `acc_delta_n8` = **0.0187** ± 0.0061  *(runs: 0.026, 0.015, 0.016)*
+- `acc_param_n16` = **0.0094** ± 0.0016  *(runs: 0.008, 0.009, 0.011)*
+- `acc_param_n2` = **0.0091** ± 0.0032  *(runs: 0.005, 0.010, 0.012)*
+- `acc_param_n32` = **0.0060** ± 0.0012  *(runs: 0.005, 0.007, 0.006)*
+- `acc_param_n4` = **0.0070** ± 0.0021  *(runs: 0.005, 0.009, 0.008)*
+- `acc_param_n64` = **0.0091** ± 0.0037  *(runs: 0.008, 0.006, 0.013)*
+- `acc_param_n8` = **0.0076** ± 0.0044  *(runs: 0.006, 0.004, 0.013)*
+- `acc_slot_n16` = **0.0107** ± 0.0047  *(runs: 0.010, 0.016, 0.006)*
+- `acc_slot_n2` = **0.0063** ± 0.0016  *(runs: 0.005, 0.006, 0.008)*
+- `acc_slot_n32` = **0.0078** ± 0.0021  *(runs: 0.009, 0.005, 0.009)*
+- `acc_slot_n4` = **0.0565** ± 0.0885  *(runs: 0.008, 0.003, 0.159)*
+- `acc_slot_n64` = **0.0070** ± 0.0036  *(runs: 0.011, 0.006, 0.004)*
+- `acc_slot_n8` = **0.0102**  *(stable across seeds)*
+- `gamma_delta` = **1.2711** ± 0.1119  *(runs: 1.338, 1.334, 1.142)*
+- `gamma_param` = **0.0045** ± 0.0847  *(runs: -0.081, 0.088, 0.006)*
+- `gamma_slot` = **0.0793** ± 0.3878  *(runs: -0.196, -0.088, 0.523)*
+- `gamma_spread` = **1.3641** ± 0.2052  *(runs: 1.534, 1.422, 1.136)*
+- `ordering_ok` = **0.3333** ± 0.5774  *(runs: 0.000, 0.000, 1.000)*
+- `r2_delta` = **0.8825** ± 0.0793  *(runs: 0.944, 0.911, 0.793)*
+- `r2_param` = **0.1043** ± 0.1026  *(runs: 0.206, 0.107, 0.001)*
+- `r2_slot` = **0.3207** ± 0.3090  *(runs: 0.654, 0.043, 0.265)*
+
+**Notes:** γ ordering: param=-0.081 < slot=-0.196 < delta=1.338, spread=1.534, R²: slot=0.654 delta=0.944 param=0.206. Ordering correct: False.
+
+---
+#### exp_33_3  ✗ REFUTED
+**Hypothesis:** Interference exponent γ is independent of hidden dimension: γ values at H=32, H=64, H=128 are within ±0.1 for each architecture.
+
+**Runs:** 3 (seeds: [123, 42, 777])  |  **Avg duration:** 1557s
+
+**Metrics (mean ± std across seeds):**
+
+- `gamma_delta_H128` = **0.8019** ± 0.1649  *(runs: 0.921, 0.870, 0.614)*
+- `gamma_delta_H32` = **1.0263** ± 0.0924  *(runs: 0.949, 1.001, 1.129)*
+- `gamma_delta_H64` = **1.0701** ± 0.0702  *(runs: 1.007, 1.057, 1.146)*
+- `gamma_slot_H128` = **0.1796** ± 0.1821  *(runs: 0.152, 0.013, 0.374)*
+- `gamma_slot_H32` = **0.0664** ± 0.2485  *(runs: 0.350, -0.113, -0.038)*
+- `gamma_slot_H64` = **0.0382** ± 0.1342  *(runs: -0.115, 0.134, 0.096)*
+- `max_gamma_spread_delta` = **0.2682** ± 0.2340  *(runs: 0.086, 0.187, 0.532)*
+- `max_gamma_spread_slot` = **0.3747** ± 0.1140  *(runs: 0.465, 0.247, 0.412)*
+- `max_spread_overall` = **0.4146** ± 0.1493  *(runs: 0.465, 0.247, 0.532)*
+- `r2_delta_H128` = **0.7319** ± 0.0561  *(runs: 0.792, 0.681, 0.722)*
+- `r2_delta_H32` = **0.8277** ± 0.0882  *(runs: 0.727, 0.891, 0.865)*
+- `r2_delta_H64` = **0.8362** ± 0.0771  *(runs: 0.770, 0.818, 0.921)*
+- `r2_slot_H128` = **0.1197** ± 0.1337  *(runs: 0.093, 0.001, 0.265)*
+- `r2_slot_H32` = **0.2617** ± 0.1639  *(runs: 0.446, 0.132, 0.207)*
+- `r2_slot_H64` = **0.0912** ± 0.0737  *(runs: 0.170, 0.081, 0.023)*
+
+**Notes:** Slot γ spread=0.465, Delta γ spread=0.086. Max of both=0.465. Slot γ: H32=0.350 H64=-0.115 H128=0.152. Delta γ: H32=0.949 H64=1.007 H128=0.921.
+
+---
+#### exp_33_4  ✓ SUPPORTED ⚠ inconsistent across seeds ['REFUTED', 'SUPPORTED', 'SUPPORTED']
+**Hypothesis:** Tripling training steps (400→1200) at ρ=1.0 recovers >50% of accuracy lost vs ρ=0.5 for at least one architecture.
+
+**Runs:** 3 (seeds: [123, 42, 777])  |  **Avg duration:** 791s
+
+**Metrics (mean ± std across seeds):**
+
+- `acc_delta_1200` = **0.0065** ± 0.0024  *(runs: 0.009, 0.004, 0.007)*
+- `acc_delta_400` = **0.0073** ± 0.0012  *(runs: 0.009, 0.006, 0.007)*
+- `acc_delta_800` = **0.0107** ± 0.0030  *(runs: 0.014, 0.009, 0.009)*
+- `acc_delta_rho05` = **0.0096** ± 0.0020  *(runs: 0.012, 0.009, 0.008)*
+- `acc_slot_1200` = **0.0094** ± 0.0041  *(runs: 0.005, 0.013, 0.011)*
+- `acc_slot_400` = **0.0063** ± 0.0027  *(runs: 0.005, 0.009, 0.005)*
+- `acc_slot_800` = **0.0057** ± 0.0028  *(runs: 0.003, 0.005, 0.009)*
+- `acc_slot_rho05` = **0.0083** ± 0.0017  *(runs: 0.008, 0.010, 0.007)*
+- `recovery_delta` = **-0.2581** ± 0.4470  *(runs: 0.000, -0.774, 0.000)*
+- `recovery_slot` = **2.1902** ± 1.9863  *(runs: 0.000, 3.875, 2.696)*
+
+**Notes:** Slot recovery=0.000, Delta recovery=0.000. ρ=0.5 ref: slot=0.008, delta=0.012. ρ=1.0@400: slot=0.005, delta=0.009. ρ=1.0@1200: slot=0.005, delta=0.009.
+
+---
+
+### Category 34 — Training Dynamics (Phase 6)
+*1 supported / 5 refuted / 3 inconclusive / 0 error*
+
+#### exp_34_1  ✗ REFUTED
+**Hypothesis:** Delta rule memory shows a sharper phase transition (≥30% accuracy gain within 200 steps) compared to slot memory.
+
+**Runs:** 3 (seeds: [123, 42, 777])  |  **Avg duration:** 48s
+
+**Metrics (mean ± std across seeds):**
+
+- `delta_chk1000` = **0.2854** ± 0.0280  *(runs: 0.300, 0.303, 0.253)*
+- `delta_chk1250` = **0.2864** ± 0.0161  *(runs: 0.291, 0.300, 0.269)*
+- `delta_chk150` = **0.2062** ± 0.0174  *(runs: 0.191, 0.203, 0.225)*
+- `delta_chk1500` = **0.2802** ± 0.0222  *(runs: 0.284, 0.256, 0.300)*
+- `delta_chk300` = **0.2417** ± 0.0213  *(runs: 0.225, 0.234, 0.266)*
+- `delta_chk50` = **0.0781** ± 0.0421  *(runs: 0.113, 0.031, 0.091)*
+- `delta_chk500` = **0.2823** ± 0.0424  *(runs: 0.331, 0.256, 0.259)*
+- `delta_chk750` = **0.2292** ± 0.0095  *(runs: 0.219, 0.237, 0.231)*
+- `delta_final` = **0.2802** ± 0.0222  *(runs: 0.284, 0.256, 0.300)*
+- `delta_has_transition` = **0.0000**  *(stable across seeds)*
+- `delta_transition_gain` = **0.0000**  *(stable across seeds)*
+- `delta_transition_window` = ['none', 'none', 'none']
+- `slot_chk1000` = **0.0302** ± 0.0201  *(runs: 0.022, 0.053, 0.016)*
+- `slot_chk1250` = **0.0291** ± 0.0018  *(runs: 0.028, 0.031, 0.028)*
+- `slot_chk150` = **0.0521** ± 0.0266  *(runs: 0.025, 0.053, 0.078)*
+- `slot_chk1500` = **0.0313** ± 0.0054  *(runs: 0.025, 0.034, 0.034)*
+- `slot_chk300` = **0.0375** ± 0.0217  *(runs: 0.025, 0.025, 0.062)*
+- `slot_chk50` = **0.0458** ± 0.0072  *(runs: 0.050, 0.050, 0.037)*
+- `slot_chk500` = **0.0229** ± 0.0078  *(runs: 0.031, 0.022, 0.016)*
+- `slot_chk750` = **0.0302** ± 0.0018  *(runs: 0.031, 0.028, 0.031)*
+- `slot_final` = **0.0313** ± 0.0054  *(runs: 0.025, 0.034, 0.034)*
+- `slot_has_transition` = **0.0000**  *(stable across seeds)*
+- `slot_transition_gain` = **0.0000**  *(stable across seeds)*
+
+**Notes:** Delta transition: False (gain=0.000, window -1--1). Slot transition: False (gain=0.000). Final: delta=0.284 slot=0.025.
+
+---
+#### exp_34_2  ~ INCONCLUSIVE
+**Hypothesis:** Memory projection parameters (k/v/q) receive larger gradient than encoder early in training (ratio > 2.0 at step 100) and converge to similar magnitudes later (ratio < 1.5 at step 1000).
+
+**Runs:** 3 (seeds: [123, 42, 777])  |  **Avg duration:** 27s
+
+**Metrics (mean ± std across seeds):**
+
+- `enc_gnorm_s100` = **2.1306** ± 0.2412  *(runs: 2.339, 2.186, 1.866)*
+- `enc_gnorm_s1000` = **4.6440** ± 0.6143  *(runs: 4.843, 3.955, 5.135)*
+- `enc_gnorm_s300` = **3.5942** ± 0.3176  *(runs: 3.260, 3.893, 3.630)*
+- `enc_gnorm_s600` = **5.4258** ± 0.8753  *(runs: 4.681, 6.390, 5.206)*
+- `mem_gnorm_s100` = **4.8566** ± 0.3218  *(runs: 5.040, 5.045, 4.485)*
+- `mem_gnorm_s1000` = **9.8536** ± 1.1597  *(runs: 9.339, 9.040, 11.182)*
+- `mem_gnorm_s300` = **7.2527** ± 0.6407  *(runs: 6.664, 7.935, 7.159)*
+- `mem_gnorm_s600` = **10.8033** ± 2.3946  *(runs: 8.260, 13.015, 11.134)*
+- `ratio_s100` = **2.2884** ± 0.1252  *(runs: 2.155, 2.307, 2.403)*
+- `ratio_s1000` = **2.1307** ± 0.1831  *(runs: 1.929, 2.286, 2.178)*
+- `ratio_s300` = **2.0182** ± 0.0400  *(runs: 2.044, 2.039, 1.972)*
+- `ratio_s600` = **1.9800** ± 0.1934  *(runs: 1.765, 2.037, 2.139)*
+
+**Notes:** Gradient ratio (mem/enc): early(s100)=2.155, late(s1000)=1.929. Hypothesis: ratio>2.0 early and <1.5 late.
+
+---
+#### exp_34_3  ~ INCONCLUSIVE
+**Hypothesis:** Energy-gated delta write rate decreases naturally during training: ≥0.70 at step 100 and ≤0.40 at step 1500.
+
+**Runs:** 3 (seeds: [123, 42, 777])  |  **Avg duration:** 41s
+
+**Metrics (mean ± std across seeds):**
+
+- `write_rate_s100` = **0.5345** ± 0.0029  *(runs: 0.534, 0.532, 0.538)*
+- `write_rate_s1200` = **0.5414** ± 0.0004  *(runs: 0.542, 0.541, 0.541)*
+- `write_rate_s1500` = **0.5414** ± 0.0038  *(runs: 0.543, 0.544, 0.537)*
+- `write_rate_s300` = **0.5385** ± 0.0023  *(runs: 0.541, 0.537, 0.537)*
+- `write_rate_s600` = **0.5394** ± 0.0028  *(runs: 0.541, 0.541, 0.536)*
+- `write_rate_s900` = **0.5388** ± 0.0028  *(runs: 0.537, 0.542, 0.537)*
+
+**Notes:** Write rate: early(s100)=0.534, late(s1500)=0.543. Full trajectory: {'write_rate_s100': 0.5339, 'write_rate_s300': 0.5411, 'write_rate_s600': 0.5411, 'write_rate_s900': 0.5375, 'write_rate_s1200': 0.5418, 'write_rate_s1500': 0.5431}. Hypothesis: ≥0.70 early → ≤0.40 late.
+
+---
+#### exp_34_4  ~ INCONCLUSIVE
+**Hypothesis:** Easy-first curriculum (2→8 pairs) improves final accuracy vs random mixed training by >0.08 on a 4-pair evaluation task.
+
+**Runs:** 3 (seeds: [123, 42, 777])  |  **Avg duration:** 99s
+
+**Metrics (mean ± std across seeds):**
+
+- `acc_easy_first` = **0.2778** ± 0.0312  *(runs: 0.269, 0.312, 0.252)*
+- `acc_hard_first` = **0.2722** ± 0.0209  *(runs: 0.271, 0.294, 0.252)*
+- `acc_random` = **0.2555** ± 0.0265  *(runs: 0.225, 0.273, 0.269)*
+- `gap_easy_vs_hard` = **0.0055** ± 0.0115  *(runs: -0.002, 0.019, 0.000)*
+- `gap_easy_vs_random` = **0.0222** ± 0.0337  *(runs: 0.044, 0.040, -0.017)*
+
+**Notes:** Random=0.225, Easy-first=0.269, Hard-first=0.271. Gap(easy-random)=+0.044.
+
+---
+#### exp_34_5  ✗ REFUTED
+**Hypothesis:** Gradual memory warmup (write scale 0→1 over 200 of 600 steps) improves final accuracy by >3% over full-memory training from step 0, because the backbone learns representations before the memory becomes active.
+
+**Runs:** 3 (seeds: [123, 42, 777])  |  **Avg duration:** 93s
+
+**Metrics (mean ± std across seeds):**
+
+- `acc_full_immediate` = **0.2092** ± 0.0081  *(runs: 0.201, 0.217, 0.209)*
+- `acc_warmup` = **0.2225** ± 0.0085  *(runs: 0.214, 0.231, 0.223)*
+- `total_steps` = **600.0000**  *(stable across seeds)*
+- `warmup_gain` = **0.0133** ± 0.0010  *(runs: 0.013, 0.013, 0.014)*
+- `warmup_steps` = **200.0000**  *(stable across seeds)*
+
+**Notes:** No significant warmup benefit: gain=0.013 (threshold >0.03). full=0.201, warmup=0.214.
+
+---
+#### exp_34_6  ✓ SUPPORTED ⚠ inconsistent across seeds ['INCONCLUSIVE', 'REFUTED', 'SUPPORTED']
+**Hypothesis:** Delta rule memory architecture shows strong optimizer preference: best optimizer outperforms worst by >10% accuracy, indicating sensitivity greater than typical for standard architectures.
+
+**Runs:** 3 (seeds: [123, 42, 777])  |  **Avg duration:** 146s
+
+**Metrics (mean ± std across seeds):**
+
+- `acc_Adam` = **0.2092** ± 0.0081  *(runs: 0.201, 0.217, 0.209)*
+- `acc_AdamW` = **0.2104** ± 0.0159  *(runs: 0.193, 0.224, 0.214)*
+- `acc_RMSprop` = **0.2194** ± 0.0147  *(runs: 0.209, 0.212, 0.236)*
+- `acc_SGD` = **0.1571** ± 0.1362  *(runs: 0.242, 0.229, 0.000)*
+- `acc_SGD_momentum` = **0.2152** ± 0.0100  *(runs: 0.220, 0.204, 0.222)*
+- `best_optimizer` = ['SGD', 'SGD', 'RMSprop']
+- `spread_max_min` = **0.1036** ± 0.1155  *(runs: 0.049, 0.025, 0.236)*
+- `worst_optimizer` = ['AdamW', 'SGD_momentum', 'SGD']
+
+**Notes:** Moderate spread=0.049. Best=SGD(0.242), Worst=AdamW(0.193).
+
+---
+#### exp_34_7  ✗ REFUTED
+**Hypothesis:** Delta rule memory has a narrow stable learning rate band spanning <1.5 decades, indicating higher LR sensitivity than standard architectures (which typically have stable bands of 2+ decades).
+
+**Runs:** 3 (seeds: [123, 42, 777])  |  **Avg duration:** 180s
+
+**Metrics (mean ± std across seeds):**
+
+- `acc_lr_1e-02` = **0.2448** ± 0.0124  *(runs: 0.248, 0.231, 0.256)*
+- `acc_lr_1e-03` = **0.2226** ± 0.0059  *(runs: 0.223, 0.228, 0.216)*
+- `acc_lr_1e-04` = **0.1490** ± 0.0176  *(runs: 0.148, 0.167, 0.132)*
+- `acc_lr_1e-05` = **0.0308** ± 0.0043  *(runs: 0.035, 0.027, 0.030)*
+- `acc_lr_3e-02` = **0.2227** ± 0.0196  *(runs: 0.245, 0.212, 0.210)*
+- `acc_lr_3e-03` = **0.2359** ± 0.0136  *(runs: 0.245, 0.220, 0.242)*
+- `acc_lr_3e-04` = **0.2128** ± 0.0051  *(runs: 0.212, 0.208, 0.218)*
+- `acc_lr_3e-05` = **0.0740** ± 0.0131  *(runs: 0.088, 0.062, 0.071)*
+- `max_acc` = **0.2448** ± 0.0124  *(runs: 0.248, 0.231, 0.256)*
+- `max_stable_lr` = **0.0300**  *(stable across seeds)*
+- `min_stable_lr` = **0.0001**  *(stable across seeds)*
+- `n_stable_lrs` = **6.0000**  *(stable across seeds)*
+- `stable_band_decades` = **2.4770**  *(stable across seeds)*
+
+**Notes:** Wide stable band: 2.48 decades > 2.0. Low LR sensitivity.
+
+---
+#### exp_34_8  ✗ REFUTED
+**Hypothesis:** Delta rule memory quality degrades at larger batch sizes independently of gradient noise: accuracy at B=128 is >5% lower than B=8 even when effective LR is scaled proportionally (linear scaling rule).
+
+**Runs:** 3 (seeds: [123, 42, 777])  |  **Avg duration:** 164s
+
+**Metrics (mean ± std across seeds):**
+
+- `acc_B128` = **0.2329** ± 0.0174  *(runs: 0.214, 0.247, 0.237)*
+- `acc_B16` = **0.2227** ± 0.0090  *(runs: 0.229, 0.212, 0.226)*
+- `acc_B32` = **0.2231** ± 0.0152  *(runs: 0.233, 0.206, 0.231)*
+- `acc_B4` = **0.1223** ± 0.0149  *(runs: 0.106, 0.127, 0.134)*
+- `acc_B64` = **0.2287** ± 0.0125  *(runs: 0.216, 0.241, 0.230)*
+- `acc_B8` = **0.1854** ± 0.0179  *(runs: 0.166, 0.188, 0.202)*
+- `drop_B8_to_B128` = **-0.0475** ± 0.0119  *(runs: -0.047, -0.059, -0.036)*
+- `spearman_batch_vs_acc` = **0.7907** ± 0.2638  *(runs: 0.486, 0.943, 0.943)*
+
+**Notes:** No batch sensitivity: drop=-0.047<0.01. Memory quality scales normally with batch size.
+
+---
+#### exp_34_9  ✗ REFUTED
+**Hypothesis:** At convergence, more than 40% of learned write gate activations are in the dead zone (<0.05) or saturated zone (>0.95), indicating bimodal gate collapse rather than graded, informative gating.
+
+**Runs:** 3 (seeds: [123, 42, 777])  |  **Avg duration:** 32s
+
+**Metrics (mean ± std across seeds):**
+
+- `acc` = **0.2476** ± 0.0047  *(runs: 0.248, 0.243, 0.252)*
+- `bimodal_fraction` = **0.0000**  *(stable across seeds)*
+- `gate_dead_frac` = **0.0000**  *(stable across seeds)*
+- `gate_entropy_normalized` = **0.3315** ± 0.0487  *(runs: 0.303, 0.304, 0.388)*
+- `gate_mean` = **0.4178** ± 0.0522  *(runs: 0.376, 0.476, 0.402)*
+- `gate_saturated_frac` = **0.0000**  *(stable across seeds)*
+- `gate_std` = **0.0371** ± 0.0044  *(runs: 0.036, 0.033, 0.042)*
+- `total_gate_samples` = **147200.0000**  *(stable across seeds)*
+
+**Notes:** Gate is well-spread: bimodal_fraction=0.000 < 0.15. Entropy=0.303. No dead/saturation collapse.
+
+---
+
+### Category 35 — Failure Modes (Phase 6)
+*2 supported / 1 refuted / 0 inconclusive / 0 error*
+
+#### exp_35_1  ✗ REFUTED
+**Hypothesis:** Delta rule memory degrades gracefully under post-hoc noise injection: accuracy at 30% additive noise to M is >60% of clean baseline, not a catastrophic cliff (>70% accuracy drop).
+
+**Runs:** 3 (seeds: [123, 42, 777])  |  **Avg duration:** 49s
+
+**Metrics (mean ± std across seeds):**
+
+- `acc_noise_0pct` = **0.2049** ± 0.0112  *(runs: 0.194, 0.216, 0.205)*
+- `acc_noise_100pct` = **0.0203** ± 0.0023  *(runs: 0.023, 0.019, 0.019)*
+- `acc_noise_10pct` = **0.0217** ± 0.0056  *(runs: 0.019, 0.018, 0.028)*
+- `acc_noise_200pct` = **0.0155** ± 0.0015  *(runs: 0.015, 0.015, 0.017)*
+- `acc_noise_25pct` = **0.0160** ± 0.0016  *(runs: 0.016, 0.015, 0.018)*
+- `acc_noise_50pct` = **0.0165** ± 0.0038  *(runs: 0.015, 0.013, 0.021)*
+- `baseline_acc` = **0.2049** ± 0.0112  *(runs: 0.194, 0.216, 0.205)*
+- `cliff_at_noise` = **0.1000**  *(stable across seeds)*
+- `cliff_detected` = [True, True, True]
+- `retention_at_25pct_noise` = **0.0782** ± 0.0097  *(runs: 0.081, 0.068, 0.086)*
+- `retention_at_50pct_noise` = **0.0807** ± 0.0197  *(runs: 0.078, 0.062, 0.102)*
+
+**Notes:** Catastrophic degradation: baseline=0.194, @25%noise=0.016 (retention=0.080). Cliff at noise=0.1.
+
+---
+#### exp_35_2  ✓ SUPPORTED
+**Hypothesis:** Slot memory architecture does NOT hallucinate: querying with keys never presented in context produces accuracy near random chance, not significantly above chance (< random + 5%).
+
+**Runs:** 3 (seeds: [123, 42, 777])  |  **Avg duration:** 25s
+
+**Metrics (mean ± std across seeds):**
+
+- `acc_in_distribution` = **0.1919** ± 0.0170  *(runs: 0.185, 0.211, 0.179)*
+- `acc_ood_query` = **0.0324** ± 0.0067  *(runs: 0.040, 0.031, 0.027)*
+- `hallucination_ratio` = **0.1698** ± 0.0394  *(runs: 0.215, 0.146, 0.148)*
+- `ood_above_random` = **0.0012** ± 0.0068  *(runs: 0.009, -0.000, -0.005)*
+- `random_baseline` = **0.0312**  *(stable across seeds)*
+
+**Notes:** No hallucination: OOD acc=0.040 ≈ random baseline=0.031 (gap=0.009<0.05). In-dist acc=0.185.
+
+---
+#### exp_35_3  ✓ SUPPORTED ⚠ inconsistent across seeds ['SUPPORTED', 'REFUTED', 'INCONCLUSIVE']
+**Hypothesis:** Out-of-distribution inputs cause abnormal write gate behavior: the write rate for OOD tokens deviates from in-distribution write rate by more than 2×, revealing that the gate is not robust to OOD inputs.
+
+**Runs:** 3 (seeds: [123, 42, 777])  |  **Avg duration:** 71s
+
+**Metrics (mean ± std across seeds):**
+
+- `acc_ood_0` = **0.2957** ± 0.0034  *(runs: 0.297, 0.292, 0.298)*
+- `acc_ood_100` = **0.0367** ± 0.0236  *(runs: 0.063, 0.018, 0.029)*
+- `acc_ood_25` = **0.1854** ± 0.0301  *(runs: 0.172, 0.165, 0.220)*
+- `acc_ood_50` = **0.1226** ± 0.0173  *(runs: 0.120, 0.107, 0.141)*
+- `acc_ood_75` = **0.0846** ± 0.0179  *(runs: 0.088, 0.065, 0.100)*
+- `baseline_write_rate` = **0.3120** ± 0.4736  *(runs: 0.000, 0.857, 0.079)*
+- `full_ood_write_rate` = **0.3304** ± 0.4503  *(runs: 0.000, 0.843, 0.148)*
+- `wr_ood_0` = **0.3120** ± 0.4736  *(runs: 0.000, 0.857, 0.079)*
+- `wr_ood_100` = **0.3304** ± 0.4503  *(runs: 0.000, 0.843, 0.148)*
+- `wr_ood_25` = **0.3171** ± 0.4679  *(runs: 0.000, 0.855, 0.097)*
+- `wr_ood_50` = **0.3208** ± 0.4609  *(runs: 0.000, 0.849, 0.113)*
+- `wr_ood_75` = **0.3260** ± 0.4563  *(runs: 0.000, 0.848, 0.131)*
+- `wr_ratio_ood_vs_baseline` = **0.9513** ± 0.9353  *(runs: 0.000, 0.984, 1.870)*
+
+**Notes:** Abnormal OOD write rate: baseline=0.000, OOD=0.000, ratio=0.00 (outside [0.5, 2.0]). Gate not robust to OOD inputs.
+
+---
+
+### Category 36 — Biological Analogues (Phase 6)
+*1 supported / 1 refuted / 1 inconclusive / 0 error*
+
+#### exp_36_1  ✗ REFUTED
+**Hypothesis:** An offline consolidation phase — replaying all written key-value pairs through the memory without new input — improves associative recall accuracy by >3% over single-pass writing, analogous to hippocampal-cortical consolidation.
+
+**Runs:** 3 (seeds: [123, 42, 777])  |  **Avg duration:** 43s
+
+**Metrics (mean ± std across seeds):**
+
+- `acc_no_consolidation` = **0.1778** ± 0.0084  *(runs: 0.170, 0.177, 0.186)*
+- `acc_with_consolidation` = **0.1696** ± 0.0112  *(runs: 0.175, 0.177, 0.157)*
+- `consolidation_gain` = **-0.0082** ± 0.0188  *(runs: 0.005, 0.000, -0.030)*
+- `consolidation_passes` = **2.0000**  *(stable across seeds)*
+
+**Notes:** No consolidation benefit: gain=0.005 (threshold >0.03). Offline replay does not improve retrieval.
+
+---
+#### exp_36_2  ~ INCONCLUSIVE
+**Hypothesis:** Storing prediction residuals (what the model predicted wrong) rather than full token representations produces equivalent or better associative recall accuracy with the same memory capacity — the predictive coding hypothesis.
+
+**Runs:** 3 (seeds: [123, 42, 777])  |  **Avg duration:** 70s
+
+**Metrics (mean ± std across seeds):**
+
+- `acc_full_representation` = **0.2049** ± 0.0112  *(runs: 0.194, 0.216, 0.205)*
+- `acc_residual_coding` = **0.1977** ± 0.0069  *(runs: 0.190, 0.200, 0.204)*
+- `residual_advantage` = **-0.0071** ± 0.0084  *(runs: -0.004, -0.017, -0.001)*
+
+**Notes:** Roughly equivalent: full=0.194, residual=0.190, gap=-0.004. Neither clearly superior.
+
+---
+#### exp_36_3  ✓ SUPPORTED
+**Hypothesis:** Separating episodic memory (what happened: event order/temporal context) from semantic memory (what things mean: content associations) outperforms a unified memory store by >5% on tasks requiring both types of recall.
+
+**Runs:** 3 (seeds: [123, 42, 777])  |  **Avg duration:** 107s
+
+**Metrics (mean ± std across seeds):**
+
+- `acc_split` = **0.2359** ± 0.0189  *(runs: 0.215, 0.243, 0.251)*
+- `acc_unified` = **0.1606** ± 0.0148  *(runs: 0.156, 0.177, 0.148)*
+- `params_split` = **29120.0000**  *(stable across seeds)*
+- `params_unified` = **29120.0000**  *(stable across seeds)*
+- `split_advantage` = **0.0753** ± 0.0235  *(runs: 0.058, 0.066, 0.102)*
+
+**Notes:** Split memory wins: unified=0.156, split=0.215, advantage=0.058>0.05.
+
+---
+
 ## Cross-Cutting Observations
 
-**All SUPPORTED experiments:** exp_1_5, exp_2_6, exp_3_1, exp_3_5, exp_3_6, exp_4_1, exp_4_4, exp_4_7, exp_4_9, exp_5_2, exp_5_6, exp_6_1, exp_6_3, exp_7_1, exp_7_2, exp_7_9, exp_9_2, exp_9_4, exp_9_5, exp_11_3, exp_13_1, exp_13_2, exp_15_3, exp_16_3
+**All SUPPORTED experiments:** exp_1_5, exp_2_6, exp_3_1, exp_3_5, exp_3_6, exp_4_1, exp_4_4, exp_4_7, exp_4_9, exp_5_2, exp_5_6, exp_6_1, exp_6_3, exp_7_1, exp_7_2, exp_7_9, exp_9_2, exp_9_4, exp_9_5, exp_11_3, exp_13_1, exp_13_2, exp_15_3, exp_16_3, exp_23_2, exp_23_3, exp_24_2, exp_25_1, exp_26_1, exp_29_1, exp_29_3, exp_30_1, exp_32_1, exp_32_2, exp_32_3, exp_32_4, exp_33_4, exp_34_6, exp_35_2, exp_35_3, exp_36_3
 
-**All REFUTED experiments:** exp_1_1, exp_1_2, exp_1_8, exp_2_2, exp_2_4, exp_2_5, exp_2_9, exp_3_2, exp_3_3, exp_3_4, exp_3_7, exp_4_2, exp_5_1, exp_5_4, exp_5_5, exp_5_7, exp_6_7, exp_7_5, exp_7_6, exp_7_7, exp_8_1, exp_8_3, exp_9_1, exp_10_2, exp_11_1, exp_11_2, exp_12_1, exp_14_1, exp_14_2, exp_14_3, exp_15_1, exp_15_2, exp_16_1, exp_17_1, exp_17_2, exp_17_4, exp_18_1, exp_19_1, exp_19_2, exp_19_3, exp_20_2, exp_20_3, exp_21_1, exp_21_2, exp_21_3, exp_21_4
+**All REFUTED experiments:** exp_1_1, exp_1_2, exp_1_8, exp_2_2, exp_2_4, exp_2_5, exp_2_9, exp_3_2, exp_3_3, exp_3_4, exp_3_7, exp_4_2, exp_5_1, exp_5_4, exp_5_5, exp_5_7, exp_6_7, exp_7_5, exp_7_6, exp_7_7, exp_8_1, exp_8_3, exp_9_1, exp_10_2, exp_11_1, exp_11_2, exp_12_1, exp_14_1, exp_14_2, exp_14_3, exp_15_1, exp_15_2, exp_16_1, exp_17_1, exp_17_2, exp_17_4, exp_18_1, exp_19_1, exp_19_2, exp_19_3, exp_20_2, exp_20_3, exp_21_1, exp_21_2, exp_21_3, exp_21_4, exp_22_1, exp_22_2, exp_22_4, exp_22_5, exp_23_4, exp_24_3, exp_24_4, exp_25_2, exp_25_3, exp_26_2, exp_26_3, exp_27_1, exp_27_3, exp_28_5, exp_30_2, exp_30_3, exp_31_1, exp_31_2, exp_33_1, exp_33_3, exp_34_1, exp_34_5, exp_34_7, exp_34_8, exp_34_9, exp_35_1, exp_36_1
 
-**Inconsistent across seeds (need more investigation):** exp_8_1, exp_8_2, exp_8_4, exp_9_4, exp_9_5, exp_10_1, exp_15_1, exp_15_2, exp_15_4, exp_17_1, exp_17_2, exp_17_4, exp_18_3
+**Inconsistent across seeds (need more investigation):** exp_8_1, exp_8_2, exp_8_4, exp_9_4, exp_9_5, exp_10_1, exp_15_1, exp_15_2, exp_15_4, exp_17_1, exp_17_2, exp_17_4, exp_18_3, exp_22_1, exp_22_2, exp_22_4, exp_22_5, exp_23_1, exp_23_2, exp_23_3, exp_23_4, exp_24_1, exp_25_2, exp_25_3, exp_26_1, exp_26_2, exp_26_3, exp_28_2, exp_28_4, exp_29_2, exp_29_3, exp_29_4, exp_30_1, exp_30_3, exp_30_4, exp_31_2, exp_32_1, exp_32_2, exp_32_3, exp_32_4, exp_33_2, exp_33_4, exp_34_6, exp_35_3
 
 **High-variance metrics (std > 0.05 — seed-sensitive, interpret carefully):**
 

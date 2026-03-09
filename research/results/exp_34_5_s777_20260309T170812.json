@@ -1,0 +1,23 @@
+{
+  "experiment_id": "exp_34_5",
+  "hypothesis": "Gradual memory warmup (write scale 0\u21921 over 200 of 600 steps) improves final accuracy by >3% over full-memory training from step 0, because the backbone learns representations before the memory becomes active.",
+  "outcome": "REFUTED",
+  "metrics": {
+    "acc_full_immediate": 0.2087,
+    "acc_warmup": 0.2231,
+    "warmup_gain": 0.0144,
+    "warmup_steps": 200,
+    "total_steps": 600
+  },
+  "notes": "No significant warmup benefit: gain=0.014 (threshold >0.03). full=0.209, warmup=0.223.",
+  "error": "",
+  "timestamp": "2026-03-09T17:08:12.893611+00:00",
+  "duration_seconds": 80.2620064590592,
+  "config": {
+    "vocab": 64,
+    "hidden": 64,
+    "steps": 600,
+    "warmup_steps": 200
+  },
+  "seed": 777
+}

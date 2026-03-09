@@ -1,0 +1,43 @@
+{
+  "experiment_id": "exp_28_1",
+  "hypothesis": "Parametric memory retains >90% accuracy at SEQ_LEN=192 while slot memory drops below 30%, confirming a length-scaling crossover.",
+  "outcome": "INCONCLUSIVE",
+  "metrics": {
+    "acc_slot_len24": 0.0208,
+    "acc_delta_len24": 0.1562,
+    "acc_param_len24": 0.0396,
+    "acc_slot_len48": 0.1396,
+    "acc_delta_len48": 0.1625,
+    "acc_param_len48": 0.0312,
+    "acc_slot_len96": 0.0208,
+    "acc_delta_len96": 0.1729,
+    "acc_param_len96": 0.0312,
+    "acc_slot_len192": 0.0354,
+    "acc_delta_len192": 0.1771,
+    "acc_param_len192": 0.0292,
+    "slot_retention_8x": 1.7019,
+    "param_retention_8x": 0.7374
+  },
+  "notes": "Slot retention 8\u00d7=1.702, param retention 8\u00d7=0.737. Slot@192=0.035, Param@192=0.029.",
+  "error": "",
+  "timestamp": "2026-03-09T14:26:52.451806+00:00",
+  "duration_seconds": 530.6048672910547,
+  "config": {
+    "hidden_dim": 64,
+    "vocab_size": 64,
+    "num_pairs": 6,
+    "seq_lens": [
+      24,
+      48,
+      96,
+      192
+    ],
+    "steps": 500,
+    "batch": 16,
+    "param_bytes_slot": 116480,
+    "param_bytes_delta": 116480,
+    "param_bytes_param": 108352,
+    "activation_bytes": 786432
+  },
+  "seed": 123
+}

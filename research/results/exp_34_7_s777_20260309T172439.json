@@ -1,0 +1,30 @@
+{
+  "experiment_id": "exp_34_7",
+  "hypothesis": "Delta rule memory has a narrow stable learning rate band spanning <1.5 decades, indicating higher LR sensitivity than standard architectures (which typically have stable bands of 2+ decades).",
+  "outcome": "REFUTED",
+  "metrics": {
+    "acc_lr_1e-05": 0.0305,
+    "acc_lr_3e-05": 0.0711,
+    "acc_lr_1e-04": 0.132,
+    "acc_lr_3e-04": 0.218,
+    "acc_lr_1e-03": 0.2164,
+    "acc_lr_3e-03": 0.2422,
+    "acc_lr_1e-02": 0.2555,
+    "acc_lr_3e-02": 0.2102,
+    "max_acc": 0.2555,
+    "stable_band_decades": 2.477,
+    "n_stable_lrs": 6,
+    "min_stable_lr": 0.0001,
+    "max_stable_lr": 0.03
+  },
+  "notes": "Wide stable band: 2.48 decades > 2.0. Low LR sensitivity.",
+  "error": "",
+  "timestamp": "2026-03-09T17:24:39.101378+00:00",
+  "duration_seconds": 211.38989962497726,
+  "config": {
+    "vocab": 64,
+    "hidden": 64,
+    "steps": 500
+  },
+  "seed": 777
+}

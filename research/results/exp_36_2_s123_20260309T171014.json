@@ -1,0 +1,21 @@
+{
+  "experiment_id": "exp_36_2",
+  "hypothesis": "Storing prediction residuals (what the model predicted wrong) rather than full token representations produces equivalent or better associative recall accuracy with the same memory capacity \u2014 the predictive coding hypothesis.",
+  "outcome": "INCONCLUSIVE",
+  "metrics": {
+    "acc_full_representation": 0.1938,
+    "acc_residual_coding": 0.1901,
+    "residual_advantage": -0.0036
+  },
+  "notes": "Roughly equivalent: full=0.194, residual=0.190, gap=-0.004. Neither clearly superior.",
+  "error": "",
+  "timestamp": "2026-03-09T17:10:14.067733+00:00",
+  "duration_seconds": 50.00911395892035,
+  "config": {
+    "vocab": 64,
+    "hidden": 64,
+    "steps": 600,
+    "num_pairs": 5
+  },
+  "seed": 123
+}

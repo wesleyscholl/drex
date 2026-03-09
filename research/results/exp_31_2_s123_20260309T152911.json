@@ -1,0 +1,39 @@
+{
+  "experiment_id": "exp_31_2",
+  "hypothesis": "Retroactive re-encoding gap persists above +0.08 at SEQ_LEN=192 (8\u00d7 baseline).",
+  "outcome": "INCONCLUSIVE",
+  "metrics": {
+    "acc_forward_len24": 0.1219,
+    "acc_retro_len24": 0.0953,
+    "gap_len24": -0.0266,
+    "acc_forward_len48": 0.1313,
+    "acc_retro_len48": 0.0984,
+    "gap_len48": -0.0329,
+    "acc_forward_len96": 0.1266,
+    "acc_retro_len96": 0.1031,
+    "gap_len96": -0.0235,
+    "acc_forward_len192": 0.1203,
+    "acc_retro_len192": 0.1375,
+    "gap_len192": 0.0172
+  },
+  "notes": "Gaps: len24=-0.027, len48=-0.033, len96=-0.023, len192=0.017. 192 gap > 0.08: False",
+  "error": "",
+  "timestamp": "2026-03-09T15:29:11.135264+00:00",
+  "duration_seconds": 1366.1173681670334,
+  "config": {
+    "vocab_size": 64,
+    "hidden_dim": 64,
+    "num_pairs": 10,
+    "seq_lens": [
+      24,
+      48,
+      96,
+      192
+    ],
+    "steps": 600,
+    "batch": 16,
+    "param_bytes": 165376,
+    "activation_bytes": 786432
+  },
+  "seed": 123
+}

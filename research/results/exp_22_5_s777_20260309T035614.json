@@ -1,0 +1,30 @@
+{
+  "experiment_id": "exp_22_5",
+  "hypothesis": "Contrastive slot training (InfoNCE-style loss pushing slot embeddings apart) improves retrieval accuracy by >5% on high-interference tasks (many similar keys).",
+  "outcome": "INCONCLUSIVE",
+  "metrics": {
+    "acc_A": 0.275,
+    "acc_B": 0.2687,
+    "gap": -0.0063,
+    "random_baseline": 0.0312
+  },
+  "notes": "Gap=-0.006, between -0.02 and +0.05.",
+  "error": "",
+  "timestamp": "2026-03-09T03:56:14.857554+00:00",
+  "duration_seconds": 20.509196541039273,
+  "config": {
+    "vocab_size": 64,
+    "hidden_dim": 64,
+    "seq_len": 32,
+    "num_pairs": 4,
+    "memory_slots": 8,
+    "steps": 2000,
+    "batch": 32,
+    "contrast_lambda": 0.1,
+    "key_range": [
+      4,
+      16
+    ]
+  },
+  "seed": 777
+}

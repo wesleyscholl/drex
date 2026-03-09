@@ -1,0 +1,24 @@
+{
+  "experiment_id": "exp_22_2",
+  "hypothesis": "Iterative message-passing read (2 rounds of slot\u2192query\u2192slot attention refinement) outperforms single-pass read by >3% on multi-fact retrieval.",
+  "outcome": "INCONCLUSIVE",
+  "metrics": {
+    "acc_A": 0.2531,
+    "acc_B": 0.2719,
+    "gap": 0.0187
+  },
+  "notes": "Gap=0.019, between -0.02 and +0.03.",
+  "error": "",
+  "timestamp": "2026-03-09T03:50:54.019873+00:00",
+  "duration_seconds": 43.5798159170663,
+  "config": {
+    "vocab_size": 64,
+    "hidden_dim": 64,
+    "seq_len": 32,
+    "num_pairs": 4,
+    "memory_slots": 8,
+    "steps": 2000,
+    "batch": 32
+  },
+  "seed": 777
+}

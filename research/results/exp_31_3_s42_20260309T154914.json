@@ -1,0 +1,30 @@
+{
+  "experiment_id": "exp_31_3",
+  "hypothesis": "DeltaRetroModel outperforms delta-only by >8% and outperforms retro-only by >2%.",
+  "outcome": "INCONCLUSIVE",
+  "metrics": {
+    "acc_delta": 0.1731,
+    "acc_retro": 0.0788,
+    "acc_delta_retro": 0.1944,
+    "gain_vs_delta": 0.0213,
+    "gain_vs_retro": 0.1156
+  },
+  "notes": "Delta=0.173, Retro=0.079, DeltaRetro=0.194. Gain vs delta: +0.021, gain vs retro: +0.116.",
+  "error": "",
+  "timestamp": "2026-03-09T15:49:14.294544+00:00",
+  "duration_seconds": 55.886827250011265,
+  "config": {
+    "vocab_size": 64,
+    "hidden_dim": 64,
+    "num_pairs": 6,
+    "seq_len": 26,
+    "steps": 500,
+    "steps_pretrain": 200,
+    "steps_finetune": 300,
+    "batch": 32,
+    "energy_threshold": 0.4,
+    "param_bytes": 165380,
+    "activation_bytes": 212992
+  },
+  "seed": 42
+}

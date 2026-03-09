@@ -159,6 +159,21 @@ CATEGORY_NAMES = {
     "exp_19": "Category 19 — Sparse Hopfield Addressing (Phase 3)",
     "exp_20": "Category 20 — Three-Gate Coordinated Controller (Phase 3)",
     "exp_21": "Category 21 — Feedforward Controller + Hindsight Distillation (Phase 3)",
+    "exp_22": "Category 22 — Read Architecture Redesigns (Phase 4)",
+    "exp_23": "Category 23 — Retroactive Re-Encoding Variants (Phase 4)",
+    "exp_24": "Category 24 — Scale and Length Generalization (Phase 4)",
+    "exp_25": "Category 25 — Hard Benchmarks (Phase 4)",
+    "exp_26": "Category 26 — Seed Stability Validation (Phase 4)",
+    "exp_27": "Category 27 — Parametric-Delta Hybrid (Phase 4)",
+    "exp_28": "Category 28 — Explicit Scaling Laws (Phase 5)",
+    "exp_29": "Category 29 — TTT / Titans-Inspired Memory (Phase 5)",
+    "exp_30": "Category 30 — Multi-Head & Extended Delta Rule (Phase 5)",
+    "exp_31": "Category 31 — Top Mechanism Integration (Phase 5)",
+    "exp_32": "Category 32 — Deep Seed Validation (Phase 5)",
+    "exp_33": "Category 33 — Capacity Physics / Interference Density Law (Phase 5)",
+    "exp_34": "Category 34 — Training Dynamics (Phase 6)",
+    "exp_35": "Category 35 — Failure Modes (Phase 6)",
+    "exp_36": "Category 36 — Biological Analogues (Phase 6)",
 }
 
 

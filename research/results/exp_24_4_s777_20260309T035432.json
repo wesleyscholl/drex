@@ -1,0 +1,22 @@
+{
+  "experiment_id": "exp_24_4",
+  "hypothesis": "Four-hop compositional chains are infeasible at HIDDEN_DIM=64: accuracy drops >50% vs two-hop even with hop-by-hop training curriculum.",
+  "outcome": "REFUTED",
+  "metrics": {
+    "acc_2hop": 1.0,
+    "acc_4hop": 0.8131,
+    "acc_drop_fraction": 0.1869,
+    "random_baseline": 0.0625
+  },
+  "notes": "4-hop achievable: drop=18.7%<20% vs 2-hop.",
+  "error": "",
+  "timestamp": "2026-03-09T03:54:32.676689+00:00",
+  "duration_seconds": 10.946114958031103,
+  "config": {
+    "num_entities": 32,
+    "num_attributes": 16,
+    "hidden_dim": 64,
+    "train_steps": 2000
+  },
+  "seed": 777
+}

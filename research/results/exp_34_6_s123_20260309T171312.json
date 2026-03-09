@@ -1,0 +1,26 @@
+{
+  "experiment_id": "exp_34_6",
+  "hypothesis": "Delta rule memory architecture shows strong optimizer preference: best optimizer outperforms worst by >10% accuracy, indicating sensitivity greater than typical for standard architectures.",
+  "outcome": "INCONCLUSIVE",
+  "metrics": {
+    "acc_Adam": 0.2013,
+    "acc_AdamW": 0.1931,
+    "acc_SGD": 0.2425,
+    "acc_SGD_momentum": 0.22,
+    "acc_RMSprop": 0.2094,
+    "spread_max_min": 0.0494,
+    "best_optimizer": "SGD",
+    "worst_optimizer": "AdamW"
+  },
+  "notes": "Moderate spread=0.049. Best=SGD(0.242), Worst=AdamW(0.193).",
+  "error": "",
+  "timestamp": "2026-03-09T17:13:12.297058+00:00",
+  "duration_seconds": 145.92134400003124,
+  "config": {
+    "vocab": 64,
+    "hidden": 64,
+    "steps": 600,
+    "batch": 32
+  },
+  "seed": 123
+}

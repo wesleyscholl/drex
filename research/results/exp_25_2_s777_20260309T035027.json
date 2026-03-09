@@ -1,0 +1,38 @@
+{
+  "experiment_id": "exp_25_2",
+  "hypothesis": "Noisy-key retrieval (Gaussian noise added to query at test time): slot memory degrades >20% while parametric memory degrades <10%.",
+  "outcome": "REFUTED",
+  "metrics": {
+    "slot_accs_by_sigma": {
+      "0.0": 0.0344,
+      "0.1": 0.0312,
+      "0.2": 0.0312
+    },
+    "param_accs_by_sigma": {
+      "0.0": 0.0437,
+      "0.1": 0.025,
+      "0.2": 0.025
+    },
+    "slot_deg_at_sigma01": 0.093,
+    "param_deg_at_sigma01": 0.4279
+  },
+  "notes": "Slot is noise-robust (deg=0.093) \u2014 no architecture gap.",
+  "error": "",
+  "timestamp": "2026-03-09T03:50:27.686531+00:00",
+  "duration_seconds": 9.364094541990198,
+  "config": {
+    "vocab_size": 64,
+    "hidden_dim": 32,
+    "seq_len": 24,
+    "num_pairs": 5,
+    "memory_slots": 8,
+    "steps": 300,
+    "batch": 8,
+    "noise_sigmas": [
+      0.0,
+      0.1,
+      0.2
+    ]
+  },
+  "seed": 777
+}

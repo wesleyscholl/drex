@@ -1,0 +1,40 @@
+{
+  "experiment_id": "exp_32_4",
+  "hypothesis": "Deep seed validation of parametric seq scaling (exp_16_3): param retention gap > 0.35 (stricter criterion).",
+  "outcome": "SUPPORTED",
+  "metrics": {
+    "acc_slot_len24": 0.0844,
+    "acc_slot_len48": 0.0469,
+    "acc_param_len24": 0.025,
+    "acc_param_len48": 0.0281,
+    "retention_slot": 0.5557,
+    "retention_parametric": 1.124,
+    "retention_diff": 0.5683,
+    "seed": 2
+  },
+  "notes": "Seed=2. Param retention gap=0.568. Required gap > 0.35. Slot retention=0.556, Param retention=1.124.",
+  "error": "",
+  "timestamp": "2026-03-09T15:19:12.514222+00:00",
+  "duration_seconds": 29.76384383405093,
+  "config": {
+    "vocab_size": 64,
+    "hidden_dim": 32,
+    "seq_lens": [
+      24,
+      48
+    ],
+    "num_pairs_per_len": [
+      4,
+      8
+    ],
+    "memory_slots": 8,
+    "steps": 300,
+    "batch": 8,
+    "inference_lr": 0.01,
+    "seed": 2,
+    "replicates": "exp_16_3",
+    "param_bytes": 35872,
+    "activation_bytes": 49152
+  },
+  "seed": 2
+}

@@ -1,0 +1,44 @@
+{
+  "experiment_id": "exp_24_3",
+  "hypothesis": "Energy-gated delta rule achieves the same accuracy-to-write-rate ratio at HIDDEN_DIM=128 as at HIDDEN_DIM=32 (within 5%) \u2014 the mechanism is dimension-robust.",
+  "outcome": "REFUTED",
+  "metrics": {
+    "results_by_dim": {
+      "32": {
+        "acc": 0.1044,
+        "write_rate": 0.5193,
+        "acc_wr_ratio": 0.201
+      },
+      "64": {
+        "acc": 0.1794,
+        "write_rate": 0.512,
+        "acc_wr_ratio": 0.3503
+      },
+      "128": {
+        "acc": 0.2062,
+        "write_rate": 0.5116,
+        "acc_wr_ratio": 0.4032
+      }
+    },
+    "ratio_spread": 0.5015,
+    "min_ratio": 0.201,
+    "max_ratio": 0.4032
+  },
+  "notes": "Ratio spread=0.501>0.15. Mechanism is dim-sensitive.",
+  "error": "",
+  "timestamp": "2026-03-09T03:51:17.293161+00:00",
+  "duration_seconds": 99.87899195903447,
+  "config": {
+    "vocab_size": 64,
+    "seq_len": 24,
+    "num_pairs": 5,
+    "steps": 400,
+    "batch": 32,
+    "hidden_dims": [
+      32,
+      64,
+      128
+    ]
+  },
+  "seed": 42
+}

@@ -1,0 +1,30 @@
+{
+  "experiment_id": "exp_29_3",
+  "hypothesis": "Surprise-gated TTT (update when gradient-norm ratio > 1.5) achieves >90% of full-update accuracy at <50% update rate.",
+  "outcome": "SUPPORTED",
+  "metrics": {
+    "acc_full": 0.0271,
+    "acc_surprise": 0.0271,
+    "acc_no_ttt": 0.0354,
+    "write_rate": 0.0795,
+    "acc_ratio": 1.0
+  },
+  "notes": "Full acc=0.027, Surprise acc=0.027, No-TTT acc=0.035. acc_ratio=1.000, write_rate=0.080.",
+  "error": "",
+  "timestamp": "2026-03-09T14:23:16.812361+00:00",
+  "duration_seconds": 71.77278516697697,
+  "config": {
+    "vocab_size": 64,
+    "hidden_dim": 64,
+    "num_pairs": 5,
+    "seq_len": 24,
+    "steps": 1500,
+    "batch": 8,
+    "inner_dim": 32,
+    "ema_decay": 0.9,
+    "surprise_thresh": 1.5,
+    "param_bytes": 116608,
+    "activation_bytes": 49152
+  },
+  "seed": 42
+}

@@ -1,0 +1,31 @@
+{
+  "experiment_id": "exp_32_1",
+  "hypothesis": "Deep seed validation of retroactive writing (exp_3_6): gap > 0.09 (stricter criterion for robust confirmation).",
+  "outcome": "SUPPORTED",
+  "metrics": {
+    "forward_acc": 0.0688,
+    "two_pass_acc": 0.2516,
+    "acc_gap": 0.1828,
+    "retroactive_write_rate": 0.0833,
+    "seed": 13
+  },
+  "notes": "Seed=13. Two-pass vs forward gap=+0.183. Retroactive write rate=0.083. Required gap > 0.09.",
+  "error": "",
+  "timestamp": "2026-03-09T15:09:53.990205+00:00",
+  "duration_seconds": 47.77449800004251,
+  "config": {
+    "vocab_size": 64,
+    "seq_len": 24,
+    "hidden_dim": 64,
+    "memory_slots": 6,
+    "forward_slots": 4,
+    "batch_size": 32,
+    "train_steps": 1500,
+    "num_pairs": 4,
+    "seed": 13,
+    "replicates": "exp_3_6",
+    "param_bytes": 174856,
+    "activation_bytes": 196608
+  },
+  "seed": 13
+}

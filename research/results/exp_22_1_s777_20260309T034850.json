@@ -1,0 +1,24 @@
+{
+  "experiment_id": "exp_22_1",
+  "hypothesis": "Slot-conditioned read (soft attention over slots -> query refinement) reduces read error by >5% vs fixed linear-projection query on multi-fact retrieval (4 KV pairs, random baseline <10%).",
+  "outcome": "INCONCLUSIVE",
+  "metrics": {
+    "acc_A": 0.2531,
+    "acc_B": 0.2731,
+    "gap": 0.02
+  },
+  "notes": "Gap=0.020, between -0.02 and +0.05.",
+  "error": "",
+  "timestamp": "2026-03-09T03:48:50.215682+00:00",
+  "duration_seconds": 41.389369250042364,
+  "config": {
+    "vocab_size": 64,
+    "hidden_dim": 64,
+    "seq_len": 32,
+    "num_pairs": 4,
+    "memory_slots": 8,
+    "steps": 2000,
+    "batch": 32
+  },
+  "seed": 777
+}

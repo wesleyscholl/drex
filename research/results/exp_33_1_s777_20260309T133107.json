@@ -1,0 +1,43 @@
+{
+  "experiment_id": "exp_33_1",
+  "hypothesis": "Slot memory accuracy follows acc ~ \u03c1^(-\u03b3) with R\u00b2 > 0.90 across \u03c1 \u2208 {0.031, 0.063, 0.125, 0.25, 0.5, 1.0} (N_pairs/hidden_dim).",
+  "outcome": "REFUTED",
+  "metrics": {
+    "acc_n2": 0.0063,
+    "acc_n4": 0.0063,
+    "acc_n8": 0.018,
+    "acc_n16": 0.0133,
+    "acc_n32": 0.0117,
+    "acc_n64": 0.0086,
+    "rho_n2": 0.0312,
+    "rho_n4": 0.0625,
+    "rho_n8": 0.125,
+    "rho_n16": 0.25,
+    "rho_n32": 0.5,
+    "rho_n64": 1.0,
+    "gamma_slot": -0.1282,
+    "intercept": -4.3904,
+    "r_squared": 0.1535
+  },
+  "notes": "Slot memory \u03b3=-0.128, R\u00b2=0.154. Accs: [0.0063, 0.0063, 0.018, 0.0133, 0.0117, 0.0086].",
+  "error": "",
+  "timestamp": "2026-03-09T13:31:07.102976+00:00",
+  "duration_seconds": 55.31291874998715,
+  "config": {
+    "hidden_dim": 64,
+    "vocab_size": 256,
+    "steps": 400,
+    "batch": 32,
+    "n_pairs_list": [
+      2,
+      4,
+      8,
+      16,
+      32,
+      64
+    ],
+    "param_bytes": 215552,
+    "activation_bytes": 196608
+  },
+  "seed": 777
+}

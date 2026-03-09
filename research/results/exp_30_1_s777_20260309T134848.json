@@ -1,0 +1,28 @@
+{
+  "experiment_id": "exp_30_1",
+  "hypothesis": "Multi-head delta rule (4 heads x H/4 dims) outperforms single-head by >5% on 8-pair associative recall.",
+  "outcome": "SUPPORTED",
+  "metrics": {
+    "acc_single": 0.1475,
+    "acc_multi": 0.2281,
+    "gap": 0.0806
+  },
+  "notes": "Multi-head acc=0.228, Single-head acc=0.147, gap=0.081. Params: single=113KB, multi=162KB.",
+  "error": "",
+  "timestamp": "2026-03-09T13:48:48.625110+00:00",
+  "duration_seconds": 428.27726962498855,
+  "config": {
+    "hidden_dim": 64,
+    "vocab_size": 64,
+    "num_pairs": 8,
+    "seq_len": 32,
+    "steps": 1500,
+    "batch": 32,
+    "num_heads": 4,
+    "h_head": 16,
+    "param_bytes_single": 116480,
+    "param_bytes_multi": 166400,
+    "activation_bytes": 262144
+  },
+  "seed": 777
+}
