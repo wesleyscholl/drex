@@ -1,0 +1,31 @@
+{
+  "experiment_id": "exp_45_2",
+  "hypothesis": "Replacing matrix-mean energy (exp_44_1's broken formula) with relative vector-norm energy (\u2016k\u2212Mk_n\u2016 \u2265 thresh \u00d7 \u2016k\u2016, thresh=0.4) in the full 2\u00b3 ablation restores acc_gate to >0.18 and enables acc_full \u2265 acc_ema_split \u00d7 0.95, eliminating the catastrophic collapse of exp_44_1.",
+  "outcome": "SUPPORTED",
+  "metrics": {
+    "acc_baseline": 0.2724,
+    "acc_ema": 0.2687,
+    "acc_split": 0.2219,
+    "acc_gate": 0.2276,
+    "acc_ema_split": 0.2604,
+    "acc_ema_gate": 0.2479,
+    "acc_split_gate": 0.2286,
+    "acc_full": 0.2568,
+    "wr_baseline": 0.0,
+    "wr_ema": 0.0,
+    "wr_split": 0.0,
+    "wr_gate": 0.3951,
+    "wr_ema_split": 0.0,
+    "wr_ema_gate": 0.9628,
+    "wr_split_gate": 0.3965,
+    "wr_full": 0.9629,
+    "ratio_full_vs_ema_split": 0.9862,
+    "gap_full_vs_ema_split": -0.0036
+  },
+  "notes": "Collapse fixed. acc_gate=0.2276>0.18. acc_full=0.2568, acc_ema_split=0.2604, ratio=0.986\u22650.95. write_rate_gate=0.395, write_rate_full=0.963.",
+  "error": "",
+  "timestamp": "2026-03-10T16:59:21.506077+00:00",
+  "duration_seconds": 605.1214597970011,
+  "config": {},
+  "seed": 42
+}

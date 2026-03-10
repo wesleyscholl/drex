@@ -1,0 +1,103 @@
+{
+  "experiment_id": "exp_45_4",
+  "hypothesis": "With the corrected relative vector-norm energy gate, write rate for all four gate-containing configs (gate, ema+gate, split+gate, full) stabilizes between 0.20 and 0.80 within the first 200 training steps and stays there throughout training; the broken matrix-mean gate collapses to \u22480.0 from step 0 and never recovers.",
+  "outcome": "REFUTED",
+  "metrics": {
+    "acc_rel_norm_gate": 0.2859,
+    "traj_rel_norm_gate": [
+      0.3919,
+      0.3951,
+      0.3964,
+      0.3955,
+      0.3965,
+      0.3962,
+      0.3972,
+      0.3983
+    ],
+    "acc_rel_norm_ema_gate": 0.2677,
+    "traj_rel_norm_ema_gate": [
+      0.9536,
+      0.9469,
+      0.9644,
+      0.9677,
+      0.9676,
+      0.9677,
+      0.9677,
+      0.9674
+    ],
+    "acc_rel_norm_split_gate": 0.2188,
+    "traj_rel_norm_split_gate": [
+      0.4052,
+      0.4044,
+      0.4051,
+      0.4053,
+      0.4064,
+      0.4073,
+      0.4073,
+      0.4075
+    ],
+    "acc_rel_norm_full": 0.2589,
+    "traj_rel_norm_full": [
+      0.9609,
+      0.9584,
+      0.9609,
+      0.9577,
+      0.9535,
+      0.9565,
+      0.9577,
+      0.9587
+    ],
+    "acc_matrix_mean_gate": 0.0333,
+    "traj_matrix_mean_gate": [
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0
+    ],
+    "acc_matrix_mean_ema_gate": 0.0281,
+    "traj_matrix_mean_ema_gate": [
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0
+    ],
+    "acc_matrix_mean_split_gate": 0.0312,
+    "traj_matrix_mean_split_gate": [
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0
+    ],
+    "acc_matrix_mean_full": 0.0328,
+    "traj_matrix_mean_full": [
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0
+    ],
+    "corrected_stable_all_configs": false,
+    "broken_collapsed_all_configs": true
+  },
+  "notes": "corrected_stable=False, broken_collapsed=True. The corrected gate did not maintain stable write rates.",
+  "error": "",
+  "timestamp": "2026-03-10T18:04:32.138508+00:00",
+  "duration_seconds": 602.9156579289993,
+  "config": {},
+  "seed": 42
+}

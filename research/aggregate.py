@@ -185,6 +185,7 @@ CATEGORY_NAMES = {
     "exp_42": "Category 42 — Episodic/Semantic Inductive Bias Design (Phase 8)",
     "exp_43": "Category 43 — Write Gate Stability and Initialization (Phase 8)",
     "exp_44": "Category 44 — Integration and Scale (Phase 8)",
+    "exp_45": "Category 45 — Gate-Writing Interaction Repair (Phase 9)",
 }
 
 

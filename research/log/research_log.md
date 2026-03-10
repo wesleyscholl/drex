@@ -211,3 +211,87 @@ the differentiability design space to Gumbel-softmax and STE. Gumbel is preferre
 
 **Degenerate solutions dominate:** When a shortcut exists, the model finds it.
 Task design is the primary tool for obtaining meaningful results, not loss design.
+
+---
+
+## Meta-Observations (Phase 8)
+
+**Date:** 2026-03-10
+
+Phase 8 completed 29 experiments across categories 41-44 and produced a clear
+integration failure signal.
+
+**What held up:**
+- EMA smoothing reliably reduces gradient variance (about 75% reduction).
+- Global alpha is sufficient; per-position alpha did not add measurable value.
+- The episodic/semantic split advantage persists at SEQ_LEN=96.
+- Write-gate multi-stability is real, with multiple threshold equilibria.
+
+**What failed critically:**
+- The full combination (EMA + split + write gate) collapsed accuracy from
+  approximately 0.27 to approximately 0.03.
+- Three stabilization attempts all failed: lower gate LR, write-rate regularization,
+  and two-phase training.
+
+**Interpretation:**
+The write gate appears to interact destructively with EMA+split, likely by pushing
+write behavior into pathological regimes that starve useful memory updates.
+
+**Next direction (Phase 9):**
+Treat gate interaction failure as the primary blocker. Instrument write-rate
+trajectories and gate logits under composition first, then redesign gating under
+explicit anti-starvation constraints before further mechanism integration.
+
+---
+
+## Phase 9 — Gate-Writing Interaction Repair (Category 45)
+*2026-03-10*
+
+### Root Cause Confirmed
+
+The Phase 8 interpretation was incorrect. The gate did not "interact destructively with
+EMA+split" — the gate was broken in complete isolation. The exp_44_1 energy formula
+`Delta.pow(2).mean([1,2])` produces values ~0.007-0.016 (O(1/H)) due to averaging over
+H² = 4096 matrix elements. With threshold=0.4, the gate fires 0% of the time, write_rate
+→ 0, and performance degrades to near-random (~0.03). This was confirmed by exp_45_1
+across all 3 seeds: matrix_max_ever < 0.01, vecnorm_mean ≈ 5–8 (O(‖k‖)).
+
+### Phase 9 Results Summary (18 runs, 6 experiments × 3 seeds)
+
+| Exp    | Outcome     | Key finding |
+|--------|-------------|-------------|
+| 45_1   | SUPPORTED   | Matrix-mean energy maxes at 0.007–0.009; vector-norm at 5–8. Scale bug confirmed. |
+| 45_2   | SUPPORTED   | Relative-norm gate restores acc_gate 0.03→0.22–0.23. acc_full/acc_ema_split = 0.99–1.01. |
+| 45_3   | INCONCLUSIVE| rel_norm stays in [0.39–0.40] across dims; matrix_mean dead. abs_norm didn't spread (0.001). |
+| 45_4   | REFUTED     | EMA+gate configs have wr=0.96–0.97 (above 0.80 threshold). Gate, split_gate: wr≈0.40. |
+| 45_5   | SUPPORTED   | Corrected full system: acc_full/acc_ema_split = 0.99–1.07 across all seeds. |
+| 45_6   | REFUTED     | wr at L=32 is 0.95 (above 0.85); wr at L=96 is 0.31. Accuracy comparable, not strictly ≥. |
+
+### Key Learnings
+
+**The fix works**: The relative vector-norm gate (‖k−vp‖ ≥ 0.4×‖k‖) fully restores
+accuracy. acc_gate jumps from 0.03 → 0.22–0.23; full system matches EMA+split within 1%.
+
+**Unexpected finding — EMA increases write rate**: EMA+gate configs have wr≈0.96, while
+gate-only has wr≈0.40. The EMA slows memory convergence, keeping ‖k−vp‖ large, which
+means the gate rarely blocks. This is an emergent interaction between EMA persistence and
+the gate threshold.
+
+**Seq-len dependence**: Short sequences (L=32) have high gate fire rates (~0.96) because
+the memory hasn't been populated yet (vp≈0, so ‖k−vp‖≈‖k‖ > 0.4×‖k‖ always). Longer
+sequences (L=96) have moderate fire rates (~0.31) because the memory builds up. The gate
+is sequence-length-sensitive in a predictable way.
+
+**abs_norm spread didn't materialize**: The absolute-norm criterion (fixed threshold=0.4)
+produces nearly identical write rates across H∈{32,64,128} because ‖k−vp‖ grows
+approximately as √H while the threshold stays fixed — but in practice these nearly cancel.
+The relative-norm criterion is stable across dims at wr≈0.40 (gate, split_gate).
+
+### Phase 10 Direction
+
+The gate repair is validated. The key open question is whether the EMA + gate interaction
+(wr=0.96 for EMA+gate configs) is benign or whether it effectively neutralizes the gate.
+Next priorities:
+1. Investigate whether wr=0.96 for EMA+gate is functionally different from no gate at all
+2. Explore adaptive/learned gate thresholds that account for EMA persistence
+3. Consider sequence-position-dependent thresholds for short vs. long sequence regimes

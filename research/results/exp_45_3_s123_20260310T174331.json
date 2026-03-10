@@ -1,0 +1,49 @@
+{
+  "experiment_id": "exp_45_3",
+  "hypothesis": "The relative vector-norm criterion (\u2016err\u2016 \u2265 thresh \u00d7 \u2016k\u2016) keeps write rate in [0.20, 0.80] across HIDDEN_DIM \u2208 {32, 64, 128}, while the matrix-mean criterion gives write_rate \u2264 0.02 at all dims and the absolute-norm write_rate varies by >0.30 across dims.",
+  "outcome": "INCONCLUSIVE",
+  "metrics": {
+    "acc_matrix_mean_H32": 0.0281,
+    "wr_matrix_mean_H32": 0.0,
+    "acc_matrix_mean_H64": 0.0211,
+    "wr_matrix_mean_H64": 0.0,
+    "acc_matrix_mean_H128": 0.007,
+    "wr_matrix_mean_H128": 0.0,
+    "acc_abs_norm_H32": 0.1703,
+    "wr_abs_norm_H32": 0.4175,
+    "acc_abs_norm_H64": 0.1977,
+    "wr_abs_norm_H64": 0.4185,
+    "acc_abs_norm_H128": 0.2227,
+    "wr_abs_norm_H128": 0.4187,
+    "acc_rel_norm_H32": 0.1914,
+    "wr_rel_norm_H32": 0.4001,
+    "acc_rel_norm_H64": 0.2086,
+    "wr_rel_norm_H64": 0.4002,
+    "acc_rel_norm_H128": 0.2016,
+    "wr_rel_norm_H128": 0.3898,
+    "rel_norm_wrs": [
+      0.4001,
+      0.4002,
+      0.3898
+    ],
+    "rel_norm_in_band": true,
+    "matrix_mean_wrs": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "matrix_mean_all_dead": true,
+    "abs_norm_wrs": [
+      0.4175,
+      0.4185,
+      0.4187
+    ],
+    "abs_norm_spread": 0.0012
+  },
+  "notes": "Partial. rel_in_band=True, mat_dead=True, abs_spread=0.001. rel_wrs=[0.4001, 0.4002, 0.3898], abs_wrs=[0.4175, 0.4185, 0.4187].",
+  "error": "",
+  "timestamp": "2026-03-10T17:43:31.533739+00:00",
+  "duration_seconds": 681.1370040399997,
+  "config": {},
+  "seed": 123
+}

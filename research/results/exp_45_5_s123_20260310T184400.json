@@ -1,0 +1,19 @@
+{
+  "experiment_id": "exp_45_5",
+  "hypothesis": "The corrected full system (EMA \u03b1=0.95 + episodic/semantic split + relative vector-norm gate, thresh=0.4) achieves acc_full \u2265 acc_ema_split \u00d7 0.95 and acc_full > 0.18 on all test seeds, confirming seed stability of the Phase 9 gate repair.",
+  "outcome": "SUPPORTED",
+  "metrics": {
+    "acc_ema_split": 0.2469,
+    "acc_full": 0.2641,
+    "write_rate": 0.9676,
+    "acc_gate_only": 0.2104,
+    "ratio_full_vs_ema_split": 1.0696,
+    "seed_stable": true
+  },
+  "notes": "CONFIRMED: acc_full=0.2641 is 1.070x acc_ema_split (0.2469), both > 0.18. Gate-alone also healthy (0.2104). Phase 9 repair is seed-stable.",
+  "error": "",
+  "timestamp": "2026-03-10T18:44:00.858371+00:00",
+  "duration_seconds": 96.44901658499998,
+  "config": {},
+  "seed": 123
+}

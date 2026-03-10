@@ -1,19 +1,19 @@
 # drex Research — Master Results Report
 
-**Generated:** 2026-03-10 14:51 UTC
-**Experiments:** 205  |  **Seeds per experiment:** 0, 1, 2, 7, 13, 42, 99, 123, 777
-**Total runs evaluated:** 909
+**Generated:** 2026-03-10 19:37 UTC
+**Experiments:** 211  |  **Seeds per experiment:** 0, 1, 2, 7, 13, 42, 99, 123, 777
+**Total runs evaluated:** 940
 
 ## Overall Scoreboard
 
 | Outcome | Count | % |
 |---------|-------|---|
-| ✓ SUPPORTED    | 48    | 23% |
-| ~ INCONCLUSIVE | 71 | 35% |
-| ✗ REFUTED      | 86      | 42% |
+| ✓ SUPPORTED    | 51    | 24% |
+| ~ INCONCLUSIVE | 72 | 34% |
+| ✗ REFUTED      | 88      | 42% |
 | ! ERROR        | 0        | 0% |
 
-**Seed consistency:** 149/205 experiments gave the same verdict across all seeds. 56 inconsistent.
+**Seed consistency:** 155/211 experiments gave the same verdict across all seeds. 56 inconsistent.
 
 ## Summary Table
 
@@ -217,13 +217,19 @@
 | exp_43_4 | ✓ SUPPORTED | ✓ | mean_acc_hard=0.208±0.000 | Hard gate has 2x lower variance: var_hard=0.000005, var_soft… |
 | exp_43_5 | ✗ REFUTED | ✓ | reduction_factor=0.898±0.007 | Low LR does not help: spread_low_lr=1.071 >= spread_full_lr*… |
 | exp_43_6 | ✗ REFUTED | ✓ | acc_reg=0.221±0.008 | Regularization does not help: spread_reg=0.528>=0.5.… |
-| exp_43_7 | ✗ REFUTED | ✓ | acc_joint=0.219±0.008 | Two-phase training does not help: spread_two_phase=1.068 >= … |
-| exp_43_8 | ~ INCONCLUSIVE | ✓ | acc_init005=0.230±0.012 | Init at 0.4 achieved acc_ratio_optimal=0.825 (need >=0.90). … |
+| exp_43_7 | ✗ REFUTED | ✓ | acc_joint=0.221±0.008 | Two-phase training does not help: spread_two_phase=1.068 >= … |
+| exp_43_8 | ~ INCONCLUSIVE | ✓ | acc_init005=0.229±0.010 | Init at 0.4 achieved acc_ratio_optimal=0.825 (need >=0.90). … |
 | exp_44_1 | ✗ REFUTED | ✓ | acc_baseline=0.232±0.036 | Full combination hurts: gap=-0.234<-0.03. acc_full=0.027, be… |
 | exp_44_2 | ~ INCONCLUSIVE | ✓ | acc_ema_h128=0.168±0.009 | EMA gap at H=128 is 0.033, positive but ≤0.02 threshold. Spl… |
 | exp_44_3 | ~ INCONCLUSIVE | ✓ | acc_ema=0.166±0.008 | acc_ema_split=0.153 (threshold 0.70), acc_std=0.131 (thresho… |
 | exp_44_4 | ✗ REFUTED | ✓ | acc_ema_split_s000=0.247±0.008 | EMA+Split is not more robust: cliff_ema_split=9.99 <= cliff_… |
 | exp_44_5 | ~ INCONCLUSIVE | ⚠ ['INCONCLUSIVE', 'REFUTED', 'INCONCLUSIVE'] | acc_baseline=0.232±0.036 | fraction_from_ema=542.000 (threshold >0.60). marginal_ema_sp… |
+| exp_45_1 | ✓ SUPPORTED | ✓ | final_knorm_mean=5.355±0.398 | Scale mismatch confirmed. matrix_max_ever=0.0072 < threshold… |
+| exp_45_2 | ✓ SUPPORTED | ✓ | acc_baseline=0.232±0.032 | Collapse fixed. acc_gate=0.2245>0.18. acc_full=0.2396, acc_e… |
+| exp_45_3 | ~ INCONCLUSIVE | ✓ | abs_norm_spread=0.001±0.000 | Partial. rel_in_band=True, mat_dead=True, abs_spread=0.001. … |
+| exp_45_4 | ✗ REFUTED | ✓ | acc_matrix_mean_ema_gate=0.028±0.002 | corrected_stable=False, broken_collapsed=True. The corrected… |
+| exp_45_5 | ✓ SUPPORTED | ✓ | acc_ema_split=0.251±0.004 | CONFIRMED: acc_full=0.2641 is 1.070x acc_ema_split (0.2469),… |
+| exp_45_6 | ✗ REFUTED | ✓ | acc_baseline_h128_s32=0.229±0.006 | all_wr_ok=False, all_acc_ok=False. Gate write rate collapsed… |
 
 ---
 
@@ -4306,16 +4312,16 @@
 #### exp_43_7  ✗ REFUTED
 **Hypothesis:** First freeze the threshold (train only model weights), then unfreeze (fine-tune threshold for 200 steps) reduces the equilibrium spread to <0.30 compared to joint training from the start (spread~1.022 from exp_39_3).
 
-**Runs:** 5 (seeds: [123, 123, 42, 42, 777])  |  **Avg duration:** 670s
+**Runs:** 6 (seeds: [123, 123, 42, 42, 777, 777])  |  **Avg duration:** 650s
 
 **Metrics (mean ± std across seeds):**
 
-- `acc_joint` = **0.2194** ± 0.0078  *(runs: 0.211, 0.211, 0.224, 0.224, 0.227)*
-- `acc_two_phase` = **0.2127** ± 0.0066  *(runs: 0.209, 0.209, 0.220, 0.220, 0.205)*
-- `final_thresholds_joint` = [[0.0974, 0.2825, 0.4916, 0.8038, 1.0642], [0.0974, 0.2825, 0.4916, 0.8038, 1.0642], [0.0965, 0.2856, 0.4928, 0.8245, 1.0621], [0.0965, 0.2856, 0.4928, 0.8245, 1.0621], [0.0979, 0.2842, 0.4985, 0.8043, 1.064]]
-- `final_thresholds_two_phase` = [[0.0988, 0.2957, 0.4983, 0.8055, 1.1667], [0.0988, 0.2957, 0.4983, 0.8055, 1.1667], [0.099, 0.2949, 0.4964, 0.8025, 1.1858], [0.099, 0.2949, 0.4964, 0.8025, 1.1858], [0.0993, 0.2976, 0.4961, 0.8067, 1.1726]]
-- `spread_joint` = **0.9662** ± 0.0006  *(runs: 0.967, 0.967, 0.966, 0.966, 0.966)*
-- `spread_two_phase` = **1.0765** ± 0.0096  *(runs: 1.068, 1.068, 1.087, 1.087, 1.073)*
+- `acc_joint` = **0.2206** ± 0.0076  *(runs: 0.211, 0.211, 0.224, 0.224, 0.227, 0.227)*
+- `acc_two_phase` = **0.2115** ± 0.0066  *(runs: 0.209, 0.209, 0.220, 0.220, 0.205, 0.205)*
+- `final_thresholds_joint` = [[0.0974, 0.2825, 0.4916, 0.8038, 1.0642], [0.0974, 0.2825, 0.4916, 0.8038, 1.0642], [0.0965, 0.2856, 0.4928, 0.8245, 1.0621], [0.0965, 0.2856, 0.4928, 0.8245, 1.0621], [0.0979, 0.2842, 0.4985, 0.8043, 1.064], [0.0979, 0.2842, 0.4985, 0.8043, 1.064]]
+- `final_thresholds_two_phase` = [[0.0988, 0.2957, 0.4983, 0.8055, 1.1667], [0.0988, 0.2957, 0.4983, 0.8055, 1.1667], [0.099, 0.2949, 0.4964, 0.8025, 1.1858], [0.099, 0.2949, 0.4964, 0.8025, 1.1858], [0.0993, 0.2976, 0.4961, 0.8067, 1.1726], [0.0993, 0.2976, 0.4961, 0.8067, 1.1726]]
+- `spread_joint` = **0.9662** ± 0.0005  *(runs: 0.967, 0.967, 0.966, 0.966, 0.966, 0.966)*
+- `spread_two_phase` = **1.0760** ± 0.0087  *(runs: 1.068, 1.068, 1.087, 1.087, 1.073, 1.073)*
 
 **Notes:** Two-phase training does not help: spread_two_phase=1.068 >= spread_joint*0.8=0.773.
 
@@ -4323,23 +4329,23 @@
 #### exp_43_8  ~ INCONCLUSIVE
 **Hypothesis:** Initializing the learnable threshold at 0.4 (the known accuracy-maximizing region from exp_39_1) reliably achieves >90% of the maximum possible write-gate accuracy, showing that good initialization is sufficient to solve the multi-stability problem without architectural changes.
 
-**Runs:** 3 (seeds: [123, 42, 777])  |  **Avg duration:** 342s
+**Runs:** 4 (seeds: [123, 42, 42, 777])  |  **Avg duration:** 340s
 
 **Metrics (mean ± std across seeds):**
 
-- `acc_init005` = **0.2297** ± 0.0124  *(runs: 0.220, 0.225, 0.244)*
-- `acc_init020` = **0.2208** ± 0.0199  *(runs: 0.211, 0.244, 0.208)*
-- `acc_init040` = **0.2229** ± 0.0145  *(runs: 0.206, 0.231, 0.231)*
-- `acc_init080` = **0.2208** ± 0.0191  *(runs: 0.200, 0.225, 0.237)*
-- `acc_init120` = **0.2386** ± 0.0172  *(runs: 0.250, 0.219, 0.247)*
-- `acc_ratio_optimal` = **0.9036** ± 0.0685  *(runs: 0.825, 0.949, 0.937)*
-- `best_init` = **0.8667** ± 0.5774  *(runs: 1.200, 0.200, 1.200)*
-- `max_acc` = **0.2469** ± 0.0032  *(runs: 0.250, 0.244, 0.247)*
-- `wr_init005` = **0.5922** ± 0.0008  *(runs: 0.593, 0.591, 0.592)*
-- `wr_init020` = **0.5560** ± 0.0012  *(runs: 0.555, 0.556, 0.557)*
-- `wr_init040` = **0.5422** ± 0.0072  *(runs: 0.537, 0.550, 0.540)*
-- `wr_init080` = **0.5000** ± 0.0059  *(runs: 0.493, 0.505, 0.502)*
-- `wr_init120` = **0.0283** ± 0.0021  *(runs: 0.026, 0.029, 0.030)*
+- `acc_init005` = **0.2285** ± 0.0104  *(runs: 0.220, 0.225, 0.225, 0.244)*
+- `acc_init020` = **0.2265** ± 0.0199  *(runs: 0.211, 0.244, 0.244, 0.208)*
+- `acc_init040` = **0.2250** ± 0.0126  *(runs: 0.206, 0.231, 0.231, 0.231)*
+- `acc_init080` = **0.2219** ± 0.0157  *(runs: 0.200, 0.225, 0.225, 0.237)*
+- `acc_init120` = **0.2336** ± 0.0172  *(runs: 0.250, 0.219, 0.219, 0.247)*
+- `acc_ratio_optimal` = **0.9150** ± 0.0604  *(runs: 0.825, 0.949, 0.949, 0.937)*
+- `best_init` = **0.7000** ± 0.5774  *(runs: 1.200, 0.200, 0.200, 1.200)*
+- `max_acc` = **0.2461** ± 0.0030  *(runs: 0.250, 0.244, 0.244, 0.247)*
+- `wr_init005` = **0.5920** ± 0.0007  *(runs: 0.593, 0.591, 0.591, 0.592)*
+- `wr_init020` = **0.5560** ± 0.0009  *(runs: 0.555, 0.556, 0.556, 0.557)*
+- `wr_init040` = **0.5442** ± 0.0071  *(runs: 0.537, 0.550, 0.550, 0.540)*
+- `wr_init080` = **0.5012** ± 0.0054  *(runs: 0.493, 0.505, 0.505, 0.502)*
+- `wr_init120` = **0.0285** ± 0.0017  *(runs: 0.026, 0.029, 0.029, 0.030)*
 
 **Notes:** Init at 0.4 achieved acc_ratio_optimal=0.825 (need >=0.90). acc_040=0.206, max_acc=0.250. Margin over init=0.05: -0.014, over init=1.20: -0.044.
 
@@ -4456,11 +4462,208 @@
 
 ---
 
+### Category 45 — Gate-Writing Interaction Repair (Phase 9)
+*3 supported / 2 refuted / 1 inconclusive / 0 error*
+
+#### exp_45_1  ✓ SUPPORTED
+**Hypothesis:** The matrix-mean energy criterion used in exp_44_1 (Delta.pow(2).mean([1,2])) evaluates to <0.05 at all training stages (well below threshold=0.4), while vector-norm energy ((k-vp).norm(dim=-1)) is in the range [1,10], confirming scale mismatch as the sole root cause of zero gate fire rate.
+
+**Runs:** 6 (seeds: [123, 123, 42, 42, 777, 777])  |  **Avg duration:** 137s
+
+**Metrics (mean ± std across seeds):**
+
+- `final_knorm_mean` = **5.3550** ± 0.3983  *(runs: 5.853, 5.853, 4.994, 4.994, 5.218, 5.218)*
+- `final_matrix_fire_rate_abs` = **0.0000**  *(stable across seeds)*
+- `final_matrix_max` = **0.0079** ± 0.0012  *(runs: 0.007, 0.007, 0.009, 0.009, 0.007, 0.007)*
+- `final_matrix_mean` = **0.0021** ± 0.0001  *(runs: 0.002, 0.002, 0.002, 0.002, 0.002, 0.002)*
+- `final_scale_ratio` = **873.8000** ± 14.8192  *(runs: 854.700, 854.700, 882.400, 882.400, 884.300, 884.300)*
+- `final_vecnorm_fire_rate_abs` = **0.4194**  *(stable across seeds)*
+- `final_vecnorm_fire_rate_rel` = **0.4178** ± 0.0025  *(runs: 0.414, 0.414, 0.419, 0.419, 0.419, 0.419)*
+- `final_vecnorm_max` = **5.6613** ± 0.4108  *(runs: 5.433, 5.433, 6.190, 6.190, 5.361, 5.361)*
+- `final_vecnorm_mean` = **1.8529** ± 0.0426  *(runs: 1.904, 1.904, 1.809, 1.809, 1.845, 1.845)*
+- `init_knorm_mean` = **4.4492** ± 0.3409  *(runs: 4.884, 4.884, 4.175, 4.175, 4.288, 4.288)*
+- `init_matrix_fire_rate_abs` = **0.0000**  *(stable across seeds)*
+- `init_matrix_max` = **0.0053** ± 0.0003  *(runs: 0.006, 0.006, 0.005, 0.005, 0.005, 0.005)*
+- `init_matrix_mean` = **0.0017**  *(stable across seeds)*
+- `init_scale_ratio` = **990.4000** ± 12.1737  *(runs: 974.900, 974.900, 1000.400, 1000.400, 995.900, 995.900)*
+- `init_vecnorm_fire_rate_abs` = **0.4194**  *(stable across seeds)*
+- `init_vecnorm_fire_rate_rel` = **0.3882** ± 0.0017  *(runs: 0.390, 0.390, 0.387, 0.387, 0.387, 0.387)*
+- `init_vecnorm_max` = **4.6610** ± 0.1255  *(runs: 4.823, 4.823, 4.570, 4.570, 4.590, 4.590)*
+- `init_vecnorm_mean` = **1.6408** ± 0.0279  *(runs: 1.676, 1.676, 1.616, 1.616, 1.631, 1.631)*
+- `matrix_always_sub_thresh` = [True, True, True, True, True, True]
+- `matrix_max_ever` = **0.0079** ± 0.0012  *(runs: 0.007, 0.007, 0.009, 0.009, 0.007, 0.007)*
+- `mid_knorm_mean` = **5.2619** ± 0.4240  *(runs: 5.752, 5.752, 4.806, 4.806, 5.228, 5.228)*
+- `mid_matrix_fire_rate_abs` = **0.0000**  *(stable across seeds)*
+- `mid_matrix_max` = **0.0070** ± 0.0003  *(runs: 0.007, 0.007, 0.007, 0.007, 0.007, 0.007)*
+- `mid_matrix_mean` = **0.0020** ± 0.0001  *(runs: 0.002, 0.002, 0.002, 0.002, 0.002, 0.002)*
+- `mid_scale_ratio` = **894.0333** ± 18.2113  *(runs: 873.300, 873.300, 914.000, 914.000, 894.800, 894.800)*
+- `mid_vecnorm_fire_rate_abs` = **0.4194**  *(stable across seeds)*
+- `mid_vecnorm_fire_rate_rel` = **0.4124** ± 0.0108  *(runs: 0.398, 0.398, 0.419, 0.419, 0.419, 0.419)*
+- `mid_vecnorm_max` = **5.3473** ± 0.1173  *(runs: 5.314, 5.314, 5.492, 5.492, 5.236, 5.236)*
+- `mid_vecnorm_mean` = **1.8228** ± 0.0391  *(runs: 1.863, 1.863, 1.776, 1.776, 1.829, 1.829)*
+
+**Notes:** Scale mismatch confirmed. matrix_max_ever=0.0072 < threshold=0.4. vecnorm_mean(init)=1.68. scale_ratio=975x. Gate fires 0% with matrix formula, 39% with relative vector-norm formula.
+
+---
+#### exp_45_2  ✓ SUPPORTED
+**Hypothesis:** Replacing matrix-mean energy (exp_44_1's broken formula) with relative vector-norm energy (‖k−Mk_n‖ ≥ thresh × ‖k‖, thresh=0.4) in the full 2³ ablation restores acc_gate to >0.18 and enables acc_full ≥ acc_ema_split × 0.95, eliminating the catastrophic collapse of exp_44_1.
+
+**Runs:** 6 (seeds: [123, 123, 42, 42, 777, 777])  |  **Avg duration:** 592s
+
+**Metrics (mean ± std across seeds):**
+
+- `acc_baseline` = **0.2316** ± 0.0318  *(runs: 0.207, 0.207, 0.272, 0.272, 0.216, 0.216)*
+- `acc_ema` = **0.2580** ± 0.0111  *(runs: 0.261, 0.261, 0.269, 0.269, 0.244, 0.244)*
+- `acc_ema_gate` = **0.2594** ± 0.0125  *(runs: 0.275, 0.275, 0.248, 0.248, 0.255, 0.255)*
+- `acc_ema_split` = **0.2451** ± 0.0118  *(runs: 0.238, 0.238, 0.260, 0.260, 0.237, 0.237)*
+- `acc_full` = **0.2441** ± 0.0100  *(runs: 0.240, 0.240, 0.257, 0.257, 0.236, 0.236)*
+- `acc_gate` = **0.2260** ± 0.0014  *(runs: 0.225, 0.225, 0.228, 0.228, 0.226, 0.226)*
+- `acc_split` = **0.2330** ± 0.0087  *(runs: 0.240, 0.240, 0.222, 0.222, 0.237, 0.237)*
+- `acc_split_gate` = **0.2399** ± 0.0208  *(runs: 0.225, 0.225, 0.229, 0.229, 0.267, 0.267)*
+- `gap_full_vs_ema_split` = **-0.0010** ± 0.0023  *(runs: 0.002, 0.002, -0.004, -0.004, -0.001, -0.001)*
+- `ratio_full_vs_ema_split` = **0.9961** ± 0.0092  *(runs: 1.007, 1.007, 0.986, 0.986, 0.995, 0.995)*
+- `wr_baseline` = **0.0000**  *(stable across seeds)*
+- `wr_ema` = **0.0000**  *(stable across seeds)*
+- `wr_ema_gate` = **0.9658** ± 0.0024  *(runs: 0.968, 0.968, 0.963, 0.963, 0.967, 0.967)*
+- `wr_ema_split` = **0.0000**  *(stable across seeds)*
+- `wr_full` = **0.9607** ± 0.0034  *(runs: 0.963, 0.963, 0.963, 0.963, 0.956, 0.956)*
+- `wr_gate` = **0.3948** ± 0.0005  *(runs: 0.394, 0.394, 0.395, 0.395, 0.395, 0.395)*
+- `wr_split` = **0.0000**  *(stable across seeds)*
+- `wr_split_gate` = **0.3986** ± 0.0018  *(runs: 0.400, 0.400, 0.397, 0.397, 0.399, 0.399)*
+
+**Notes:** Collapse fixed. acc_gate=0.2245>0.18. acc_full=0.2396, acc_ema_split=0.2380, ratio=1.007≥0.95. write_rate_gate=0.394, write_rate_full=0.963.
+
+---
+#### exp_45_3  ~ INCONCLUSIVE
+**Hypothesis:** The relative vector-norm criterion (‖err‖ ≥ thresh × ‖k‖) keeps write rate in [0.20, 0.80] across HIDDEN_DIM ∈ {32, 64, 128}, while the matrix-mean criterion gives write_rate ≤ 0.02 at all dims and the absolute-norm write_rate varies by >0.30 across dims.
+
+**Runs:** 6 (seeds: [123, 123, 42, 42, 777, 777])  |  **Avg duration:** 743s
+
+**Metrics (mean ± std across seeds):**
+
+- `abs_norm_spread` = **0.0013** ± 0.0001  *(runs: 0.001, 0.001, 0.001, 0.001, 0.001, 0.001)*
+- `abs_norm_wrs` = [[0.4175, 0.4185, 0.4187], [0.4175, 0.4185, 0.4187], [0.4172, 0.4183, 0.4186], [0.4172, 0.4183, 0.4186], [0.4173, 0.4181, 0.4187], [0.4173, 0.4181, 0.4187]]
+- `acc_abs_norm_H128` = **0.2094** ± 0.0160  *(runs: 0.223, 0.223, 0.216, 0.216, 0.189, 0.189)*
+- `acc_abs_norm_H32` = **0.2003** ± 0.0232  *(runs: 0.170, 0.170, 0.216, 0.216, 0.214, 0.214)*
+- `acc_abs_norm_H64` = **0.1883** ± 0.0078  *(runs: 0.198, 0.198, 0.180, 0.180, 0.187, 0.187)*
+- `acc_matrix_mean_H128` = **0.0052** ± 0.0014  *(runs: 0.007, 0.007, 0.004, 0.004, 0.005, 0.005)*
+- `acc_matrix_mean_H32` = **0.0294** ± 0.0027  *(runs: 0.028, 0.028, 0.033, 0.033, 0.027, 0.027)*
+- `acc_matrix_mean_H64` = **0.0159** ± 0.0043  *(runs: 0.021, 0.021, 0.015, 0.015, 0.012, 0.012)*
+- `acc_rel_norm_H128` = **0.1992** ± 0.0025  *(runs: 0.202, 0.202, 0.200, 0.200, 0.196, 0.196)*
+- `acc_rel_norm_H32` = **0.2021** ± 0.0126  *(runs: 0.191, 0.191, 0.218, 0.218, 0.197, 0.197)*
+- `acc_rel_norm_H64` = **0.2055** ± 0.0142  *(runs: 0.209, 0.209, 0.188, 0.188, 0.220, 0.220)*
+- `matrix_mean_all_dead` = [True, True, True, True, True, True]
+- `matrix_mean_wrs` = [[0.0, 0.0, 0.0], [0.0, 0.0, 0.0], [0.0, 0.0, 0.0], [0.0, 0.0, 0.0], [0.0, 0.0, 0.0], [0.0, 0.0, 0.0]]
+- `rel_norm_in_band` = [True, True, True, True, True, True]
+- `rel_norm_wrs` = [[0.4001, 0.4002, 0.3898], [0.4001, 0.4002, 0.3898], [0.3988, 0.3984, 0.3911], [0.3988, 0.3984, 0.3911], [0.4006, 0.3979, 0.3892], [0.4006, 0.3979, 0.3892]]
+- `wr_abs_norm_H128` = **0.4187** ± 0.0001  *(runs: 0.419, 0.419, 0.419, 0.419, 0.419, 0.419)*
+- `wr_abs_norm_H32` = **0.4173** ± 0.0001  *(runs: 0.417, 0.417, 0.417, 0.417, 0.417, 0.417)*
+- `wr_abs_norm_H64` = **0.4183** ± 0.0002  *(runs: 0.418, 0.418, 0.418, 0.418, 0.418, 0.418)*
+- `wr_matrix_mean_H128` = **0.0000**  *(stable across seeds)*
+- `wr_matrix_mean_H32` = **0.0000**  *(stable across seeds)*
+- `wr_matrix_mean_H64` = **0.0000**  *(stable across seeds)*
+- `wr_rel_norm_H128` = **0.3900** ± 0.0009  *(runs: 0.390, 0.390, 0.391, 0.391, 0.389, 0.389)*
+- `wr_rel_norm_H32` = **0.3998** ± 0.0008  *(runs: 0.400, 0.400, 0.399, 0.399, 0.401, 0.401)*
+- `wr_rel_norm_H64` = **0.3988** ± 0.0011  *(runs: 0.400, 0.400, 0.398, 0.398, 0.398, 0.398)*
+
+**Notes:** Partial. rel_in_band=True, mat_dead=True, abs_spread=0.001. rel_wrs=[0.4001, 0.4002, 0.3898], abs_wrs=[0.4175, 0.4185, 0.4187].
+
+---
+#### exp_45_4  ✗ REFUTED
+**Hypothesis:** With the corrected relative vector-norm energy gate, write rate for all four gate-containing configs (gate, ema+gate, split+gate, full) stabilizes between 0.20 and 0.80 within the first 200 training steps and stays there throughout training; the broken matrix-mean gate collapses to ≈0.0 from step 0 and never recovers.
+
+**Runs:** 5 (seeds: [123, 123, 42, 42, 777])  |  **Avg duration:** 562s
+
+**Metrics (mean ± std across seeds):**
+
+- `acc_matrix_mean_ema_gate` = **0.0284** ± 0.0019  *(runs: 0.027, 0.027, 0.028, 0.028, 0.032)*
+- `acc_matrix_mean_full` = **0.0303** ± 0.0034  *(runs: 0.027, 0.027, 0.033, 0.033, 0.033)*
+- `acc_matrix_mean_gate` = **0.0324** ± 0.0008  *(runs: 0.032, 0.032, 0.033, 0.033, 0.032)*
+- `acc_matrix_mean_split_gate` = **0.0312** ± 0.0007  *(runs: 0.031, 0.031, 0.031, 0.031, 0.032)*
+- `acc_rel_norm_ema_gate` = **0.2606** ± 0.0074  *(runs: 0.259, 0.259, 0.268, 0.268, 0.250)*
+- `acc_rel_norm_full` = **0.2516** ± 0.0087  *(runs: 0.242, 0.242, 0.259, 0.259, 0.256)*
+- `acc_rel_norm_gate` = **0.2383** ± 0.0435  *(runs: 0.206, 0.206, 0.286, 0.286, 0.208)*
+- `acc_rel_norm_split_gate` = **0.2233** ± 0.0059  *(runs: 0.223, 0.223, 0.219, 0.219, 0.233)*
+- `broken_collapsed_all_configs` = [True, True, True, True, True]
+- `corrected_stable_all_configs` = [False, False, False, False, False]
+- `traj_matrix_mean_ema_gate` = [[0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0], [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0], [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0], [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0], [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]]
+- `traj_matrix_mean_full` = [[0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0], [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0], [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0], [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0], [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]]
+- `traj_matrix_mean_gate` = [[0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0], [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0], [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0], [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0], [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]]
+- `traj_matrix_mean_split_gate` = [[0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0], [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0], [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0], [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0], [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]]
+- `traj_rel_norm_ema_gate` = [[0.9674, 0.9647, 0.9672, 0.9677, 0.9677, 0.9677, 0.9677, 0.9677], [0.9674, 0.9647, 0.9672, 0.9677, 0.9677, 0.9677, 0.9677, 0.9677], [0.9536, 0.9469, 0.9644, 0.9677, 0.9676, 0.9677, 0.9677, 0.9674], [0.9536, 0.9469, 0.9644, 0.9677, 0.9676, 0.9677, 0.9677, 0.9674], [0.9544, 0.9512, 0.964, 0.9654, 0.9649, 0.9641, 0.962, 0.9594]]
+- `traj_rel_norm_full` = [[0.9526, 0.9441, 0.9482, 0.9656, 0.9657, 0.9615, 0.964, 0.9663], [0.9526, 0.9441, 0.9482, 0.9656, 0.9657, 0.9615, 0.964, 0.9663], [0.9609, 0.9584, 0.9609, 0.9577, 0.9535, 0.9565, 0.9577, 0.9587], [0.9609, 0.9584, 0.9609, 0.9577, 0.9535, 0.9565, 0.9577, 0.9587], [0.9642, 0.9584, 0.9648, 0.9677, 0.9677, 0.9676, 0.9677, 0.9677]]
+- `traj_rel_norm_gate` = [[0.395, 0.397, 0.3972, 0.3975, 0.3976, 0.3958, 0.3949, 0.3944], [0.395, 0.397, 0.3972, 0.3975, 0.3976, 0.3958, 0.3949, 0.3944], [0.3919, 0.3951, 0.3964, 0.3955, 0.3965, 0.3962, 0.3972, 0.3983], [0.3919, 0.3951, 0.3964, 0.3955, 0.3965, 0.3962, 0.3972, 0.3983], [0.3909, 0.396, 0.3985, 0.3986, 0.3992, 0.399, 0.3998, 0.3984]]
+- `traj_rel_norm_split_gate` = [[0.4012, 0.4022, 0.4029, 0.4031, 0.4037, 0.404, 0.4043, 0.4054], [0.4012, 0.4022, 0.4029, 0.4031, 0.4037, 0.404, 0.4043, 0.4054], [0.4052, 0.4044, 0.4051, 0.4053, 0.4064, 0.4073, 0.4073, 0.4075], [0.4052, 0.4044, 0.4051, 0.4053, 0.4064, 0.4073, 0.4073, 0.4075], [0.4035, 0.4028, 0.4041, 0.4042, 0.4045, 0.404, 0.4044, 0.405]]
+
+**Notes:** corrected_stable=False, broken_collapsed=True. The corrected gate did not maintain stable write rates.
+
+---
+#### exp_45_5  ✓ SUPPORTED
+**Hypothesis:** The corrected full system (EMA α=0.95 + episodic/semantic split + relative vector-norm gate, thresh=0.4) achieves acc_full ≥ acc_ema_split × 0.95 and acc_full > 0.18 on all test seeds, confirming seed stability of the Phase 9 gate repair.
+
+**Runs:** 3 (seeds: [123, 42, 777])  |  **Avg duration:** 96s
+
+**Metrics (mean ± std across seeds):**
+
+- `acc_ema_split` = **0.2509** ± 0.0037  *(runs: 0.247, 0.252, 0.254)*
+- `acc_full` = **0.2582** ± 0.0077  *(runs: 0.264, 0.249, 0.261)*
+- `acc_gate_only` = **0.2153** ± 0.0089  *(runs: 0.210, 0.210, 0.226)*
+- `ratio_full_vs_ema_split` = **1.0293** ± 0.0390  *(runs: 1.070, 0.992, 1.027)*
+- `seed_stable` = [True, True, True]
+- `write_rate` = **0.9627** ± 0.0044  *(runs: 0.968, 0.962, 0.959)*
+
+**Notes:** CONFIRMED: acc_full=0.2641 is 1.070x acc_ema_split (0.2469), both > 0.18. Gate-alone also healthy (0.2104). Phase 9 repair is seed-stable.
+
+---
+#### exp_45_6  ✗ REFUTED
+**Hypothesis:** The corrected full system (EMA + split + relative-norm gate) maintains write rate in [0.15, 0.85] and accuracy ≥ EMA-only baseline across all six scale configurations: HIDDEN_DIM ∈ {32, 64, 128} × SEQ_LEN ∈ {32, 96}.
+
+**Runs:** 3 (seeds: [123, 42, 777])  |  **Avg duration:** 1004s
+
+**Metrics (mean ± std across seeds):**
+
+- `acc_baseline_h128_s32` = **0.2287** ± 0.0063  *(runs: 0.221, 0.233, 0.232)*
+- `acc_baseline_h128_s96` = **0.2344** ± 0.0188  *(runs: 0.253, 0.235, 0.215)*
+- `acc_baseline_h32_s32` = **0.0523** ± 0.0178  *(runs: 0.064, 0.061, 0.032)*
+- `acc_baseline_h32_s96` = **0.0377** ± 0.0156  *(runs: 0.053, 0.039, 0.021)*
+- `acc_baseline_h64_s32` = **0.1946** ± 0.0107  *(runs: 0.201, 0.182, 0.201)*
+- `acc_baseline_h64_s96` = **0.1936** ± 0.0122  *(runs: 0.183, 0.191, 0.207)*
+- `acc_full_h128_s32` = **0.2377** ± 0.0068  *(runs: 0.231, 0.245, 0.237)*
+- `acc_full_h128_s96` = **0.2203** ± 0.0122  *(runs: 0.206, 0.228, 0.227)*
+- `acc_full_h32_s32` = **0.0420** ± 0.0180  *(runs: 0.037, 0.062, 0.027)*
+- `acc_full_h32_s96` = **0.0379** ± 0.0034  *(runs: 0.040, 0.040, 0.034)*
+- `acc_full_h64_s32` = **0.1819** ± 0.0095  *(runs: 0.193, 0.178, 0.175)*
+- `acc_full_h64_s96` = **0.1854** ± 0.0060  *(runs: 0.183, 0.192, 0.181)*
+- `acc_ok_h128_s32` = [True, True, True]
+- `acc_ok_h128_s96` = [False, False, True]
+- `acc_ok_h32_s32` = [False, True, False]
+- `acc_ok_h32_s96` = [False, True, True]
+- `acc_ok_h64_s32` = [False, False, False]
+- `acc_ok_h64_s96` = [True, True, False]
+- `all_accs_at_least_baseline` = [False, False, False]
+- `all_write_rates_in_range` = [False, False, False]
+- `wr_full_h128_s32` = **0.9677**  *(stable across seeds)*
+- `wr_full_h128_s96` = **0.3158**  *(stable across seeds)*
+- `wr_full_h32_s32` = **0.9484** ± 0.0091  *(runs: 0.958, 0.948, 0.939)*
+- `wr_full_h32_s96` = **0.3086** ± 0.0013  *(runs: 0.307, 0.308, 0.310)*
+- `wr_full_h64_s32` = **0.9667** ± 0.0012  *(runs: 0.965, 0.968, 0.967)*
+- `wr_full_h64_s96` = **0.3149** ± 0.0008  *(runs: 0.314, 0.316, 0.315)*
+- `wr_ok_h128_s32` = [False, False, False]
+- `wr_ok_h128_s96` = [True, True, True]
+- `wr_ok_h32_s32` = [False, False, False]
+- `wr_ok_h32_s96` = [True, True, True]
+- `wr_ok_h64_s32` = [False, False, False]
+- `wr_ok_h64_s96` = [True, True, True]
+
+**Notes:** all_wr_ok=False, all_acc_ok=False. Gate write rate collapsed or accuracy degraded at one or more scale configs.
+
+---
+
 ## Cross-Cutting Observations
 
-**All SUPPORTED experiments:** exp_1_5, exp_2_6, exp_3_1, exp_3_5, exp_3_6, exp_4_1, exp_4_4, exp_4_7, exp_4_9, exp_5_2, exp_5_6, exp_6_1, exp_6_3, exp_7_1, exp_7_2, exp_7_9, exp_9_2, exp_9_4, exp_9_5, exp_11_3, exp_13_1, exp_13_2, exp_15_3, exp_16_3, exp_23_2, exp_23_3, exp_24_2, exp_25_1, exp_26_1, exp_29_1, exp_29_3, exp_30_1, exp_32_1, exp_32_2, exp_32_3, exp_32_4, exp_33_4, exp_34_6, exp_35_2, exp_35_3, exp_36_3, exp_37_3, exp_38_3, exp_41_5, exp_41_6, exp_42_7, exp_43_1, exp_43_4
+**All SUPPORTED experiments:** exp_1_5, exp_2_6, exp_3_1, exp_3_5, exp_3_6, exp_4_1, exp_4_4, exp_4_7, exp_4_9, exp_5_2, exp_5_6, exp_6_1, exp_6_3, exp_7_1, exp_7_2, exp_7_9, exp_9_2, exp_9_4, exp_9_5, exp_11_3, exp_13_1, exp_13_2, exp_15_3, exp_16_3, exp_23_2, exp_23_3, exp_24_2, exp_25_1, exp_26_1, exp_29_1, exp_29_3, exp_30_1, exp_32_1, exp_32_2, exp_32_3, exp_32_4, exp_33_4, exp_34_6, exp_35_2, exp_35_3, exp_36_3, exp_37_3, exp_38_3, exp_41_5, exp_41_6, exp_42_7, exp_43_1, exp_43_4, exp_45_1, exp_45_2, exp_45_5
 
-**All REFUTED experiments:** exp_1_1, exp_1_2, exp_1_8, exp_2_2, exp_2_4, exp_2_5, exp_2_9, exp_3_2, exp_3_3, exp_3_4, exp_3_7, exp_4_2, exp_5_1, exp_5_4, exp_5_5, exp_5_7, exp_6_7, exp_7_5, exp_7_6, exp_7_7, exp_8_1, exp_8_3, exp_9_1, exp_10_2, exp_11_1, exp_11_2, exp_12_1, exp_14_1, exp_14_2, exp_14_3, exp_15_1, exp_15_2, exp_16_1, exp_17_1, exp_17_2, exp_17_4, exp_18_1, exp_19_1, exp_19_2, exp_19_3, exp_20_2, exp_20_3, exp_21_1, exp_21_2, exp_21_3, exp_21_4, exp_22_1, exp_22_2, exp_22_4, exp_22_5, exp_23_4, exp_24_3, exp_24_4, exp_25_2, exp_25_3, exp_26_2, exp_26_3, exp_27_1, exp_27_3, exp_28_5, exp_30_2, exp_30_3, exp_31_1, exp_31_2, exp_33_1, exp_33_3, exp_34_1, exp_34_5, exp_34_7, exp_34_8, exp_34_9, exp_35_1, exp_36_1, exp_38_1, exp_38_2, exp_39_3, exp_41_2, exp_41_8, exp_42_1, exp_42_4, exp_42_5, exp_43_5, exp_43_6, exp_43_7, exp_44_1, exp_44_4
+**All REFUTED experiments:** exp_1_1, exp_1_2, exp_1_8, exp_2_2, exp_2_4, exp_2_5, exp_2_9, exp_3_2, exp_3_3, exp_3_4, exp_3_7, exp_4_2, exp_5_1, exp_5_4, exp_5_5, exp_5_7, exp_6_7, exp_7_5, exp_7_6, exp_7_7, exp_8_1, exp_8_3, exp_9_1, exp_10_2, exp_11_1, exp_11_2, exp_12_1, exp_14_1, exp_14_2, exp_14_3, exp_15_1, exp_15_2, exp_16_1, exp_17_1, exp_17_2, exp_17_4, exp_18_1, exp_19_1, exp_19_2, exp_19_3, exp_20_2, exp_20_3, exp_21_1, exp_21_2, exp_21_3, exp_21_4, exp_22_1, exp_22_2, exp_22_4, exp_22_5, exp_23_4, exp_24_3, exp_24_4, exp_25_2, exp_25_3, exp_26_2, exp_26_3, exp_27_1, exp_27_3, exp_28_5, exp_30_2, exp_30_3, exp_31_1, exp_31_2, exp_33_1, exp_33_3, exp_34_1, exp_34_5, exp_34_7, exp_34_8, exp_34_9, exp_35_1, exp_36_1, exp_38_1, exp_38_2, exp_39_3, exp_41_2, exp_41_8, exp_42_1, exp_42_4, exp_42_5, exp_43_5, exp_43_6, exp_43_7, exp_44_1, exp_44_4, exp_45_4, exp_45_6
 
 **Inconsistent across seeds (need more investigation):** exp_8_1, exp_8_2, exp_8_4, exp_9_4, exp_9_5, exp_10_1, exp_15_1, exp_15_2, exp_15_4, exp_17_1, exp_17_2, exp_17_4, exp_18_3, exp_22_1, exp_22_2, exp_22_4, exp_22_5, exp_23_1, exp_23_2, exp_23_3, exp_23_4, exp_24_1, exp_25_2, exp_25_3, exp_26_1, exp_26_2, exp_26_3, exp_28_2, exp_28_4, exp_29_2, exp_29_3, exp_29_4, exp_30_1, exp_30_3, exp_30_4, exp_31_2, exp_32_1, exp_32_2, exp_32_3, exp_32_4, exp_33_2, exp_33_4, exp_34_6, exp_35_3, exp_38_1, exp_38_2, exp_38_3, exp_41_1, exp_41_5, exp_42_1, exp_42_2, exp_42_3, exp_42_5, exp_42_7, exp_43_2, exp_44_5
 
