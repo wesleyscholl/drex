@@ -186,6 +186,7 @@ CATEGORY_NAMES = {
     "exp_43": "Category 43 — Write Gate Stability and Initialization (Phase 8)",
     "exp_44": "Category 44 — Integration and Scale (Phase 8)",
     "exp_45": "Category 45 — Gate-Writing Interaction Repair (Phase 9)",
+    "exp_46": "Category 46 — EMA-Gate Threshold Calibration (Phase 10)",
 }
 
 

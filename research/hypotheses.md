@@ -1328,3 +1328,54 @@ EMA-only baseline across all six scale configurations: HIDDEN_DIM ∈ {32, 64, 1
 × SEQ_LEN ∈ {32, 96}, showing the relative-norm gate fix is not specific to the
 H=64, L=32 setting used during diagnosis.
 *Status: REFUTED (exp_45_6)*
+
+## Category 46: EMA-Gate Threshold Calibration (Phase 10)
+
+**H-46.1 — Universal Threshold thresh* Exists Across Sequence Lengths**
+There exists a scalar threshold thresh* such that EMA+gate with thresh* achieves
+write rate in [0.20, 0.70] at SEQ_LEN=32 AND [0.15, 0.50] at SEQ_LEN=96,
+with accuracy ≥ EMA-alone × 0.97 at both lengths. A universal thresh* would
+allow a single fixed threshold to serve both short-context and long-context regimes
+without per-deployment re-tuning.
+*Status: UNTESTED (exp_46_1)*
+
+**H-46.2 — Velocity Gate Achieves EMA-Agnostic Selectivity at Both Lengths**
+A velocity gate conditioned on ‖vp_t − vp_{t-1}‖ / ‖k‖ ≥ thresh_v achieves
+write rate in [0.20, 0.60] under EMA at both SEQ_LEN=32 and SEQ_LEN=96, unlike
+the error gate which gives wr≈0.96 at L=32 because vp≈0 throughout the short
+sequence. The velocity signal is EMA-agnostic because it tracks how fast the
+memory prediction is changing, not how far from zero it is.
+*Status: UNTESTED (exp_46_2)*
+
+**H-46.3 — Position-Conditioned Schedule Solves Bootstrap Problem**
+A deterministic position-conditioned threshold schedule
+thresh(t) = thresh_min + (thresh_max − thresh_min) × (1 − t/L)
+achieves write rate in [0.20, 0.60] at SEQ_LEN=32 under EMA while retaining
+wr in [0.15, 0.50] at SEQ_LEN=96, for at least one thresh_max ∈ {1.0, 1.5, 2.0}.
+The schedule compensates for the bootstrap problem (vp≈0 at early positions)
+without any learned parameters, directly addressing the L-dependency observed
+in exp_45_6.
+*Status: UNTESTED (exp_46_3)*
+
+**H-46.4 — Calibrated Gate Adds Genuine Accuracy Beyond EMA Alone**
+Using the calibrated threshold thresh* in the full 2³ ablation achieves
+acc(EMA+gate) > acc(EMA-alone) + 0.005 at SEQ_LEN=32, confirming thresh* enables
+the gate to add genuine value beyond EMA alone; and wr(EMA+gate, L=96) ∈ [0.15, 0.50],
+confirming no over-suppression at long context.
+*Status: UNTESTED (exp_46_4)*
+
+**H-46.5 — Gate Advantage Increases Monotonically With Interference Density ρ**
+The gate accuracy advantage (acc(EMA+gate, thresh*) − acc(EMA-alone)) is positive
+and increases monotonically with interference density ρ = N_pairs / H across
+ρ ∈ {0.08, 0.12, 0.19, 0.31, 0.50, 0.75}. Write selectivity is most valuable
+when the memory matrix is under high capacity pressure, and adds negligible benefit
+at the standard low-density task (ρ=0.078, the N=5, H=64 baseline).
+*Status: UNTESTED (exp_46_5)*
+
+**H-46.6 — Calibrated Full System Is Seed-Stable at Both Lengths**
+The calibrated full system (EMA + split + gate, thresh*) achieves
+acc_full ≥ acc_ema_split × 1.02 at SEQ_LEN=96 AND wr ∈ [0.20, 0.70] at L=32
+AND wr ∈ [0.15, 0.50] at SEQ_LEN=96 on all three seeds (42, 123, 777),
+confirming that Phase 10's calibrated system is seed-stable and not
+sensitive to random initialisation.
+*Status: UNTESTED (exp_46_6)*
