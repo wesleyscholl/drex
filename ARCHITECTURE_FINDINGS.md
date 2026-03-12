@@ -1,6 +1,6 @@
 # ARCHITECTURE_FINDINGS.md — Drex Research Findings
 
-*Created: 2026-03-12 | Covers Phases 1–12 (48 categories, 247+ experiments)*
+*Created: 2026-03-12 | Updated: 2026-03-12 | Covers Phases 1–15 (48 categories, 247+ experiments, production implementation)*
 
 This document records the validated architecture specification and the research dead ends
 that should not be re-investigated. All findings have ≥2/3 seed confirmation unless noted.
@@ -289,3 +289,132 @@ Output: r ∈ ℝ^{B × H}         — memory retrieval for position L-1
 - No learned episodic/semantic router
 - No learned combination of r_sem and r_epi
 - Optimiser: Adam (not SGD)
+
+---
+
+## §11 — Phase 13–15: Implementation Experience
+
+This section records findings from the production implementation (Phases 13–15) that are
+relevant to reproducing or extending the architecture. These findings emerged from code
+rather than experiments.
+
+### §11.1 — F.normalize stability (Phase 15)
+
+`F.normalize(k, dim=-1)` with the PyTorch default `eps=1e-12` is numerically fragile
+under weight-decay pressure or MPS precision characteristics. When a key projection
+outputs a near-zero vector, the norm is amplified by `1/eps = 1e12`, propagating enormous
+activations through the delta-rule update into the residual stream, and eventually
+producing `NaN` loss.
+
+**Fix:** Use `eps=1e-6` on all four `F.normalize` calls in `MemoryModule.forward()`:
+
+```python
+kns = F.normalize(ks, dim=-1, eps=1e-6)
+kne = F.normalize(ke, dim=-1, eps=1e-6)
+qns = F.normalize(self.sem_proj(q), dim=-1, eps=1e-6)
+qne = F.normalize(self.epi_proj(q), dim=-1, eps=1e-6)
+```
+
+This allows near-zero keys to remain near-zero (rather than being normalised to a random
+unit direction), with at most `1/1e-6 = 1e6` amplification — large but not enough to
+cause NaN under standard float32 range.
+
+### §11.2 — NaN training loss (Phase 15)
+
+Small models (d\_model ≤ 128) with random initialisation can produce NaN cross-entropy
+loss on the first few steps, particularly at high learning rates (`lr ≥ 1e-3`) or small
+batch sizes. Once a NaN loss occurs, `loss.backward()` poisons all weights irreversibly.
+
+**Fix:** Check `loss.isfinite()` before the backward pass; if non-finite, zero gradients,
+reset TBPTT states, and continue:
+
+```python
+if not loss.isfinite():
+    optimizer.zero_grad()
+    states = model.init_states(batch_size, device)
+    continue
+loss.backward()
+```
+
+This is implemented in `scripts/train.py`. The fix is defensive — at production model
+sizes (d\_model ≥ 256) with proper hyperparameters (lr=3e-4, dropout=0.1), NaN loss
+should not occur in normal training.
+
+### §11.3 — TBPTT document-boundary contamination (Phase 15)
+
+`DrexTransformer` uses TBPTT: `LayerState` is detached from the computation graph and
+carried forward across batches. With `shuffle=True` and TinyStories, consecutive batches
+contain segments from different stories. The L2 Infini-Attention matrix `M` ends up
+holding associations from story N when the model starts processing story N+1.
+
+**Severity:** Moderate. The model is unlikely to learn strong cross-story associations
+because story boundaries (token 10 = `\n`) break semantic continuity. However, it
+introduces noise in the gradient signal and may reduce L2 memory precision.
+
+**Fix:** Use `--reset-on-boundary` in `scripts/train.py`. This detects any segment whose
+target contains token 10 and zeros the corresponding `LayerState` entries for those batch
+elements before the next forward pass.
+
+**Validation is unaffected:** `_validate()` calls `model(src)` with `states=None`,
+which triggers `model.init_states()` — fully independent per-batch evaluation.
+
+### §11.4 — Write loop performance (Phase 15)
+
+`MemoryModule.forward()` iterates `for t in range(L-1)` because step t reads
+`M_{t-1}` (sequential recurrence). Per-step Python overhead includes:
+- 4 kernel launches for `sem_proj(h_t)`, `epi_proj(h_t)`, and their `F.normalize` calls
+- 1 CPU-GPU sync for `fire.sum().item()`
+
+**Phase 15 fix:** Batch all projections and normalizations before the loop (2 large
+launches instead of 4×(L-1) small launches). Accumulate `fire` tensors inside the loop
+and compute the write-rate sum in a single `torch.stack(...).sum().item()` call after
+the loop (1 sync instead of L-1).
+
+**Remaining cost:** The `torch.bmm(M_sem, kns_t)` and `torch.bmm(M_epi, kne_t)` calls
+inside the loop cannot be eliminated without changing the semantics of the delta rule.
+At `segment_len=512`, this is 511 sequential `bmm` operations per layer per forward
+pass. This is the dominant throughput bottleneck before the attention sublayer at
+production scale. Full parallelisation requires a parallel scan approximation or a
+custom kernel (Phase 16 candidate).
+
+---
+
+## §12 — Component Confidence Classifications
+
+Each component is classified by evidence strength. "High confidence" means ≥7/9 seed
+evidence with ≥2 independent experiments. "Medium confidence" means design or
+implementation choices not ablated at the same rigor as the core architecture. "Phase
+experience" means informed by production training in Phases 13–15.
+
+### §12.1 — High confidence (validated, do not change without re-running write-rate suite)
+
+| Component | Evidence | Phase |
+|---|---|---|
+| Delta-rule update formula `Δ = (k−Mk̂) ⊗ k̂` | 9/9 seeds, Phases 3–8 | Phase 3 |
+| ELU+1 feature map for L2 | 9/9 seeds | Phase 2 |
+| OR relative-norm write gate | 9/9 seeds, exp_47_2 (AND inferior) | Phase 9 |
+| Fixed 50/50 episodic/semantic split | 9/9 seeds, exp_38_1 | Phase 9 |
+| Concatenated retrieval (no learned gate) | 6/9 seeds, exp_38_3 | Phase 9 |
+| thresh\*=0.70 for OR-gate model | 3/3 seeds deterministic, exp_48_1 | Phase 12 |
+| α(L) = 0.95^(96/L) length-adaptive EMA | 6/9 seeds, exp_47_1/3 | Phase 11 |
+| Adam optimizer (not SGD) | 9/9 seeds, exp_34_6 | Phase 8 |
+| `F.normalize eps=1e-6` (not default 1e-12) | Phase 15 production experience | Phase 15 |
+
+### §12.2 — Medium confidence (implemented, not independently ablated at production scale)
+
+| Component | Basis | Risk if wrong |
+|---|---|---|
+| Null retrieval gate `g = σ(linear(q))` | Phase 13 design; not ablated against no-gate baseline | Possible accuracy overhead; removing is safe to test |
+| Pre-LayerNorm before `MemoryModule` | Standard convention; not ablated | Minor; consistent with rest of DrexLayer |
+| Residual addition at last-token-only (`x[:, -1]`) | Inference from task design; not ablated | Could improve to full-sequence residual; uncertain |
+| `out_proj: Linear(H, H)` | Implementation choice; not ablated | Removing one projection unlikely to materially hurt |
+| Recency weight `w_t = (t+1)/L` for episodic branch | Phase 11 design; not independently ablated | May not improve over uniform; low risk |
+
+### §12.3 — Low confidence / not yet tested at production scale
+
+| Component | Current status |
+|---|---|
+| Behaviour at `segment_len > 512` (longer contexts) | Only tested at L ≤ 128 in micro-experiments; L=512 is the production target but no trained model exists yet |
+| Interaction between L2 MemoryState and L4 MemoryModule | Both are active in production config; no ablation of L4-only vs L2+L4 at full training |
+| Null retrieval gate convergence speed | Not measured; gate may take longer to converge than the main weights |
+| Write rate stability over 50k training steps | Only measured in short experiments; long-run stability at 50k steps is untested |

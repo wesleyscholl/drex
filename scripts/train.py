@@ -53,8 +53,78 @@ from drex.utils.config import load_checkpoint, save_checkpoint
 _NEWLINE_TOKEN: int = 10
 
 
-def _load_tinystories(split: str = "train", max_chars: int | None = None) -> str:
-    """Download and concatenate TinyStories text. Returns a single long string."""
+def _patch_ssl_for_download() -> None:
+    """
+    Disable SSL certificate verification for the current process.
+
+    Use only in development environments where HuggingFace Hub connections
+    fail due to a corporate proxy performing SSL inspection.  Do not use
+    in production or CI; fix the certificate bundle instead.
+    """
+    import ssl as _ssl
+
+    import httpx as _httpx
+
+    # Patch stdlib ssl context (used by urllib/requests)
+    _unverified = _ssl._create_unverified_context
+    _ssl.create_default_context = lambda *a, **kw: _unverified()
+    _ssl._create_default_https_context = _unverified
+
+    # Patch httpx (used by huggingface_hub ≥0.20)
+    _OrigClient = _httpx.Client
+
+    class _NoVerifyClient(_OrigClient):
+        def __init__(self, *args, **kwargs):
+            kwargs["verify"] = False
+            super().__init__(*args, **kwargs)
+
+    _OrigAsyncClient = _httpx.AsyncClient
+
+    class _NoVerifyAsyncClient(_OrigAsyncClient):
+        def __init__(self, *args, **kwargs):
+            kwargs["verify"] = False
+            super().__init__(*args, **kwargs)
+
+    _httpx.Client = _NoVerifyClient  # type: ignore[misc]
+    _httpx.AsyncClient = _NoVerifyAsyncClient  # type: ignore[misc]
+
+    print(
+        "  [WARNING] SSL certificate verification disabled (--no-ssl-verify).",
+        file=sys.stderr,
+        flush=True,
+    )
+
+
+def _load_tinystories(
+    split: str = "train",
+    max_chars: int | None = None,
+    data_file: str | None = None,
+    no_ssl_verify: bool = False,
+) -> str:
+    """
+    Load TinyStories text for the given split.
+
+    Priority:
+      1. ``data_file`` — path to a local text file (newline-separated stories).
+         Use this to skip the HuggingFace download entirely.
+      2. HuggingFace Hub (roneneldan/TinyStories, streaming mode).
+         Set ``no_ssl_verify=True`` if your network proxy intercepts SSL.
+
+    Returns a single concatenated string of story text.
+    """
+    if data_file is not None:
+        print(f"Loading TinyStories [{split}] from {data_file} …", flush=True)
+        with open(data_file, encoding="utf-8") as fh:
+            text = fh.read()
+        if max_chars is not None:
+            text = text[:max_chars]
+        n_stories = text.count("\n")
+        print(f"  Loaded {len(text):,} chars (~{n_stories:,} stories)", flush=True)
+        return text
+
+    if no_ssl_verify:
+        _patch_ssl_for_download()
+
     try:
         from datasets import load_dataset  # type: ignore[import]
     except ImportError:
@@ -169,6 +239,8 @@ def train(args: argparse.Namespace) -> None:
     raw_text = _load_tinystories(
         split="train",
         max_chars=args.max_chars,
+        data_file=args.data_file,
+        no_ssl_verify=args.no_ssl_verify,
     )
     segment_len = args.segment_len
     dataset = _make_dataset(raw_text, segment_len=segment_len, stride=segment_len)
@@ -187,11 +259,11 @@ def train(args: argparse.Namespace) -> None:
     # ── validation data (optional) ──────────────────────────────────────────
     val_loader: DataLoader | None = None
     if args.val_every > 0:
-        print(
-            f"Loading TinyStories [validation] (max_chars={args.val_max_chars:,}) …",
-            flush=True,
+        val_text = _load_tinystories(
+            split="validation",
+            max_chars=args.val_max_chars,
+            no_ssl_verify=args.no_ssl_verify,
         )
-        val_text = _load_tinystories(split="validation", max_chars=args.val_max_chars)
         val_dataset = _make_dataset(val_text, segment_len=segment_len, stride=segment_len)
         val_loader = DataLoader(
             val_dataset,
@@ -398,6 +470,27 @@ def _parser() -> argparse.ArgumentParser:
     p.add_argument("--segment-len", type=int, default=512,
                    help="Tokens per training segment (TBPTT chunk length)")
     p.add_argument("--batch-size", type=int, default=8)
+    p.add_argument(
+        "--data-file",
+        type=str,
+        default=None,
+        metavar="PATH",
+        help=(
+            "Path to a local UTF-8 text file of stories (newline-separated). "
+            "When provided, skips the HuggingFace Hub download entirely. "
+            "Useful for air-gapped or network-restricted environments."
+        ),
+    )
+    p.add_argument(
+        "--no-ssl-verify",
+        action="store_true",
+        default=False,
+        help=(
+            "Disable SSL certificate verification for the HuggingFace Hub download. "
+            "Development/lab use only — use when a corporate proxy causes "
+            "'self-signed certificate in certificate chain' errors."
+        ),
+    )
 
     # Model
     p.add_argument("--d-model", type=int, default=256)
