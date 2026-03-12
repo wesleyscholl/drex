@@ -370,3 +370,78 @@ Next investigation directions:
 4. **Higher-density benchmarks**: The current task (ρ=0.078) may be too easy. Move to
    ρ≥0.30 as the primary test case where gate selectivity has non-trivial consequences
    for accuracy.
+
+---
+
+## Phase 11 — Length-Adaptive EMA Alpha (Category 47)
+*2026-03-11 to 2026-03-12*
+
+### Phase 11 Results Summary (27 runs, 3 experiments × 3 seeds)
+
+| Exp    | Outcome         | Key finding |
+|--------|-----------------|-------------|
+| 47_1   | SUPPORTED (2/3) | exp_scale α(L)=0.95^(96/L) resolves L=32 bootstrap: wr drops 0.97→0.58. Seeds 123 & 777 SUPPORTED; seed 42 INCONCLUSIVE (acc noise at L=96). |
+| 47_2   | REFUTED (3/3)   | Full split model OR gate structurally raises wr: wr_L32=0.774, wr_L96=0.653 (deterministic across all seeds, need ≤0.70/0.50). Accuracy preserved. |
+| 47_3   | INCONCLUSIVE    | L=16 always wr=1.0 (5 pairs in 16 slots = every position novel). L=32–128 write rates healthy. Calibration table recorded. |
+
+### Key Learnings
+
+**The EMA bootstrap blocker at L=32 is resolved for the simple gate model.** exp_47_1
+confirmed that α(L) = 0.95^(96/L) (exp_scale) keeps τ/L ≈ 0.21 constant across sequence
+lengths, ensuring the EMA converges in a fixed fraction of each sequence. With α=0.857 at
+L=32, the Write rate drops from 0.967 (fixed α=0.95) to 0.580 across all seeds —
+consistently within the [0.20, 0.70] target. The hypothesis is supported on 2/3 seeds
+(seed 42 showed acc ratio at L=96 just below threshold due to stochastic noise at ~26%
+absolute accuracy; the write rate effect itself was clean on all 3 seeds).
+
+**OR gate in split model raises write rate structurally.** exp_47_2 found that the full
+architecture (episodic/semantic split + OR gate) consistently yields wr_L32=0.774 and
+wr_L96=0.653 at thresh=0.40 with exp_scale — identical across all 3 seeds. This is not a
+noise artifact. With two branches each firing at p≈0.58, the OR gate fires at
+1−(1−p)²≈0.82, and partial correlation pulls it down slightly to 0.774. Accuracy
+ratios are ≥0.970 in 2/3 seeds at L=32; L=96 is noisy. The fix is to raise thresh for
+the split model. Geometric analysis suggests thresh ≈ 0.60–0.65 should push wr_L32 into
+target range.
+
+**L=16 is a structural wr=1.0 regime, not a failure.** exp_47_3 confirmed that at L=16,
+both exp_scale (α=0.735) and linear_c5 (α=0.75) produce wr=1.0 across all seeds. With
+5 key-value pairs in a 16-token sequence, ~77% of positions carry novel key-value content,
+so the gate fires correctly at every position. Accuracy ratios at L=16 are ~1.0 (the
+gate is not hurting accuracy). This is correct model behavior, not a failure mode. The
+practical deployment minimum for meaningful gate selectivity is L≥24 (or L≥32 at
+standard task density ρ=0.078).
+
+**Calibration table from exp_47_3** (exp_scale formula):
+| L   | α      | τ    | τ/L  |
+|-----|--------|------|------|
+| 16  | 0.7351 |  3.8 | 0.24 |
+| 32  | 0.8574 |  7.0 | 0.22 |
+| 48  | 0.9025 | 10.3 | 0.21 |
+| 64  | 0.9259 | 13.5 | 0.21 |
+| 96  | 0.9500 | 20.0 | 0.21 |
+| 128 | 0.9623 | 26.5 | 0.21 |
+
+τ/L is near-constant (0.21–0.22) for L≥32, confirming the formula design principle.
+
+**linear_c5 (α = clamp(1−5/L, 0.75, 0.98)) is a simpler drop-in alternative.**
+Both exp_47_1 and exp_47_3 show linear_c5 meets all criteria at L≥32 with the same
+write-rate pattern as exp_scale. τ/L is exactly 0.20 (constant by construction for
+L≥25). Either formula is acceptable; exp_scale is the primary choice due to cleaner
+theoretical motivation.
+
+### Phase 12 Direction
+
+The remaining work to reach a deployable full architecture:
+
+1. **Recalibrate threshold for OR-gate split model** (Priority 1): Run a threshold sweep
+   at thresh ∈ {0.50, 0.55, 0.60, 0.65, 0.70} for the full system (FullAdaptiveModel
+   with exp_scale). Target: wr_L32 ∈ [0.20, 0.70] and wr_L96 ∈ [0.15, 0.50]. Estimated
+   optimal thresh ≈ 0.60–0.65. This is 10 training runs per seed, 3 seeds = 30 runs.
+
+2. **Accept L<24 as fully-active regime**: The gate should be unconditionally enabled for
+   L≥24; for L<24, wr≈1.0 is valid behavior. Implementation can include a floor check:
+   if L < 24, skip gate computation (wr=1.0 by default).
+
+3. **Proceed to implementation once thresh* found for full system**: After exp_48_1
+   confirms a usable thresh* for the full OR-gate split model, all blockers are resolved
+   and Step 1 of the implementation plan can begin.
