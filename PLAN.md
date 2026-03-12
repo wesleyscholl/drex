@@ -251,10 +251,52 @@ Stability, vectorization, and training quality. All four blockers from Phase 14 
 
 ---
 
-## Phase 16 — Candidates
+## Phase 16 — Pre-Publication Hardening (IN PROGRESS — 2026-03-12)
+
+Based on the pre-publication hardening plan. Goal: close documentation and
+reproducibility gaps before first arXiv submission.
+
+### Step 1 — Documentation gaps (DONE)
+
+- [x] Fix README.md `yourusername` placeholder → `wesleyscholl`
+- [x] Add honest opening paragraph explaining current state (no published checkpoint yet)
+- [x] Add "Current Results" section disclosing gap between component validation and
+  end-to-end benchmark
+- [x] Update Research Summary: "12 phases" → "15 phases"
+- [x] Add Experiment A/B training and evaluation commands to README
+- [x] Update ARCHITECTURE_FINDINGS.md header to cover Phases 1–15
+- [x] Add §11: Phase 13–15 implementation experience (F.normalize stability, NaN guard,
+  TBPTT boundary, write loop performance)
+- [x] Add §12: Component confidence classifications (high / medium / low)
+- [x] Add `--no-ssl-verify` and `--data-file` flags to `scripts/train.py` (network
+  resilience for development environments with SSL-intercepting proxies)
+- [x] Create `results/TRAINING_RUNS.md` with full Exp A/B commands, results template,
+  interpretation guide, and Phase 16 ablation roadmap
+
+### Step 2 — End-to-end benchmark (IN PROGRESS)
+
+- [ ] Run Experiment A: DrexTransformer baseline (no MemoryModule), 256d/4L, 50k steps
+- [ ] Run Experiment B: DrexTransformer + MemoryModule (thresh=0.70), same config
+- [ ] Evaluate both on passkey recall: 512/1k/2k/4k/8k/16k context lengths
+- [ ] Evaluate both on BABILong: Tasks 1–5, 2k/4k/8k context lengths
+- [ ] Fill in results/TRAINING_RUNS.md tables
+- [ ] Update README Current Results section
+
+### Step 3 — Paper (PENDING)
+
+- [ ] Write paper draft (arXiv format)
+- [ ] Add related work section (Infini-Attention, Titans, Mamba, RWKV)
+- [ ] Add ablation experiments to elevate §12.2 medium-confidence components
+- [ ] Review with researcher collaborator; check arXiv endorsement
+- [ ] Submit to arXiv (cs.LG + cs.CL)
+
+---
+
+## Phase 16 — Architecture Candidates
 
 | Item | Priority | Description |
 |---|---|---|
 | Multi-dataset training | Medium | Extend train.py to support source mixing (TinyStories + Wikipedia tokenized) with a weighted sampler. |
 | BABILong distractor density parameter | Low | Add `--distractor-density` to eval_babilong.py to control filler fraction, enabling isolation of memory capacity vs. retrieval precision. |
 | Full matrix-recurrence parallelization | Low | Replace the remaining sequential `for t` loop with a parallel scan; requires approximation or custom kernel. |
+
