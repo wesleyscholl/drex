@@ -31,6 +31,7 @@ from torch.utils.data import DataLoader
 # Allow running from repo root without installing
 sys.path.insert(0, str(Path(__file__).parent.parent / "python"))
 
+from drex.models.memory import MemoryModule, WRITE_RATE_LO, WRITE_RATE_HI
 from drex.models.transformer import DrexConfig, DrexTransformer
 from drex.training.data import SegmentDataset, collate_fn, tokenize_chars
 from drex.training.optimizer import build_optimizer, cosine_schedule_with_warmup
@@ -74,6 +75,41 @@ def _make_dataset(
 
 
 # ---------------------------------------------------------------------------
+# Validation helper
+# ---------------------------------------------------------------------------
+
+
+def _validate(
+    model: DrexTransformer,
+    val_loader: DataLoader,
+    config: DrexConfig,
+    device: torch.device,
+) -> float:
+    """
+    Compute average cross-entropy loss over the validation set.
+
+    Each batch uses fresh zero states (no TBPTT threading across shuffled
+    document boundaries).  Returns average loss as a float.
+    """
+    model.eval()
+    total_loss = 0.0
+    n_batches = 0
+    with torch.no_grad():
+        for src, tgt in val_loader:
+            src = src.to(device, non_blocking=True)
+            tgt = tgt.to(device, non_blocking=True)
+            logits, _ = model(src)   # states=None → model.init_states() called internally
+            loss = torch.nn.functional.cross_entropy(
+                logits.reshape(-1, config.vocab_size),
+                tgt.reshape(-1),
+            )
+            total_loss += loss.item()
+            n_batches += 1
+    model.train()
+    return total_loss / max(n_batches, 1)
+
+
+# ---------------------------------------------------------------------------
 # Training loop
 # ---------------------------------------------------------------------------
 
@@ -110,6 +146,27 @@ def train(args: argparse.Namespace) -> None:
         pin_memory=(device.type == "cuda"),
     )
 
+    # ── validation data (optional) ──────────────────────────────────────────
+    val_loader: DataLoader | None = None
+    if args.val_every > 0:
+        print(
+            f"Loading TinyStories [validation] (max_chars={args.val_max_chars:,}) …",
+            flush=True,
+        )
+        val_text = _load_tinystories(split="validation", max_chars=args.val_max_chars)
+        val_dataset = _make_dataset(val_text, segment_len=segment_len, stride=segment_len)
+        val_loader = DataLoader(
+            val_dataset,
+            batch_size=args.batch_size,
+            shuffle=False,          # deterministic; no TBPTT threading needed
+            collate_fn=collate_fn,
+            num_workers=0,
+            drop_last=True,
+            pin_memory=(device.type == "cuda"),
+        )
+        print(f"  Validation: {len(val_dataset):,} segments of {segment_len} tokens",
+              flush=True)
+
     # ── model ───────────────────────────────────────────────────────────────
     config = DrexConfig(
         d_model=args.d_model,
@@ -124,10 +181,17 @@ def train(args: argparse.Namespace) -> None:
         use_l3=args.use_l3,
         l3_base_path=args.l3_path,
         l3_compress=args.l3_compress,
+        use_episodic_memory=args.use_episodic_memory,
+        episodic_gate_thresh=args.episodic_gate_thresh,
     )
     model = DrexTransformer(config).to(device)
     n_params = sum(p.numel() for p in model.parameters() if p.requires_grad)
     print(f"Model: {n_params:,} trainable parameters", flush=True)
+    if config.use_episodic_memory:
+        print(
+            f"Episodic memory: enabled  gate_thresh={config.episodic_gate_thresh}",
+            flush=True,
+        )
 
     # ── optimizer + schedule ────────────────────────────────────────────────
     optimizer = build_optimizer(model, lr=args.lr, weight_decay=args.weight_decay)
@@ -155,8 +219,18 @@ def train(args: argparse.Namespace) -> None:
     model.train()
     states = model.init_states(args.batch_size, device)
 
+    # Collect MemoryModule instances for write-rate monitoring.
+    # Empty list when use_episodic_memory=False → all write-rate code is a no-op.
+    _mem_modules: list[MemoryModule] = [
+        m for m in model.modules() if isinstance(m, MemoryModule)
+    ]
+
     running_loss = 0.0
     running_n = 0
+    running_wr_sum = 0.0
+    running_wr_min = 1.0
+    running_wr_max = 0.0
+    running_wr_n = 0
     t0 = time.perf_counter()
 
     def _iter_loader():
@@ -174,6 +248,15 @@ def train(args: argparse.Namespace) -> None:
         optimizer.zero_grad()
         logits, states = model(src, states)
         states = [s.detach() for s in states]   # TBPTT boundary
+
+        # Collect per-step write rates (no-op when use_episodic_memory=False)
+        if _mem_modules:
+            step_rates = [m.last_write_rate() for m in _mem_modules]
+            step_mean = sum(step_rates) / len(step_rates)
+            running_wr_sum += step_mean
+            running_wr_min = min(running_wr_min, min(step_rates))
+            running_wr_max = max(running_wr_max, max(step_rates))
+            running_wr_n += 1
 
         loss = torch.nn.functional.cross_entropy(
             logits.reshape(-1, config.vocab_size),
@@ -198,13 +281,31 @@ def train(args: argparse.Namespace) -> None:
             ppl = math.exp(avg_loss)
             lr_now = optimizer.param_groups[0]["lr"]
             tokens_per_sec = (running_n * args.batch_size * segment_len) / elapsed
+
+            wr_suffix = ""
+            if _mem_modules and running_wr_n > 0:
+                avg_wr = running_wr_sum / running_wr_n
+                wr_suffix = (
+                    f"  wr {avg_wr:.3f}"
+                    f" [{running_wr_min:.3f},{running_wr_max:.3f}]"
+                )
+                if avg_wr < WRITE_RATE_LO or avg_wr > WRITE_RATE_HI:
+                    wr_suffix += (
+                        f"  [WARNING: write rate outside"
+                        f" [{WRITE_RATE_LO},{WRITE_RATE_HI}]]"
+                    )
+
             print(
                 f"step {global_step:>6}  loss {avg_loss:.4f}  ppl {ppl:7.2f}"
-                f"  lr {lr_now:.2e}  {tokens_per_sec:,.0f} tok/s",
+                f"  lr {lr_now:.2e}  {tokens_per_sec:,.0f} tok/s" + wr_suffix,
                 flush=True,
             )
             running_loss = 0.0
             running_n = 0
+            running_wr_sum = 0.0
+            running_wr_min = 1.0
+            running_wr_max = 0.0
+            running_wr_n = 0
             t0 = time.perf_counter()
 
         # ── checkpointing ────────────────────────────────────────────────
@@ -212,6 +313,16 @@ def train(args: argparse.Namespace) -> None:
             ckpt_path = ckpt_dir / f"step_{global_step:07d}.safetensors"
             save_checkpoint(model, ckpt_path, step=global_step)
             print(f"  Checkpoint saved → {ckpt_path}", flush=True)
+
+        # ── validation ───────────────────────────────────────────────────
+        if args.val_every > 0 and global_step % args.val_every == 0 and val_loader is not None:
+            val_loss = _validate(model, val_loader, config, device)
+            val_ppl = math.exp(val_loss)
+            print(
+                f"  [val] step {global_step:>6}"
+                f"  val_loss {val_loss:.4f}  val_ppl {val_ppl:7.2f}",
+                flush=True,
+            )
 
     # Final checkpoint
     final_path = ckpt_dir / f"step_{global_step:07d}_final.safetensors"
@@ -259,6 +370,19 @@ def _parser() -> argparse.ArgumentParser:
     p.add_argument("--l3-path", type=str, default="/tmp/drex_l3")
     p.add_argument("--l3-compress", action="store_true")
 
+    # Episodic memory (Phase 13 validated architecture)
+    p.add_argument(
+        "--use-episodic-memory",
+        action="store_true",
+        help="Enable MemoryModule per layer (thresh*=0.70 per exp_48_1, Phase 12)",
+    )
+    p.add_argument(
+        "--episodic-gate-thresh",
+        type=float,
+        default=0.70,
+        help="OR-gate threshold for MemoryModule write gate",
+    )
+
     # Infrastructure
     p.add_argument("--device", type=str, default="auto",
                    choices=["auto", "mps", "cuda", "cpu"])
@@ -268,6 +392,18 @@ def _parser() -> argparse.ArgumentParser:
     p.add_argument("--save-every", type=int, default=2000,
                    help="Save checkpoint every N steps (0 = only final)")
     p.add_argument("--log-every", type=int, default=100)
+    p.add_argument(
+        "--val-every",
+        type=int,
+        default=0,
+        help="Run validation every N steps (0 = disabled)",
+    )
+    p.add_argument(
+        "--val-max-chars",
+        type=int,
+        default=500_000,
+        help="Maximum characters to load from TinyStories validation split",
+    )
 
     return p
 

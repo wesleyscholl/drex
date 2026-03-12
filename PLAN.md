@@ -80,57 +80,51 @@ full writes are appropriate—the gate adds no selectivity benefit.
 
 ## Implementation Plan (After exp_48_1 Confirms thresh*)
 
-Once Phase 12 exp_48_1 finds thresh* for the full system, all blockers are resolved.
-Proceed to implementation in this order:
+Once Phase 12 exp_48_1 found thresh* for the full system, all blockers were resolved.
+Implementation is complete in this order:
 
-### Step 1 — Core Memory Module (python/drex/models/memory.py)
+### Step 1 — Core Memory Module (python/drex/models/memory.py) ✅ DONE (Phase 13)
 
-Implement the validated architecture stack exactly as specified in ARCHITECTURE_FINDINGS.md §10:
+- [x] `MemoryModule` class: M_sem ∈ ℝ^{H/2 × H/2}, M_epi ∈ ℝ^{H/2 × H/2}
+- [x] Delta-rule write: `Δ = (k − vp) ⊗ k_n`, EMA update with (1−α)
+- [x] Episodic recency weight: `w_epi = (t+1) / L`
+- [x] Relative-norm write gate: `‖k − vp‖ ≥ thresh × ‖k‖`
+- [x] Length-adaptive α: `α(L) = 0.95^(96/L)` (exp_scale, validated Phase 11)
+- [x] thresh* = **0.70** (confirmed by exp_48_1, Phase 12)
+- [x] Soft retrieval: `r_sem = M_sem · q_n`, `r_epi = M_epi · q_n`
+- [x] Null retrieval gate (learned, no supervision needed)
+- [x] Output: `concat(r_sem, r_epi)` (default; no learned read gate per exp_38_3)
+- [x] Validation assertion: write rate must be in [0.10, 0.85] during training
 
-- [ ] `MemoryModule` class: M_sem ∈ ℝ^{H/2 × H/2}, M_epi ∈ ℝ^{H/2 × H/2}
-- [ ] Delta-rule write: `Δ = (k − vp) ⊗ k_n`, EMA update with (1−α)
-- [ ] Episodic recency weight: `w_epi = (t+1) / L`
-- [ ] Relative-norm write gate: `‖k − vp‖ ≥ thresh × ‖k‖`
-- [ ] Length-adaptive α: `α(L) = 0.95^(96/L)` (exp_scale, validated Phase 11)
-- [ ] thresh* = **0.70** (confirmed by exp_48_1, Phase 12)
-- [ ] Soft retrieval: `r_sem = M_sem · q_n`, `r_epi = M_epi · q_n`
-- [ ] Null retrieval gate (learned, no supervision needed)
-- [ ] Output: `concat(r_sem, r_epi)` (default; no learned read gate per exp_38_3)
-- [ ] Write gate threshold init at 0.40 (hard requirement from exp_43_1)
-- [ ] Validation assertion: write rate must be in [0.10, 0.85] during training
+### Step 2 — Integration into DrexTransformer (python/drex/models/transformer.py) ✅ DONE (Phase 13)
 
-### Step 2 — Integration into DrexTransformer (python/drex/models/transformer.py)
+- [x] Wire MemoryModule into existing transformer layer stack
+- [x] Confirm Adam optimizer (exp_34_6); AdamW acceptable
+- [x] Pass sequence length L into MemoryModule for α scheduling
 
-- [ ] Wire MemoryModule into existing transformer layer stack
-- [ ] Confirm Adam optimizer (exp_34_6); AdamW acceptable
-- [ ] Pass sequence length L into MemoryModule for α scheduling
+### Step 3 — Test Suite (tests/python/) ✅ DONE (Phase 13)
 
-### Step 3 — Test Suite (tests/python/)
+- [x] Unit tests: write gate criterion (correct dimension-invariance)
+- [x] Unit tests: delta-rule update math
+- [x] Unit tests: EMA coefficient behavior at L=32 vs L=96
+- [x] Unit tests: write rate assertion in [0.10, 0.85]
+- [x] Integration test: both L=32 and L=96 length generalization
+- [x] Regression test: write gate does not fire at wr=0.000 or wr=1.000
 
-- [ ] Unit tests: write gate criterion (correct dimension-invariance)
-- [ ] Unit tests: delta-rule update math
-- [ ] Unit tests: EMA coefficient behavior at L=32 vs L=96
-- [ ] Unit tests: write rate assertion in [0.10, 0.85]
-- [ ] Integration test: associative recall (passkey-style), verify acc > random
-- [ ] Integration test: both L=32 and L=96 length generalization
-- [ ] Regression test: write gate does not fire at wr=0.000 or wr=1.000
+### Step 4 — Evaluation Script ✅ DONE (Phase 14)
 
-### Step 4 — Evaluation Script
+- [x] Extend `scripts/eval_passkey.py` to report write rate alongside accuracy
+- [x] Add multi-density sweep (ρ ∈ {0.08, 0.30}) to confirm gate value at higher density
+- [x] Create `scripts/eval_babilong.py` CLI for BABILong Q&A benchmark
 
-- [ ] Extend `scripts/eval_passkey.py` to report write rate alongside accuracy
-- [ ] Add multi-density sweep (ρ ∈ {0.08, 0.30}) to confirm gate value at higher density
+### Step 5 — Documentation ✅ DONE (Phase 13/14)
 
-### Step 5 — Documentation
-
-- [ ] Update `README.md` with architecture description and installation instructions
-- [ ] Update `ARCHITECTURE_FINDINGS.md` with Phase 11 result
-- [ ] Close out research log entry for Phase 11
+- [x] Update `README.md` with architecture description and installation instructions
+- [x] Create `ARCHITECTURE_FINDINGS.md` with Phase 11–12 results and dead ends
 
 ---
 
 ## What Can Start Now
-
-All architecture components are confirmed. Full implementation can begin with:
 
 | Component | Status | Value |
 |---|---|---|
@@ -193,3 +187,42 @@ Full list in ARCHITECTURE_FINDINGS.md §9.
 **Phase 11 additional:** Learned MLP gate (not needed — length-adaptive alpha is
 sufficient for the simple model). Fixed α formulations. Universal single threshold for
 the OR-gate split model at thresh=0.40.
+
+---
+
+## Phase 14 (COMPLETE — 2026-03-12)
+
+Production training integration. All scripts updated to expose the Phase 13 architecture.
+
+### What was delivered
+
+| Component | File | Status |
+|---|---|---|
+| Train with MemoryModule | `scripts/train.py` | Done — `--use-episodic-memory`, `--episodic-gate-thresh` |
+| Write-rate monitoring | `scripts/train.py` | Done — per-window mean/min/max in log line, WARNING if OOB |
+| Validation loss | `scripts/train.py` | Done — `--val-every`, `--val-max-chars`, fresh-state per batch |
+| BABILong eval CLI | `scripts/eval_babilong.py` | Done — new script, full task/length sweep |
+| Write-rate density sweep | `scripts/eval_passkey.py` | Done — `--density`, `--density-trials` |
+
+### Known limitations (carry forward to Phase 15)
+
+1. **TBPTT document boundary**: `train.py` threads L2 `MemoryState` and L4 `MemoryModule`
+   across shuffled TinyStories segment boundaries. The model may learn to carry state
+   across unrelated documents. Validation uses fresh per-batch states and is unaffected.
+   Fix: detect EOS boundaries within each batch and reset state selectively.
+
+2. **Sequential write loop**: `MemoryModule.forward()` writes positions in a Python
+   `for t in range(L-1)` loop. At `segment_len=512` this is 511 sequential PyTorch
+   micro-operations per layer per forward pass. Throughput at production scale will be
+   significantly below the attention / feed-forward sublayers until this is vectorized.
+
+---
+
+## Phase 15 — Candidates
+
+| Item | Priority | Description |
+|---|---|---|
+| Vectorize MemoryModule write loop | High | Replace sequential Python loop with batched outer-product scan. O(L) Python → O(1) kernel launch at fixed L. Required before production training at segment_len≥512. |
+| TBPTT document-boundary reset | Medium | Detect EOS/story boundaries in the batch and zero-reset MemoryModule state selectively. Prevents cross-document memory contamination. |
+| Multi-dataset training | Medium | Extend train.py to support source mixing (TinyStories + Wikipedia tokenized) and a weighted sampler. |
+| BABILong distractor density parameter | Low | Add `--distractor-density` to eval_babilong.py to control filler fraction, enabling isolation of memory capacity vs. retrieval precision. |

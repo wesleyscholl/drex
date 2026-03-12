@@ -29,9 +29,13 @@ import torch
 sys.path.insert(0, str(Path(__file__).parent.parent / "python"))
 
 from drex.eval.passkey import PasskeyBenchmark
-from drex.models.memory import MemoryModule
+from drex.models.memory import MemoryModule, WRITE_RATE_LO, WRITE_RATE_HI
 from drex.models.transformer import DrexConfig, DrexTransformer
 from drex.utils.config import load_checkpoint
+
+
+# Filler text used for density sweep prompts (same source as PasskeyBenchmark)
+_DISTRACTOR_STR = "The quick brown fox jumps over the lazy dog. "
 
 
 # ---------------------------------------------------------------------------
@@ -107,8 +111,94 @@ def _report_write_rates(
     print()
 
 
+def _make_density_prompt(
+    context_len: int,
+    rho: float,
+    seed: int,
+    vocab_size: int = 256,
+) -> list[int]:
+    """
+    Build a token list with approximately rho * context_len tokens occupied by
+    key sentences, distributed evenly throughout the sequence.
+
+    Used only for write-rate density measurement; not an accuracy benchmark.
+    rho=0.08 = low density; rho=0.30 = high density.
+    """
+    import random as _rng_module
+
+    rng = _rng_module.Random(seed)
+    template = "The number is: {n}. "
+    avg_len = len(template.format(n="12345"))
+    n_keys = max(1, round(rho * context_len / avg_len))
+    key_seqs = [
+        [min(ord(c), vocab_size - 1) for c in template.format(n=rng.randint(10000, 99999))]
+        for _ in range(n_keys)
+    ]
+    filler_unit = [min(ord(c), vocab_size - 1) for c in _DISTRACTOR_STR]
+    key_total = sum(len(s) for s in key_seqs)
+    gap = max(0, (context_len - key_total) // (n_keys + 1))
+    tokens: list[int] = []
+    for ks in key_seqs:
+        fill_needed = gap
+        while fill_needed > 0:
+            chunk = filler_unit[:fill_needed]
+            tokens.extend(chunk)
+            fill_needed -= len(chunk)
+            if len(chunk) == 0:
+                break
+        tokens.extend(ks)
+    while len(tokens) < context_len:
+        tokens.extend(filler_unit)
+    return [min(t, vocab_size - 1) for t in tokens[:context_len]]
+
+
+def _report_density_sweep(
+    model: DrexTransformer,
+    lengths: list[int],
+    densities: list[float],
+    device: torch.device,
+    n_trials: int,
+    vocab_size: int = 256,
+) -> None:
+    """
+    Print a write-rate table swept over (context_length, key_density) cells.
+
+    Verifies that the OR-gate threshold produces write rates within
+    [WRITE_RATE_LO, WRITE_RATE_HI] across the supported density range.
+    """
+    print("\nWrite-rate density sweep (mean wr per layer across trials):")
+    header = f"  {'Length':>8}  {'Density':>8}  mean_wr  min_wr  max_wr"
+    sep = "-" * len(header)
+    print(sep)
+    print(header)
+    print(sep)
+
+    with torch.no_grad():
+        for length in sorted(lengths):
+            for rho in sorted(densities):
+                all_rates: list[float] = []
+                for s in range(n_trials):
+                    ids_list = _make_density_prompt(length, rho, s, vocab_size)
+                    ids = torch.tensor([ids_list], dtype=torch.long, device=device)
+                    model(ids)
+                    all_rates.extend(_collect_write_rates(model))
+                if not all_rates:
+                    print(f"  {length:>8,}  {rho:>8.2f}  (no MemoryModule found)")
+                    continue
+                mean_wr = sum(all_rates) / len(all_rates)
+                flag = ""
+                if mean_wr < WRITE_RATE_LO or mean_wr > WRITE_RATE_HI:
+                    flag = "  [WARNING: outside valid range]"
+                print(
+                    f"  {length:>8,}  {rho:>8.2f}"
+                    f"  {mean_wr:>7.3f}  {min(all_rates):>6.3f}  {max(all_rates):>6.3f}"
+                    + flag
+                )
+    print(sep)
+    print()
+
+
 def _print_table(results: dict[int, dict[int, float]]) -> None:
-    """Print a markdown-style table of accuracy by context length and layer count."""
     lengths = sorted(next(iter(results.values())).keys())
     header = f"{'Config':<30}" + "".join(f"  {l//1024:>4}k" for l in lengths)
     sep = "-" * len(header)
@@ -191,6 +281,19 @@ def run_eval(args: argparse.Namespace) -> None:
         else:
             _report_write_rates(model, args.lengths, device)
 
+    # Optional density sweep
+    if args.density:
+        if not args.use_episodic_memory:
+            print("\n[note] --density has no effect without --use-episodic-memory.")
+        else:
+            _report_density_sweep(
+                model,
+                args.lengths,
+                args.density,
+                device,
+                n_trials=args.density_trials,
+            )
+
 
 # ---------------------------------------------------------------------------
 # CLI
@@ -234,6 +337,24 @@ def _parser() -> argparse.ArgumentParser:
                    help="OR-gate threshold for MemoryModule (thresh*=0.70 per exp_48_1)")
     p.add_argument("--report-write-rate", action="store_true",
                    help="Print MemoryModule write-rate table after accuracy sweep")
+    p.add_argument(
+        "--density",
+        type=float,
+        nargs="*",
+        default=[],
+        metavar="RHO",
+        help=(
+            "Key-sentence density values for write-rate density sweep "
+            "(rho = fraction of context occupied by key sentences). "
+            "Requires --use-episodic-memory. Example: --density 0.08 0.30"
+        ),
+    )
+    p.add_argument(
+        "--density-trials",
+        type=int,
+        default=5,
+        help="Number of random seeds per (length, density) cell in the density sweep",
+    )
 
     # Infrastructure
     p.add_argument("--device", type=str, default="auto",
