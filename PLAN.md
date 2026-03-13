@@ -273,20 +273,25 @@ reproducibility gaps before first arXiv submission.
 - [x] Create `results/TRAINING_RUNS.md` with full Exp A/B commands, results template,
   interpretation guide, and Phase 16 ablation roadmap
 
-### Step 2 — End-to-end benchmark (BLOCKED)
+### Step 2 — End-to-end benchmark (IN PROGRESS)
 
-**Blocker:** Exp B write loop is 20× slower than baseline at `segment_len=512` (measured:
-543 tok/s vs 11,700 for Exp A). Projected Exp B runtime: ~4.5 h for 2k steps, ~112 h for
-50k steps. Additionally, wr=0.969 at step 200 is outside [0.10, 0.85]. Exp B was killed
-via SIGKILL (exit 137) at step 200. See §11.4 in ARCHITECTURE_FINDINGS.md.
+**Throughput fix implemented (Phase 16):** Three-part write loop fix:
+1. CPU backend: move `M_sem`/`M_epi` + key tensors to CPU for the sequential loop
+2. Detached write: `kns_all.detach().to(cpu)` + `torch.no_grad()` around loop body —
+   eliminates O(L) autograd graph construction overhead
+3. `norm_out` LayerNorm on memory output — bounds residual contribution when write-path
+   gradients are absent (prevents training instability with detached write)
 
-**Required first:** CPU-backend fix for the write loop (Phase 16 Architecture Candidate,
-now HIGH priority). After fix, re-run the 2000-step probe to confirm throughput and that
-wr converges to [0.10, 0.85] by ~step 1000. Then proceed with 50k runs.
+**Measured at step 200 (2000-step probe, seg_len=512):**
+- Throughput: **2,310 tok/s** (4.3× improvement vs 543 tok/s original)
+- wr=0.987 [0.746, 1.000] at step 200 — still high, convergence in progress
+- Projected 2k-step runtime: ~59 min (feasible)
+
+Remaining write-rate convergence and full convergence metrics pending step 1000 and step 2000 results.
 
 - [x] Run Experiment A: 2000-step convergence probe complete (val_ppl 4.21, ~11,700 tok/s)
-- [ ] **[BLOCKER]** Fix write loop throughput (CPU backend for sequential bmm section)
-- [ ] Validate wr convergence at L=512 with 1000-step diagnostic run after fix
+- [x] Fix write loop throughput (CPU backend + detached write + norm_out)
+- [ ] **[IN PROGRESS]** Validate wr convergence at L=512 — probe running (step 200: wr=0.987)
 - [ ] Run Experiment A full 50k steps
 - [ ] Run Experiment B full 50k steps
 - [ ] Evaluate both on passkey recall: 512/1k/2k/4k/8k/16k context lengths
@@ -313,7 +318,8 @@ wr converges to [0.10, 0.85] by ~step 1000. Then proceed with 50k runs.
 
 | Item | Priority | Description |
 |---|---|---|
-| **Write loop CPU backend** | **HIGH — blocks Exp B** | Move `M_sem`/`M_epi` to CPU for the sequential write loop; move results back to GPU for the read. Avoids MPS per-kernel-launch overhead. Measured: 20× slowdown at seg_len=512 (543 vs 11,700 tok/s). |
+| **Write loop CPU backend + detached write** | **DONE** | Three-part fix: CPU migration, detach+no_grad, norm_out. Measured: 543 → 2,310 tok/s (4.3×) at seg_len=512 step 200. |
+| **Output LayerNorm (norm_out)** | **DONE** | Prevents M explosion with detached write (no write-path gradient). `nn.LayerNorm(d_model)` after `out_proj`. Validated: 233 tests pass, no NaN with proper warmup. |
 | **Last-layer-only memory** | **HIGH — candidate default** | Ablated: same val_ppl (2.33) as all-layers at 500 steps, 9.8% fewer params, 2.7× faster throughput (partly resolves MPS bottleneck). Needs ≥3-seed + 2k-step confirmation before changing production config. `--memory-last-layer-only` flag added. |
 | **Full-sequence residual** | **Medium-High — upgrade candidate** | Ablated: val_ppl 2.07 vs 2.33 baseline (−0.26) at no throughput cost. Needs ≥3-seed + 2k-step confirmation. `--full-seq-residual` flag added. |
 | Multi-dataset training | Medium | Extend train.py to support source mixing (TinyStories + Wikipedia tokenized) with a weighted sampler. |

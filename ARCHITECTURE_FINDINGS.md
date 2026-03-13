@@ -77,7 +77,7 @@ At position L-1 (query):
   g_null = σ(null_gate(q))            (learned scalar null-retrieval gate)
   r = g_null · r
 
-Output = out_proj(r)                  ∈ ℝ^{B × H}
+Output = norm_out(out_proj(r))         ∈ ℝ^{B × H}  (LayerNorm bounds residual contribution)
 ```
 
 ### Hyperparameters (non-negotiable)
@@ -90,7 +90,8 @@ Output = out_proj(r)                  ∈ ℝ^{B × H}
 | Episodic recency weight | **(t+1)/L** | Phase 11 validation |
 | Write gate op | **OR** over branches | exp_47_2 (AND gate degrades recall) |
 | Read combination | **concat** (no learned gate) | exp_38_3 (learned gate −10%) |
-| Null retrieval gate | **learned σ(linear(q))** | Phase 13 design |
+| Null retrieval gate | **learned σ(linear(q))** | Phase 16 ablation (+0.30 ppl without it) |
+| Output normalization | **LayerNorm(H) after out_proj** | Phase 16 (norm_out prevents M explosion with detached write) |
 
 ### Valid write rate range
 
@@ -392,15 +393,38 @@ valid wr is expected but unconfirmed at L=512 (validated only at L=32, L=96).
 
 **Fix options (Phase 16, HIGH priority — blocks Exp B):**
 
-1. **CPU backend for write loop** *(recommended first step)*: Move `M_sem`, `M_epi` to
-   CPU for the loop body; results moved back to GPU for the read phase. CPU avoids MPS
-   per-kernel-launch overhead for small sequential ops. Estimated ~5–10× speedup on M3.
+1. **CPU backend for write loop** *(implemented, Phase 16)*: Move `M_sem`, `M_epi` to
+   CPU for the loop body; results moved back to GPU for the read phase.
 
-2. **Parallel scan approximation**: Replace the sequential recurrence with a linear
-   recurrence scan. Changes delta-rule semantics; requires new write-rate micro-experiment.
+2. **Detached write (torch.no_grad + .detach())** *(implemented, Phase 16)*: Key tensors
+   (`kns_all`, `ks_all`, etc.) are detached before the CPU loop; the loop runs inside
+   `torch.no_grad()`.  This eliminates autograd graph construction for L-1 sequential
+   tensor assignments (O(L) graph nodes, ~1.7 ms/iter on CPU).  Gradient signal to
+   `sem_proj`/`epi_proj` flows through the read query path only.
 
-3. **Custom Metal kernel**: Fuse the entire write loop into one kernel. Best ceiling
-   but significant implementation complexity.
+3. **Output LayerNorm (norm_out)** *(implemented, Phase 16)*: Without write-path gradient,
+   write-key norms are unconstrained and M can grow large, destabilising training.
+   `nn.LayerNorm(d_model)` applied after `out_proj` bounds the memory residual
+   contribution regardless of M magnitude.
+
+**Phase 16 measured result (Exp B 2000-step probe, seg_len=512):**
+
+| Config | tok/s | Ratio vs baseline | Notes |
+|---|---|---|---|
+| Exp A (no MemoryModule), seg_len=512 | ~11,700 | 1.0× | Phase 15 |
+| Exp B (MemoryModule), seg_len=512 | **543** | 0.046× | Original (MPS sequential loop) |
+| Exp B + CPU backend (autograd) | ~543–600 | ~1.0× | Bottleneck shifted to O(L) autograd |
+| Exp B + CPU backend (detached) | ~1,158 | ~2× | Python loop overhead remains |
+| Exp B + CPU backend + detached + norm_out | **2,310** | **4.3×** | Measured at step 200 |
+
+At step 200, write rate: wr=0.987 [0.746, 1.000] — still outside [0.10, 0.85].
+wr convergence at L=512 is unconfirmed beyond step 200; see §11.4 blocker checklist.
+
+**Remaining bottleneck:** Python interpreter overhead for 511 iterations × 4 layers × ~15
+operations per iteration ≈ 30,660 Python/PyTorch calls per step.  The wall-time breakdown
+is approximately: ~350 ms attention+FFN (MPS) + ~250 ms CPU write loop (Python overhead) +
+~50 ms CPU-MPS data transfer = ~650 ms/step → 6,300 tok/s ceiling.  Actual: 2,310 tok/s
+suggests other overhead.  Full elimination requires parallel scan or custom Metal kernel.
 
 ---
 
