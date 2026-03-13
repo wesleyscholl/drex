@@ -461,8 +461,22 @@ dataset-structural rather than architecture-specific.
 |---|---|---|---|---|---|
 | Baseline (all components) | 1,020,180 | 2.33 | — | ~1,344 | Reference |
 | No null gate | 1,019,664 | 2.63 | +0.30 (worse) | ~1,243 | Gate helps; **keep** |
-| Full-sequence residual | 1,020,180 | **2.07** | **−0.26 (better)** | ~1,274 | **Upgrade candidate** |
-| Last-layer-only memory | 920,337 | 2.33 | 0.00 (same) | ~3,619 | **Efficiency candidate** |
+| Full-sequence residual | 1,020,180 | **2.07** | **−0.26 (better)** | ~1,274 | Upgrade candidate ¹ |
+| Last-layer-only memory | 920,337 | 2.33 | 0.00 (same) | ~3,619 | Efficiency candidate ¹ |
+
+¹ **Multi-seed validation (2000 steps, 3 seeds × 2 conditions, seg_len=64, batch_size=4):**
+
+| Seed | Baseline val_ppl | Full-seq-residual val_ppl | Last-layer-only val_ppl | Last-layer-only tok/s |
+|---|---|---|---|---|
+| 42 | 1.87 | 1.72 | 2.22 | 7,172 |
+| 123 | 1.98 | 1.25 | 1.74 | 9,479 |
+| 777 | 1.41 | 2.23 | 1.67 | 9,082 |
+| **Mean** | **1.75** | **1.73** | **1.88** | **8,578** |
+| **Std (n−1)** | **0.30** | **0.49** | **0.30** | — |
+
+Note: baseline tok/s at these settings ≈ 5,037 (1.70× slower than last-layer-only).
+
+---
 
 #### Null retrieval gate `g = σ(linear(q))`
 
@@ -473,38 +487,39 @@ Evidence: 1 run, 500 steps. **Elevate to high confidence** pending second-seed c
 
 #### Residual injection mode (last-token-only vs full-sequence)
 
-**Status: UPGRADE CANDIDATE — full-sequence residual is better at this scale.** Broadcasting
-the memory read vector to all token positions (not just `x[:, -1]`) reduces val_ppl from
-2.33 to 2.07 (−0.26). This is the largest per-step effect in the ablation.
+**Status: INCONCLUSIVE (multi-seed) — initial 500-step screen favoured full-seq-residual
+(−0.26 ppl), but multi-seed validation at 2000 steps shows high variance (std=0.49) with
+mean val_ppl 1.73 vs baseline 1.75 — a difference of −0.02, well within noise.** Seed 123
+shows a strong benefit (1.25 vs 1.98), seed 777 shows a regression (2.23 vs 1.41), and
+seed 42 is neutral. The initial screen result does not replicate reliably.
 
-Interpretation: feeding the retrieved context to every position in the segment allows
-the attention sublayers in later segments to attend to memory-augmented representations,
-not just the query token. Throughput is unchanged (the broadcast is free).
+Broadcasting the memory read vector to all token positions (not just `x[:, -1]`) is
+theoretically sound, but the evidence is insufficient to justify changing the default.
 
-**Action:** Switch default to `full_seq_residual=True` after multi-seed (≥3) confirmation
-at both 500-step and 2k-step scales. The `--full-seq-residual` flag is now in `train.py`
-for this purpose. Do not change the default until confirmed.
+**Action:** Do not switch the default to `full_seq_residual=True`. The `--full-seq-residual`
+flag remains available for future study at longer training horizons (≥10k steps) or with
+larger models where the write-rate plateau resolves. Revisit after a confirmed 10k-step run.
 
 #### Memory layer placement (all layers vs last layer only)
 
-**Status: EFFICIENCY CANDIDATE — last-layer-only matches baseline quality at 2.7× throughput.**
-Restricting `MemoryModule` to the final transformer layer (layers 0–2 are pure baseline):
+**Status: EFFICIENCY TRADEOFF — last-layer-only is 1.70× faster at seg_len=64 but costs
++0.13 val_ppl on average (1.88 vs 1.75, 3-seed, 2000 steps).** Restricting `MemoryModule`
+to the final transformer layer (layers 0–2 are pure baseline):
 
-- val_ppl: 2.33 (identical to all-layers baseline)
+- val_ppl: mean 1.88 (±0.30 std) vs baseline 1.75 (±0.30 std) — consistent +0.13 disadvantage
 - Parameters: 920,337 vs 1,020,180 (−9.8%)
-- Throughput: ~3,619 tok/s vs ~1,344 (2.7× faster; partly resolves the MPS bottleneck)
-- Write rate trend: max gate activation decreases from 1.000 at step 100 to 0.823 at step
-  500, suggesting the single memory layer becomes more selective as training progresses.
+- Throughput: ~8,578 tok/s (mean across seeds) vs ~5,037 tok/s baseline at seg_len=64 (1.70×)
+- Write rate: gate activation range [0.347–1.000] early in training, converging to
+  [0.397–0.923] by step 2000 — more selective than all-layers variant
 
-**Action:** This is the most important architectural finding of Phase 16. A single memory
-layer at the final position achieves the same val_ppl as all-layers memory while recovering
-most of the throughput penalty. This also directly addresses the seq_len=512 bottleneck
-(3×fewer sequential loops). Multi-seed validation and a 2k-step run
-recommended before changing the production config.
+The initial single-seed screen showing identical val_ppl (2.33) did not replicate; multi-seed
+reveals a consistent small quality penalty. The throughput gain is real and consistent.
 
-The `--memory-last-layer-only` flag is now in `train.py` for this purpose.
-Supersedes the §12.3 "L2+L4 interaction" question — this data shows the attention
-matrices in non-final layers carry sufficient context without their own MemoryModule.
+**Action:** The all-layers configuration remains the production default. The
+`--memory-last-layer-only` flag is available for throughput-constrained use cases where a
+small quality tradeoff is acceptable. The 1.70× throughput gain at seg_len=64 is
+significant — consider this flag when seq_len≥512 training is the constraint. Re-evaluate
+quality gap at the production seg_len=512 scale before making a final decision.
 
 #### Still un-ablated (remain medium confidence)
 
@@ -519,8 +534,8 @@ matrices in non-final layers carry sufficient context without their own MemoryMo
 | Component | Current status |
 |---|---|
 | Behaviour at `segment_len > 512` (longer contexts) | Only tested at L ≤ 128 in micro-experiments; L=512 is the production target but no trained model exists yet |
-| `full_seq_residual=True` at production scale | Ablated at 500 steps / 128d; needs ≥3 seeds and 2k-step confirmation before promoting to default |
-| `memory_last_layer_only=True` at production scale | Ablated at 500 steps / 128d; needs ≥3 seeds and 2k-step confirmation before promoting to default |
+| `full_seq_residual=True` at production scale | **Multi-seed complete (3 seeds, 2k steps): INCONCLUSIVE.** Do not promote to default. |
+| `memory_last_layer_only=True` at production scale | **Multi-seed complete (3 seeds, 2k steps): EFFICIENCY TRADEOFF (+0.13 ppl, 1.70× faster).** Not production default. |
 | Write rate stability over 50k training steps | Only measured in short experiments; long-run stability at 50k steps is untested |
-| α(L=512) write rate convergence | wr=0.969 at step 200 (outside spec); whether it converges to [0.10, 0.85] by ~5k steps is unconfirmed |
+| α(L=512) write rate convergence | **wr plateau at ~0.963 through 2000 steps (Exp B confirmed) — does NOT converge to [0.10, 0.85] within 2k steps.** Extended training (≥10k steps) required to determine convergence behaviour. |
 

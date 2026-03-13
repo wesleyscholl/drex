@@ -147,45 +147,49 @@ PYTHONPATH=python python3.12 scripts/train.py \
 
 ### Training log
 
+**Phase 16 fix:** Three-part write loop fix applied — CPU backend (move M/keys to CPU),
+detached write (`torch.no_grad()` + `.detach()`), output LayerNorm (`norm_out`).
+Throughput recovered from **543 → 2,310 tok/s** (4.3× improvement).
+
 | Metric | Value |
 |---|---|
-| Final train loss | BLOCKED — run terminated at step 200 (SIGKILL) |
-| Final train ppl | BLOCKED |
-| Final val loss | BLOCKED |
-| Final val ppl | BLOCKED |
-| Throughput at step 200, seg_len=512 | **543 tok/s** (vs Exp A ~11,700 → **20× slower**) |
-| Write rate at step 200 | **0.969** — OUTSIDE [0.10, 0.85] (see α note below) |
-| Write rate range (per batch element) | [0.645, 1.000] |
-| Throughput at seg_len=64 (short probe) | ~1,200 tok/s (9.8× slower than baseline) |
+| Final train loss | **0.3169** (step 2000) |
+| Final train ppl | **1.37** (step 2000) |
+| Final val loss | **1.4522** (step 2000) |
+| Final val ppl | **4.27** (step 2000) |
+| Throughput at step 200, pre-fix seg_len=512 | **543 tok/s** (20× slower than baseline) |
+| Throughput at step 200, post-fix seg_len=512 | **2,310 tok/s** (4.3× improvement, 5× slower than baseline) |
+| Throughput at step 400, post-fix seg_len=512 | **2,377 tok/s** (consistent) |
+| Throughput at step 2000, post-fix seg_len=512 | **3,074 tok/s** (peak; cosine LR tail) |
+| Write rate at step 200 (pre-fix, original run) | **0.969** — outside [0.10, 0.85] |
+| Write rate at step 200 (post-fix probe) | **0.987** [0.746, 1.000] — outside target |
+| Write rate at step 1000 (post-fix probe) | **0.968** [0.913, 0.993] — plateau beginning |
+| Write rate at step 2000 (post-fix probe) | **0.963** [0.911, 0.986] — **plateau confirmed; NOT converging within 2k steps** |
 | Write rate at seg_len=64 | 0.456–0.491 ✓ |
-| Parameters | 4,792,852 |
+| Parameters (with norm_out LayerNorm) | **4,794,900** (+2,048 vs original) |
 
-> **Throughput blocker (Phase 16 — HIGH priority):** `MemoryModule.forward()` contains a
-> `for t in range(L-1)` loop with 4 sequential `torch.bmm` calls per iteration. At L=512
-> with 4 transformer layers that is **4 × 511 × 4 = 8,176 sequential GPU kernel launches
-> per forward pass**. On MPS each small-tensor bmm has significant per-launch overhead;
-> the measured rate is 543 tok/s vs 11,700 for the baseline — **20× slowdown**. The
-> 2000-step probe run was killed via SIGKILL (exit 137) after step 200, estimated ~27
-> minutes per 200-step interval. Projected full runtime:
+> **Throughput fix (Phase 16 — completed):** Three-part fix implemented and committed.
 >
-> | Run | Steps | Estimated wall-clock |
+> | Fix | Throughput | Notes |
 > |---|---|---|
-> | 2000-step probe | 2,000 | ~4.5 hours |
-> | 50k benchmark | 50,000 | ~112 hours |
+> | Original (MPS sequential loop) | 543 tok/s | 20× slower than baseline |
+> | CPU backend without detach | ~543–600 tok/s | Bottleneck shifted to O(L) autograd |
+> | CPU backend with detach (no_grad) | ~1,158 tok/s | Python loop overhead remains |
+> | CPU + detach + norm_out | **2,310 tok/s** | 4.3× improvement; 5× below Exp A baseline |
 >
-> **α calibration note (write rate at L=512):** The `α(L)` formula (`α = 0.95^(96/L)`)
+> Remaining gap to baseline (11,700 tok/s): Python interpreter overhead at 511 iterations × 4 layers × ~15 ops ≈ 30,660 Python/PyTorch calls per step. Full elimination requires parallel scan or custom Metal kernel.
+>
+> **α calibration note (write rate at L=512 — CONFIRMED):** The `α(L)` formula (`α = 0.95^(96/L)`)
 > gives α≈0.990 at L=512. With `(1−α)=0.010`, each delta-rule update is only 1% of its
 > full magnitude. Early in training the matrices are near-zero, so `vps ≈ 0` and the
 > prediction error `||ks − vps|| = ||ks||` almost always exceeds `thresh × ||ks||` when
 > thresh=0.70 < 1. This forces wr≈1.0 until the matrices populate enough to match keys.
-> At step 200 (only 1,600 tokens seen per matrix layer), wr=0.969 is expected.
-> Whether wr converges into [0.10, 0.85] by step ~5000 is untested. The α formula was
-> validated at L=32 (wr=0.581) and L=96 (wr=0.421); extrapolation to L=512 is unconfirmed.
->
-> **Fix required before full Exp B run:**
-> Primary fix: move the sequential write loop to CPU backend to avoid MPS kernel-launch
-> overhead. Secondary: validate that wr converges into [0.10, 0.85] by step ~5000 at
-> L=512 once throughput is resolved (could use a short 1000-step diagnostic run).
+> **Confirmed (Exp B 2000-step probe): wr plateau at 0.987 → 0.972 → 0.968 → 0.965 → 0.963
+> through all 2000 steps. Write rate does NOT converge to [0.10, 0.85] within 2000 steps at L=512.**
+> The earlier estimate of convergence by ~5000 steps was optimistic. Extended training
+> (≥10k steps) is required to determine if the write rate converges to spec.
+> The α formula was validated at L=32 (wr=0.581) and L=96 (wr=0.421); extrapolation to
+> L=512 overestimated convergence speed.
 
 ---
 

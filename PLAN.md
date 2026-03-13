@@ -285,13 +285,18 @@ reproducibility gaps before first arXiv submission.
 **Measured at step 200 (2000-step probe, seg_len=512):**
 - Throughput: **2,310 tok/s** (4.3× improvement vs 543 tok/s original)
 - wr=0.987 [0.746, 1.000] at step 200 — still high, convergence in progress
-- Projected 2k-step runtime: ~59 min (feasible)
 
-Remaining write-rate convergence and full convergence metrics pending step 1000 and step 2000 results.
+**Exp B 2000-step probe COMPLETE:**
+- Final train loss: 0.3169, ppl 1.37 (step 2000)
+- Final val loss: 1.4522, val_ppl **4.27** (step 2000)
+- Write rate at step 2000: **0.963** [0.911, 0.986] — **PLATEAU CONFIRMED**
+- Write rate does NOT converge to [0.10, 0.85] within 2000 steps at L=512.
+  Extended training (≥10k steps) required to determine convergence behaviour.
+- 0 NaN skips during probe (NaN guard working correctly)
 
 - [x] Run Experiment A: 2000-step convergence probe complete (val_ppl 4.21, ~11,700 tok/s)
 - [x] Fix write loop throughput (CPU backend + detached write + norm_out)
-- [ ] **[IN PROGRESS]** Validate wr convergence at L=512 — probe running (step 200: wr=0.987)
+- [x] Validate wr convergence at L=512 — **CONFIRMED PLATEAU: wr≈0.963 at step 2000, does not converge to [0.10, 0.85] within 2k steps**
 - [ ] Run Experiment A full 50k steps
 - [ ] Run Experiment B full 50k steps
 - [ ] Evaluate both on passkey recall: 512/1k/2k/4k/8k/16k context lengths
@@ -305,10 +310,13 @@ Remaining write-rate convergence and full convergence metrics pending step 1000 
 - [ ] Add related work section (Infini-Attention, Titans, Mamba, RWKV)
 - [x] Add ablation experiments to elevate §12.2 medium-confidence components
       → Phase 16 micro-ablations complete (see §12.2 in ARCHITECTURE_FINDINGS.md):
-         null gate: keep (+0.30 ppl without it); full-seq-residual: better (−0.26 ppl);
-         last-layer-only: same quality at 2.7× throughput; flags added to train.py + tests
-- [ ] **[FOLLOW-UP]** Multi-seed (≥3) + 2k-step validation for full-seq-residual and
-      last-layer-only before promoting either to production default
+         null gate: keep (+0.30 ppl without it); full-seq-residual: initial screen −0.26 ppl;
+         last-layer-only: same quality at 2.7× throughput (single seed); flags added to train.py + tests
+- [x] **[DONE]** Multi-seed (3 seeds × 2000 steps) validation for full-seq-residual and
+      last-layer-only:
+      - full-seq-residual: **INCONCLUSIVE** (mean 1.73 vs baseline 1.75, std=0.49 — high variance)
+      - last-layer-only: **EFFICIENCY TRADEOFF** (mean 1.88 vs 1.75, +0.13 ppl; 1.70× faster)
+      Neither condition promoted to production default.
 - [ ] Review with researcher collaborator; check arXiv endorsement
 - [ ] Submit to arXiv (cs.LG + cs.CL)
 
@@ -320,8 +328,8 @@ Remaining write-rate convergence and full convergence metrics pending step 1000 
 |---|---|---|
 | **Write loop CPU backend + detached write** | **DONE** | Three-part fix: CPU migration, detach+no_grad, norm_out. Measured: 543 → 2,310 tok/s (4.3×) at seg_len=512 step 200. |
 | **Output LayerNorm (norm_out)** | **DONE** | Prevents M explosion with detached write (no write-path gradient). `nn.LayerNorm(d_model)` after `out_proj`. Validated: 233 tests pass, no NaN with proper warmup. |
-| **Last-layer-only memory** | **HIGH — candidate default** | Ablated: same val_ppl (2.33) as all-layers at 500 steps, 9.8% fewer params, 2.7× faster throughput (partly resolves MPS bottleneck). Needs ≥3-seed + 2k-step confirmation before changing production config. `--memory-last-layer-only` flag added. |
-| **Full-sequence residual** | **Medium-High — upgrade candidate** | Ablated: val_ppl 2.07 vs 2.33 baseline (−0.26) at no throughput cost. Needs ≥3-seed + 2k-step confirmation. `--full-seq-residual` flag added. |
+| **Last-layer-only memory** | **DONE — EFFICIENCY TRADEOFF** | Multi-seed (3 seeds, 2k steps): mean val_ppl 1.88 vs baseline 1.75 (+0.13); 1.70× faster (8,578 vs 5,037 tok/s at seg_len=64). Not production default. Use `--memory-last-layer-only` for throughput-constrained runs. |
+| **Full-sequence residual** | **DONE — INCONCLUSIVE** | Multi-seed (3 seeds, 2k steps): mean val_ppl 1.73 vs baseline 1.75 (−0.02); std=0.49 (high variance). Initial 500-step screen did not replicate. Do not change default. Revisit at ≥10k steps. |
 | Multi-dataset training | Medium | Extend train.py to support source mixing (TinyStories + Wikipedia tokenized) with a weighted sampler. |
 | BABILong distractor density parameter | Low | Add `--distractor-density` to eval_babilong.py to control filler fraction, enabling isolation of memory capacity vs. retrieval precision. |
 | Full matrix-recurrence parallelization | Low | Replace the remaining sequential `for t` loop with a parallel scan; requires approximation or custom kernel. |
