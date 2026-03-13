@@ -235,6 +235,16 @@ def train(args: argparse.Namespace) -> None:
         device = torch.device(args.device)
     print(f"Device: {device}", flush=True)
 
+    # ── reproducibility ─────────────────────────────────────────────────────
+    import random as _random
+    import numpy as _np
+    _random.seed(args.seed)
+    _np.random.seed(args.seed)
+    torch.manual_seed(args.seed)
+    if torch.cuda.is_available():
+        torch.cuda.manual_seed_all(args.seed)
+    print(f"Seed: {args.seed}", flush=True)
+
     # ── data ────────────────────────────────────────────────────────────────
     raw_text = _load_tinystories(
         split="train",
@@ -511,6 +521,13 @@ def _parser() -> argparse.ArgumentParser:
     p.add_argument("--dropout", type=float, default=0.1)
     p.add_argument("--grad-ckpt", action="store_true",
                    help="Enable gradient checkpointing to reduce VRAM at cost of speed")
+    p.add_argument(
+        "--seed",
+        type=int,
+        default=42,
+        help="Global random seed for torch, numpy, and Python random (default: 42).  "
+             "Set different values for multi-seed validation runs.",
+    )
 
     # Optimizer
     p.add_argument("--steps", type=int, default=10_000)
