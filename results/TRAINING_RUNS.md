@@ -78,7 +78,8 @@ DrexTransformer without MemoryModule. This is the control condition.
 | grad_clip | 1.0 |
 | use_episodic_memory | False |
 | reset_on_boundary | True |
-| ~parameters | ~6.3M (estimated) |
+| seed | 42 |
+| ~parameters | 4,264,464 (measured) |
 
 ### Command
 
@@ -90,6 +91,7 @@ PYTHONPATH=python python3.12 scripts/train.py \
   --lr 3e-4 --warmup-steps 2000 --grad-clip 1.0 \
   --val-every 1000 --val-max-chars 500000 \
   --reset-on-boundary \
+  --seed 42 \
   --ckpt-dir checkpoints/exp_a \
   --save-every 5000 \
   --no-ssl-verify \
@@ -126,7 +128,8 @@ Same as Experiment A, plus:
 |---|---|
 | use_episodic_memory | True |
 | episodic_gate_thresh | 0.70 (thresh* confirmed exp_48_1) |
-| ~parameters | ~8.1M (estimated: +4 × 2 × (256/2)² × 5 params per MemoryModule) |
+| seed | 42 |
+| parameters | 4,794,900 (measured; +2,048 for norm_out LayerNorm vs earlier estimate) |
 
 ### Command
 
@@ -139,6 +142,7 @@ PYTHONPATH=python python3.12 scripts/train.py \
   --use-episodic-memory --episodic-gate-thresh 0.70 \
   --val-every 1000 --val-max-chars 500000 \
   --reset-on-boundary \
+  --seed 42 \
   --ckpt-dir checkpoints/exp_b \
   --save-every 5000 \
   --no-ssl-verify \
