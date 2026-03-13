@@ -384,31 +384,37 @@ If SUPPORTED: add `alpha_warmup_steps` to `MemoryModule`, `--alpha-warmup-steps`
 
 ---
 
-## Phase 19 — Ablation Completeness (PENDING)
+## Phase 19 — Ablation Completeness (PENDING — code infrastructure READY)
 
 *Trigger: Phase 17 complete. Scale: d_model=256, seg_len=512, 10k steps, 3 seeds.*
+
+**Code prep (2026-03-13 — DONE, commit aa24098):**
+- `use_recency_weight: bool = True` added to `MemoryModule` and `DrexConfig`; `--no-recency-weight` in `train.py`
+- `use_l2: bool = True` added to `DrexConfig` and `HybridAttention`; `--no-l2` in `train.py`
+- 15 new tests; 256 total, 100% branch coverage
 
 ### exp_50 — Full-sequence residual at 10k steps (resolve INCONCLUSIVE)
 
 Current evidence: 2k-step, std=0.49 — inconclusive. Need 10k steps to reduce variance.
-Success criterion: ≥0.05 val_ppl benefit (3/3 seeds) to change default.
+Success criterion: ≥0.05 val_ppl benefit (≥2/3 seeds) to change default.
+Flag `--full-seq-residual` already exists — no code changes needed.
 
-- [ ] Run 3 seeds × 10k steps × {baseline, full-seq-residual}
+- [ ] Run 3 seeds × 10k steps × {baseline, `--full-seq-residual`}
 - [ ] Record verdict; update ARCHITECTURE_FINDINGS.md §12.2
 
 ### exp_51 — Recency weight ablation (first controlled test)
 
-Test whether `w_t = (t+1)/L` in episodic branch provides any benefit.
-If REFUTED: merge M_epi into M_sem (single H×H matrix, simpler architecture).
+Test whether `w_t = (t+1)/L` in episodic branch provides any benefit vs uniform `w_t=1.0`.
+If REFUTED (no benefit): consider merging M_epi into M_sem (halves L4 state size).
 
-- [ ] Run 3 seeds × 10k steps × {w_t=(t+1)/L, w_t=1.0}
+- [ ] Run 3 seeds × 10k steps × {baseline, `--no-recency-weight`}
 - [ ] Record verdict; update ARCHITECTURE_FINDINGS.md §12
 
 ### exp_52 — L2 vs L4 interaction (are they complementary or redundant?)
 
 Test L2-only, L4-only, L2+L4 to confirm the tiers are complementary.
 
-- [ ] Run 3 seeds × 10k steps × {L2+L4, L4-only, L2-only}
+- [ ] Run 3 seeds × 10k steps × {L2+L4, `--no-l2` (L4-only), L2-only (no `--use-episodic-memory`)}
 - [ ] Record verdict; update ARCHITECTURE_FINDINGS.md §1
 
 ---
