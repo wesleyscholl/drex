@@ -102,7 +102,7 @@ PYTHONPATH=python python3.12 scripts/train.py \
 
 | Metric | Value |
 |---|---|
-| Status | **IN PROGRESS** — step 16,800 / 50,000 (2026-03-13) |
+| Status | **IN PROGRESS** — resumed from step 20,000 / 50,000 (2026-03-13) |
 | Best val_ppl so far | **1.82** at step 16,000 (resumed run, correct LR) |
 | Steady-state throughput | ~13,000–15,000 tok/s (MPS, resumed from step 15k) |
 | NaN skips total | 0 |
@@ -327,12 +327,12 @@ After Exp A/B complete, run these ablations to elevate medium-confidence compone
 (§12.2 in ARCHITECTURE_FINDINGS.md) to high confidence or refute them:
 
 ```bash
-# Ablation C — no null retrieval gate
-# Requires: add --no-null-gate flag to train.py (not yet implemented)
+# Ablation C — no null retrieval gate (exp_50-style: verify null gate benefit at 10k steps)
+# Flag: --no-null-gate (implemented Phase 16)
 
 # Ablation D — full-sequence residual (not last-token-only)
-# Requires: change x[:, -1] = x[:, -1] + mem_r to a full-sequence residual
+# Flag: --full-seq-residual (implemented Phase 16; exp_50 planned in Phase 19)
 
-# Ablation E — L4 only (disable L2 InfiniAttention)
-# Requires: add --no-l2 flag to train.py
+# Ablation E — L4 only (disable L2 Infini-Attention)
+# Flag: --no-l2 (implemented Phase 19, commit aa24098; exp_52 planned in Phase 19)
 ```
