@@ -21,6 +21,7 @@ import torch.nn.functional as F
 
 from drex.models.attention import HybridAttention
 from drex.models.hdc_encoder import HDCEncoder
+from drex.models.mamba import MambaLayer
 from drex.models.memory import LayerState, MemoryModule
 from drex.models.memory_esn import EchoStateMemory
 
@@ -62,6 +63,11 @@ class DrexConfig:
     hdc_dim: int = 4096                 # hypervector dimension (must be ≥ d_model)
     hdc_normalize: bool = True          # L2-normalise hypervectors before readdown
     hdc_seed: int = 0                   # seed for reproducible projection weights
+    # Phase 25 (DREX-UNIFIED) — Mamba-1 SSM backbone
+    use_mamba: bool = False             # replace L1 sliding-window attention with Mamba SSM
+    mamba_d_state: int = 16             # SSM state expansion N
+    mamba_d_conv: int = 4               # causal depthwise-conv kernel width
+    mamba_expand: int = 2               # inner-dimension expansion factor E (d_inner = E·d_model)
 
 
 class FeedForward(nn.Module):
@@ -91,12 +97,22 @@ class DrexLayer(nn.Module):
         self.layer_idx = layer_idx
         self.l3_bridge = l3_bridge
 
-        self.attn = HybridAttention(
-            d_model=config.d_model,
-            n_heads=config.n_heads,
-            window_size=config.window_size,
-            use_l2=config.use_l2,
-        )
+        if config.use_mamba:
+            self.attn: nn.Module = MambaLayer(
+                d_model=config.d_model,
+                n_heads=config.n_heads,
+                d_state=config.mamba_d_state,
+                d_conv=config.mamba_d_conv,
+                expand=config.mamba_expand,
+                use_l2=config.use_l2,
+            )
+        else:
+            self.attn = HybridAttention(
+                d_model=config.d_model,
+                n_heads=config.n_heads,
+                window_size=config.window_size,
+                use_l2=config.use_l2,
+            )
         self.ff = FeedForward(config.d_model, config.ff_mult, config.dropout)
         self.norm1 = nn.LayerNorm(config.d_model)
         self.norm2 = nn.LayerNorm(config.d_model)

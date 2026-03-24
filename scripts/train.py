@@ -317,6 +317,10 @@ def train(args: argparse.Namespace) -> None:
         hdc_dim=args.hdc_dim,
         hdc_normalize=not args.no_hdc_normalize,
         hdc_seed=args.hdc_seed,
+        use_mamba=args.use_mamba,
+        mamba_d_state=args.mamba_d_state,
+        mamba_d_conv=args.mamba_d_conv,
+        mamba_expand=args.mamba_expand,
     )
     model = DrexTransformer(config).to(device)
     n_params = sum(p.numel() for p in model.parameters() if p.requires_grad)
@@ -352,6 +356,15 @@ def train(args: argparse.Namespace) -> None:
             f"  normalize={config.hdc_normalize}"
             f"  seed={config.hdc_seed}"
             f"  [zero trainable params]",
+            flush=True,
+        )
+    if config.use_mamba:
+        print(
+            f"Mamba backbone: enabled  d_state={config.mamba_d_state}"
+            f"  d_conv={config.mamba_d_conv}"
+            f"  expand={config.mamba_expand}"
+            f"  d_inner={config.mamba_expand * config.d_model}"
+            f"  [L1 replaced by Mamba SSM]",
             flush=True,
         )
 
@@ -695,6 +708,32 @@ def _parser() -> argparse.ArgumentParser:
         type=int,
         default=0,
         help="Seed for reproducible HDC projection weights (default: 0)",
+    )
+
+    # Phase 25 (DREX-UNIFIED) — Mamba-1 SSM backbone
+    p.add_argument(
+        "--use-mamba",
+        action="store_true",
+        default=False,
+        help="Replace L1 sliding-window attention with Mamba-1 SSM (Phase 25)",
+    )
+    p.add_argument(
+        "--mamba-d-state",
+        type=int,
+        default=16,
+        help="Mamba SSM state expansion N (default: 16)",
+    )
+    p.add_argument(
+        "--mamba-d-conv",
+        type=int,
+        default=4,
+        help="Mamba causal depthwise-conv kernel width (default: 4)",
+    )
+    p.add_argument(
+        "--mamba-expand",
+        type=int,
+        default=2,
+        help="Mamba inner-dimension expansion factor E; d_inner = E · d_model (default: 2)",
     )
 
     # Infrastructure
