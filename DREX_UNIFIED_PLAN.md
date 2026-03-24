@@ -1,7 +1,7 @@
 # DREX-UNIFIED PLAN
 # Architecture Evolution & Forward Research Roadmap
 
-*Created: 2026-03-24 | Updated: 2026-03-24 (Phase 24 complete) | Status: Active*
+*Created: 2026-03-24 | Updated: 2026-03-24 (Phase 25 complete, POC sprints planned) | Status: Active*
 *Synthesizes: Phases 1–22 findings + architectural research from March 2026 sessions*
 
 **See DREX_UNIFIED_SPEC.md for the full per-component interface spec, tensor shapes,
@@ -16,7 +16,7 @@ validation criteria, and phase gates.**
 | 13–16 | MemoryModule (L2+L4)     | models/memory.py                | ✅ DONE              |
 | 23    | EchoStateMemory (L1 ESN) | models/memory_esn.py            | ✅ DONE 170ff80      |
 | 24    | HDCEncoder               | models/hdc_encoder.py           | ✅ DONE 999d067      |
-| 25    | Mamba SSM Backbone       | models/mamba.py                 | 🔲 NEXT              |
+| 25    | Mamba SSM Backbone       | models/mamba.py                 | ✅ DONE 0f16216      |
 | 26    | DREX Controller + Reward | models/controller.py + reward.py| 🔲 After Phase 25    |
 | 27    | NoProp Semantic (L3)     | models/semantic.py              | 🔲 After Phase 22 ✓  |
 | 28    | KAN Readout              | models/kan_readout.py           | 🔲 After Phase 25    |
@@ -256,19 +256,206 @@ The Phase 1–16 research does not become irrelevant. Key findings carry forward
 
 ## Part 6 — Phased Forward Plan
 
-### Current priority: Phase 25 — Mamba SSM Backbone.
+### Current priority: POC Sprint Campaign — prove DREX-UNIFIED beats baseline.
 
-**Phases 23 (ESN) and 24 (HDC Encoder) are COMPLETE.** Phase 1 of the DREX-UNIFIED
-component build is done. The two zero-cost fixed encoders are in the repo and tested.
+**Phases 23, 24, 25 are COMPLETE.** All modular components exist, are tested, and
+are independently togglable. The next goal is no longer implementation — it is
+EVIDENCE. Run the 5-sprint campaign below to produce the first empirical proof that
+the DREX-UNIFIED architecture is superior to the baseline transformer.
 
-Next immediate actions:
-1. Implement `python/drex/models/mamba.py` (Mamba-1/2 SSM layers)
-2. Wire Mamba backbone behind `--use-mamba` flag in `DrexConfig` + `train.py`
-3. Run exp_57 (Mamba backbone vs transformer baseline)
-4. If exp_57 passes, proceed to Phase 26 (RL Controller)
+---
 
-Exp A/B baselines are still needed to unlock exp_53–56 (ESN/HDC validation experiments).
-Run Phases 17–22 when Exp A/B produce final checkpoints, but do NOT block Phase 25 on them.
+## POC Sprint Campaign
+
+Goal: Produce empirical evidence that Mamba + ESN + HDC outperforms the baseline
+transformer on long-context language modeling at equal or lower compute budget.
+
+All experiments: TinyStories char-level, d=128, n_layers=4, n_heads=4, window_size=128,
+segment_len=128, batch_size=8, 10k steps, 3 seeds (42, 43, 44 for statistical confidence).
+
+Fast iteration scale (d=128, 10k steps): ~15–25 min/run on M3. 3 seeds = ~1h/sprint.
+
+Success criterion (global): ≥1 sprint beats baseline val_ppl by ≥0.10 across ≥2/3 seeds.
+
+---
+
+### Sprint 1 — Baseline (exp_poc_a)
+
+**Goal:** Establish the floor. Every subsequent sprint must beat this.
+
+**What it measures:** Transformer L1 (SWA) + L2 (InfiniAttention). No episodic memory.
+
+```bash
+python scripts/train.py \
+  --d-model 128 --n-heads 4 --n-layers 4 --segment-len 128 \
+  --steps 10000 --batch-size 8 --val-every 500 \
+  --log-every 100 --save-every 5000 \
+  --ckpt-dir checkpoints/poc_a_s42 --seed 42
+
+python scripts/train.py \
+  --d-model 128 --n-heads 4 --n-layers 4 --segment-len 128 \
+  --steps 10000 --batch-size 8 --val-every 500 \
+  --log-every 100 --save-every 5000 \
+  --ckpt-dir checkpoints/poc_a_s43 --seed 43
+
+python scripts/train.py \
+  --d-model 128 --n-heads 4 --n-layers 4 --segment-len 128 \
+  --steps 10000 --batch-size 8 --val-every 500 \
+  --log-every 100 --save-every 5000 \
+  --ckpt-dir checkpoints/poc_a_s44 --seed 44
+```
+
+**Record:** median val_ppl at step 10k across 3 seeds → `results/poc_sprint1.md`
+
+**Gate to proceed:** runs converge (val_ppl < 2.5 at step 10k)
+
+---
+
+### Sprint 2 — Mamba Backbone (exp_poc_b = exp_57)
+
+**Goal:** Replace L1 SWA with Mamba SSM. Test the core backbone swap.
+
+**Hypothesis:** Mamba's selective state-space dynamics give similar or better
+perplexity vs SWA, with O(n) complexity at any segment length.
+
+```bash
+python scripts/train.py \
+  --d-model 128 --n-heads 4 --n-layers 4 --segment-len 128 \
+  --use-mamba --mamba-d-state 16 --mamba-d-conv 4 --mamba-expand 2 \
+  --steps 10000 --batch-size 8 --val-every 500 \
+  --log-every 100 --save-every 5000 \
+  --ckpt-dir checkpoints/poc_b_s42 --seed 42
+# (repeat for seeds 43, 44)
+```
+
+**Success criterion:** median val_ppl(Sprint 2) ≤ median val_ppl(Sprint 1) + 0.20
+  (within 0.20 of baseline is acceptable; better than baseline is the target)
+
+**Diagnostic:** if Mamba is ≥0.5 worse, check that log_A gradient is flowing — the
+selective scan must be learning, not just passing state unchanged (D-skip over-dominates)
+
+**If fails:** reduce mamba_d_state to 8, increase mamba_expand to 4, retry.
+
+---
+
+### Sprint 3 — Mamba + ESN Episodic Memory (exp_poc_c = exp_58)
+
+**Goal:** Add zero-training-cost associative memory on top of the Mamba backbone.
+
+**Hypothesis:** ESN working memory provides the episodic recall that Mamba's SSM
+state cannot hold at O(1) memory — combination should beat either alone.
+
+```bash
+python scripts/train.py \
+  --d-model 128 --n-heads 4 --n-layers 4 --segment-len 128 \
+  --use-mamba --mamba-d-state 16 --mamba-d-conv 4 --mamba-expand 2 \
+  --use-episodic-memory --use-esn-memory \
+  --esn-reservoir-mult 4 --esn-spectral-radius 0.95 \
+  --steps 10000 --batch-size 8 --val-every 500 \
+  --log-every 100 --save-every 5000 \
+  --ckpt-dir checkpoints/poc_c_s42 --seed 42
+# (repeat for seeds 43, 44)
+```
+
+**Success criterion:** median val_ppl(Sprint 3) < median val_ppl(Sprint 2)
+
+**Diagnostic:** print `wr` (write rate) at each log step — must be in [0.10, 0.85].
+If wr > 0.85 (over-writing), decrease `--episodic-gate-thresh` from 0.70 to 0.50.
+If wr < 0.10 (under-writing), decrease to 0.40 (hard floor from exp_43_1).
+
+**Also run** passkey eval after training:
+```bash
+python -m drex.eval.passkey --checkpoint checkpoints/poc_c_s42/step_0010000.safetensors \
+  --max-context 1024
+```
+
+---
+
+### Sprint 4 — Full DREX-UNIFIED Core: Mamba + ESN + HDC (exp_poc_d)
+
+**Goal:** Add HDC encoder as the zero-training-cost input lifter.
+
+**Hypothesis:** HDC compositional encoding gives the ESN reservoir richer structure
+to write into — the three zero-cost or near-zero-cost components together form a
+synergistic system.
+
+```bash
+python scripts/train.py \
+  --d-model 128 --n-heads 4 --n-layers 4 --segment-len 128 \
+  --use-mamba --mamba-d-state 16 --mamba-d-conv 4 --mamba-expand 2 \
+  --use-episodic-memory --use-esn-memory \
+  --esn-reservoir-mult 4 --esn-spectral-radius 0.95 \
+  --use-hdc-encoder --hdc-dim 512 --hdc-seed 0 \
+  --steps 10000 --batch-size 8 --val-every 500 \
+  --log-every 100 --save-every 5000 \
+  --ckpt-dir checkpoints/poc_d_s42 --seed 42
+# (repeat for seeds 43, 44)
+```
+
+**Success criterion:** median val_ppl(Sprint 4) ≤ median val_ppl(Sprint 3)
+  (adding HDC must not hurt, and ideally helps by ≥0.05 ppl)
+
+**Diagnostic:** if HDC hurts, try hdc_dim=256 (closer to d_model). If still hurts,
+the problem may be that hdc_dim >> d_model creates too large a readdown bottleneck —
+test with hdc_dim=256 and hdc_normalize=False.
+
+**Count trainable params:**
+```bash
+# Should show model with ≥50% fewer trainable params vs Sprint 1 baseline
+# (ESN reservoir + HDC projections are all frozen buffers)
+```
+
+---
+
+### Sprint 5 — Scale + Proof (exp_poc_e)
+
+**Goal:** Take the best config from Sprints 2–4 and scale to d=256, 8-layer,
+50k steps, longer context. This is the "architecture kicks ass" run.
+
+```bash
+# Use best Sprint config + increase scale:
+python scripts/train.py \
+  --d-model 256 --n-heads 4 --n-layers 8 --segment-len 512 \
+  --use-mamba --mamba-d-state 16 --mamba-d-conv 4 --mamba-expand 2 \
+  --use-episodic-memory --use-esn-memory \
+  --esn-reservoir-mult 4 --esn-spectral-radius 0.95 \
+  --use-hdc-encoder --hdc-dim 1024 \
+  --steps 50000 --batch-size 8 --val-every 1000 \
+  --log-every 200 --save-every 5000 \
+  --ckpt-dir checkpoints/poc_e_s42 --seed 42
+```
+
+**Run evaluations:**
+```bash
+python -m drex.eval.passkey \
+  --checkpoint checkpoints/poc_e_s42/step_0050000_final.safetensors \
+  --max-context 4096
+
+python -m drex.eval.babilong \
+  --checkpoint checkpoints/poc_e_s42/step_0050000_final.safetensors
+```
+
+**POC success criteria (all 3 must hold):**
+1. val_ppl ≤ Sprint 1 baseline (transformer + no memory) at equal step budget
+2. passkey retrieval depth ≥ 2× Sprint 1 baseline (memory is doing something)
+3. Model has ≤ training_cost_score of baseline (measure: track-record tok/s * param count)
+
+**If all 3 pass:** the paper is writing itself. Update results/TRAINING_RUNS.md and
+submit to arXiv. **This is the experimental proof that DREX-UNIFIED works.**
+
+---
+
+## Sprint Checklist & Tracking
+
+| Sprint | Config                        | Status     | Best val_ppl | Notes |
+|--------|-------------------------------|------------|--------------|-------|
+| 1      | Baseline transformer          | 🔲 TODO    | —            | seeds 42, 43, 44 |
+| 2      | + Mamba backbone              | 🔲 TODO    | —            | seeds 42, 43, 44 |
+| 3      | + ESN episodic memory         | 🔲 TODO    | —            | seeds 42, 43, 44 |
+| 4      | + HDC encoder                 | 🔲 TODO    | —            | seeds 42, 43, 44 |
+| 5      | Scale: d=256, 8L, 50k steps   | 🔲 TODO    | —            | seed 42 only     |
+
+Update this table as each sprint completes.
 
 ---
 
