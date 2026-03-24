@@ -1,5 +1,7 @@
 # Drex
 
+<img width="500" height="500" alt="Gemini_Generated_Image_m59f8em59f8em59f" src="https://github.com/user-attachments/assets/74881eac-690a-41c3-9c58-3a4faa8bc620" />
+
 Drex is an experimental transformer architecture with a four-tier memory hierarchy,
 implementing a validated episodic/semantic split associative memory module. The
 architecture was developed through 16 phases of hypothesis-driven research across 247+
