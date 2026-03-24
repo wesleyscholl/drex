@@ -1,8 +1,27 @@
 # DREX-UNIFIED PLAN
 # Architecture Evolution & Forward Research Roadmap
 
-*Created: 2026-03-24 | Status: Active planning document*
+*Created: 2026-03-24 | Updated: 2026-03-24 (Phase 24 complete) | Status: Active*
 *Synthesizes: Phases 1–22 findings + architectural research from March 2026 sessions*
+
+**See DREX_UNIFIED_SPEC.md for the full per-component interface spec, tensor shapes,
+validation criteria, and phase gates.**
+
+---
+
+## Implementation Status (as of 2026-03-24)
+
+| Phase | Component                | File                            | Status              |
+|-------|--------------------------|---------------------------------|---------------------|
+| 13–16 | MemoryModule (L2+L4)     | models/memory.py                | ✅ DONE              |
+| 23    | EchoStateMemory (L1 ESN) | models/memory_esn.py            | ✅ DONE 170ff80      |
+| 24    | HDCEncoder               | models/hdc_encoder.py           | ✅ DONE 999d067      |
+| 25    | Mamba SSM Backbone       | models/mamba.py                 | 🔲 NEXT              |
+| 26    | DREX Controller + Reward | models/controller.py + reward.py| 🔲 After Phase 25    |
+| 27    | NoProp Semantic (L3)     | models/semantic.py              | 🔲 After Phase 22 ✓  |
+| 28    | KAN Readout              | models/kan_readout.py           | 🔲 After Phase 25    |
+| 29    | Sparse Router            | models/router.py                | 🔲 After Phase 26    |
+| 30    | Full Integration         | models/drex_unified.py          | 🔲 After Phases 25–29|
 
 ---
 
@@ -237,12 +256,19 @@ The Phase 1–16 research does not become irrelevant. Key findings carry forward
 
 ## Part 6 — Phased Forward Plan
 
-### Current priority: Complete Phases 17–22 without interruption.
+### Current priority: Phase 25 — Mamba SSM Backbone.
 
-Reason: Exp A/B produce the first published benchmark for the current architecture.
-That benchmark is the baseline against which DREX-UNIFIED will be measured.
-NoProp Phase 22 validates the training method for the semantic tier.
-Do not fork or abandon Exp A/B — let them run to completion.
+**Phases 23 (ESN) and 24 (HDC Encoder) are COMPLETE.** Phase 1 of the DREX-UNIFIED
+component build is done. The two zero-cost fixed encoders are in the repo and tested.
+
+Next immediate actions:
+1. Implement `python/drex/models/mamba.py` (Mamba-1/2 SSM layers)
+2. Wire Mamba backbone behind `--use-mamba` flag in `DrexConfig` + `train.py`
+3. Run exp_57 (Mamba backbone vs transformer baseline)
+4. If exp_57 passes, proceed to Phase 26 (RL Controller)
+
+Exp A/B baselines are still needed to unlock exp_53–56 (ESN/HDC validation experiments).
+Run Phases 17–22 when Exp A/B produce final checkpoints, but do NOT block Phase 25 on them.
 
 ---
 
